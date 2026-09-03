@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix Ultra & Lampa (Telegram Mini App)</title>
-    <!-- Подключаем Telegram Web App SDK[cite: 3] -->
+    <!-- Подключаем Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { box-sizing: border-box; }
         :root {
             --netflix-red: #E50914;
-            --bg-dark: #0b0b0e;
-            --bg-card: #14141c;
+            --bg-dark: #0e0e13;
+            --bg-card: #16161f;
             --text-main: #ffffff;
             --text-muted: #8a8a9d;
             --neon-glow: rgba(229, 9, 20, 0.85);
         }
 
         body.theme-cyberpunk {
-            --bg-dark: #030305;
-            --bg-card: #090912;
+            --bg-dark: #050508;
+            --bg-card: #0c0c16;
             --netflix-red: #00f3ff;
             --text-main: #f0fbff;
             --text-muted: #6b8c99;
@@ -27,8 +27,8 @@
         }
 
         body.theme-widow {
-            --bg-dark: #07040a;
-            --bg-card: #120a1c;
+            --bg-dark: #09050d;
+            --bg-card: #150c20;
             --netflix-red: #9d00ff;
             --text-main: #fcf5ff;
             --text-muted: #8c7899;
@@ -36,8 +36,8 @@
         }
 
         body.theme-gold {
-            --bg-dark: #0d0a05;
-            --bg-card: #1c150c;
+            --bg-dark: #100c06;
+            --bg-card: #20180e;
             --netflix-red: #ffb700;
             --text-main: #fffdf5;
             --text-muted: #998a6b;
@@ -45,8 +45,8 @@
         }
 
         body.theme-emerald {
-            --bg-dark: #030a06;
-            --bg-card: #091710;
+            --bg-dark: #040c08;
+            --bg-card: #0c1a13;
             --netflix-red: #00ff66;
             --text-main: #f0fff5;
             --text-muted: #6b997c;
@@ -63,136 +63,100 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* ---------------- ИНТРО-АНИМАЦИЯ (15с) ---------------- */
+        /* ---------------- ИНТРО-АНИМАЦИЯ (Живая, динамичная и легкая для процессора) ---------------- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #020204; z-index: 99999; display: flex; justify-content: center; align-items: center;
-            perspective: 1600px; overflow: hidden;
-            animation: screenFadeOut 15s cubic-bezier(0.19, 1, 0.22, 1) forwards;[cite: 3]
+            background: radial-gradient(circle at center, #1b0204 0%, #070102 60%, #010001 100%);
+            z-index: 99999; display: flex; justify-content: center; align-items: center;
+            perspective: 1400px; overflow: hidden;
+            animation: screenFadeOut 13.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-        .intro-side-ambience {
-            position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
+        /* Фоновые пульсирующие световые лучи (CSS-only, без JS-нагрузки) */
+        .intro-bg-beams {
+            position: absolute; inset: -50%;
+            background: conic-gradient(from 0deg at 50% 50%, rgba(229,9,20,0.08) 0deg, transparent 60deg, rgba(229,9,20,0.12) 120deg, transparent 180deg, rgba(229,9,20,0.08) 240deg, transparent 300deg);
+            animation: beamsRotate 20s linear infinite;
+            pointer-events: none;
         }
-        .intro-side-ambience::before, .intro-side-ambience::after {
-            content: ''; position: absolute; width: 700px; height: 700px; border-radius: 50%;
-            background: radial-gradient(circle, var(--neon-glow) 0%, transparent 70%);
-            opacity: 0.3; filter: blur(70px);
-            animation: sideOrbsMove 10s ease-in-out infinite alternate;[cite: 3]
-        }
-        .intro-side-ambience::before { top: -250px; left: -250px; }
-        .intro-side-ambience::after { bottom: -250px; right: -250px; animation-delay: -5s;[cite: 3]}
-
-        @keyframes sideOrbsMove {
-            0% { transform: scale(0.8) translate(0, 0); opacity: 0.15; }
-            100% { transform: scale(1.4) translate(70px, 70px); opacity: 0.4; }
-        }
-
-        .side-light-beam {
-            position: absolute; top: 0; bottom: 0; width: 30vw;
-            background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.07), transparent);
-            animation: beamPulse 5s ease-in-out infinite;[cite: 3]
-        }
-        .side-light-beam.left { left: 0; }
-        .side-light-beam.right { right: 0; animation-delay: -2.5s;[cite: 3]}
-
-        @keyframes beamPulse {
-            0%, 100% { opacity: 0.3; transform: scaleX(1); }
-            50% { opacity: 0.8; transform: scaleX(1.5); filter: brightness(1.6); }
-        }
-
-        .intro-particles {
-            position: absolute; inset: 0; pointer-events: none; z-index: 2;
-            background-image:
-                radial-gradient(circle, #fff 1px, transparent 1px),
-                radial-gradient(circle, var(--netflix-red) 1.5px, transparent 1.5px);
-            background-size: 140px 140px, 200px 200px;
-            background-position: 0 0, 50px 70px;
-            opacity: 0.4;
-            animation: particlesFly 15s linear infinite;[cite: 3]
-        }
-
-        @keyframes particlesFly {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.7; }
-            80% { opacity: 0.7; }
-            100% { transform: translateY(-800px) rotate(8deg); opacity: 0; }
-        }
-
-        .intro-laser-bg {
-            position: absolute; width: 200%; height: 200%;
-            background:
-                radial-gradient(2px 2px at 40px 60px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 200px 150px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 350px 250px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(circle at 50% 50%, rgba(30, 10, 60, 0.8) 0%, rgba(5, 2, 15, 0.95) 50%, #010103 100%),
-                radial-gradient(ellipse at 70% 30%, rgba(0, 243, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 30% 70%, rgba(229, 9, 20, 0.12) 0%, transparent 50%);
-            background-repeat: repeat;
-            background-size: 400px 400px, 500px 500px, 300px 300px, 100% 100%, 100% 100%, 100% 100%;
-            animation: spaceDrift 20s linear infinite;[cite: 3]
-            z-index: 1; opacity: 0.8;
-        }
-        @keyframes spaceDrift {
-            0% { transform: scale(1) translate(0, 0); }
-            50% { transform: scale(1.15) translate(-30px, -20px); }
-            100% { transform: scale(1) translate(0, 0); }
+        @keyframes beamsRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .netflix-intro-container {
-            position: relative; width: 180px; height: 260px;
+            position: relative; width: 150px; height: 225px;
             display: flex; justify-content: center; align-items: center;
             transform-style: preserve-3d; z-index: 5;
-            animation: containerEpicMotion 15s cubic-bezier(0.19, 1, 0.22, 1) forwards;[cite: 3]
+            animation: containerDynamicMotion 13.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
         .n-bar {
-            position: absolute; width: 40px; height: 220px;
-            background: linear-gradient(135deg, #ff3344 0%, var(--netflix-red) 40%, #300002 100%);
-            box-shadow: 0 0 50px var(--neon-glow);
+            position: absolute; width: 38px; height: 190px;
+            background: linear-gradient(135deg, #ff3344 0%, #E50914 45%, #600002 100%);
+            box-shadow: 0 0 50px rgba(229, 9, 20, 0.85);
             backface-visibility: hidden; border-radius: 4px;
         }
-        .n-bar.left { transform: translateX(-55px); animation: leftBarEpic 15s cubic-bezier(0.19, 1, 0.22, 1) forwards;[cite: 3]}
-        .n-bar.right { transform: translateX(55px); animation: rightBarEpic 15s cubic-bezier(0.19, 1, 0.22, 1) forwards;[cite: 3]}
+        .n-bar.left { transform: translateX(-48px); animation: leftBarDynamic 13.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+        .n-bar.right { transform: translateX(48px); animation: rightBarDynamic 13.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
         .n-bar.diagonal {
-            width: 40px; height: 268px; transform: rotate(23.5deg) translateZ(30px);
-            background: linear-gradient(180deg, #ff6677 0%, var(--netflix-red) 50%, #100001 100%);
-            box-shadow: 0 0 80px var(--neon-glow);
-            animation: diagBarEpic 15s cubic-bezier(0.19, 1, 0.22, 1) forwards;[cite: 3]
+            width: 38px; height: 236px; transform: rotate(22.6deg) translateZ(40px);
+            background: linear-gradient(180deg, #ff7788 0%, #E50914 40%, #300001 100%);
+            box-shadow: 0 0 75px rgba(229, 9, 20, 0.95);
+            animation: diagBarDynamic 13.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-        @keyframes leftBarEpic {
-            0% { transform: translateX(-220px) translateY(260px) scaleY(0) rotate(-65deg); opacity: 0; filter: brightness(3) blur(8px); }
-            15% { transform: translateX(-55px) translateY(0) scaleY(1) rotate(0deg); opacity: 1; filter: brightness(1.5) blur(0px); }
-            70% { transform: translateX(-55px) rotateY(-20deg) scale(1.05); filter: brightness(1.1); }
-            100% { transform: translateX(-55px) translateZ(600px) scale(1.3); opacity: 0; }
+        @keyframes leftBarDynamic {
+            0% { transform: translateX(-400px) scaleY(0) rotate(-60deg); filter: hue-rotate(120deg) brightness(2); opacity: 0; }
+            15% { transform: translateX(-48px) scaleY(1.05) rotate(0deg); filter: hue-rotate(0deg) brightness(1.2); opacity: 1; }
+            30% { transform: translateX(-48px) scaleY(0.95) rotate(-3deg); }
+            45% { transform: translateX(-48px) scale(1.08) rotate(0deg); filter: brightness(1.4) drop-shadow(0 0 30px var(--netflix-red)); }
+            70% { transform: translateX(-48px) scale(1) rotate(0deg); filter: brightness(1); opacity: 1; }
+            85% { transform: translateX(-48px) scale(1.15) rotate(5deg); opacity: 1; }
+            100% { transform: translateX(-48px) translateZ(600px) scale(1.8) rotate(15deg); opacity: 0; }
         }
-        @keyframes rightBarEpic {
-            0% { transform: translateX(220px) translateY(-260px) scaleY(0) rotate(65deg); opacity: 0; filter: brightness(3) blur(8px); }
-            15% { transform: translateX(55px) translateY(0) scaleY(1) rotate(0deg); opacity: 1; filter: brightness(1.5) blur(0px); }
-            70% { transform: translateX(55px) rotateY(20deg) scale(1.05); filter: brightness(1.1); }
-            100% { transform: translateX(55px) translateZ(600px) scale(1.3); opacity: 0; }
+        @keyframes rightBarDynamic {
+            0% { transform: translateX(400px) scaleY(0) rotate(60deg); filter: hue-rotate(120deg) brightness(2); opacity: 0; }
+            15% { transform: translateX(48px) scaleY(1.05) rotate(0deg); filter: hue-rotate(0deg) brightness(1.2); opacity: 1; }
+            30% { transform: translateX(48px) scaleY(0.95) rotate(3deg); }
+            45% { transform: translateX(48px) scale(1.08) rotate(0deg); filter: brightness(1.4) drop-shadow(0 0 30px var(--netflix-red)); }
+            70% { transform: translateX(48px) scale(1) rotate(0deg); filter: brightness(1); opacity: 1; }
+            85% { transform: translateX(48px) scale(1.15) rotate(-5deg); opacity: 1; }
+            100% { transform: translateX(48px) translateZ(600px) scale(1.8) rotate(-15deg); opacity: 0; }
         }
-        @keyframes diagBarEpic {
-            0% { transform: rotate(23.5deg) scaleY(0) translateZ(-400px); opacity: 0; filter: brightness(3.5) blur(10px); }
-            18% { transform: rotate(23.5deg) scaleY(1) translateZ(30px); opacity: 1; filter: brightness(1.6) blur(0px); }
-            100% { transform: rotate(23.5deg) scale(1.3) translateZ(550px); opacity: 0; }
+        @keyframes diagBarDynamic {
+            0% { transform: rotate(22.6deg) scaleY(0) translateZ(-400px); filter: brightness(2.5); opacity: 0; }
+            18% { transform: rotate(22.6deg) scaleY(1.08) translateZ(40px); opacity: 1; filter: brightness(1.6); }
+            45% { transform: rotate(22.6deg) scale(1.12) translateZ(80px); filter: brightness(1.4) drop-shadow(0 0 40px var(--netflix-red)); }
+            70% { transform: rotate(22.6deg) scale(1); filter: brightness(1); opacity: 1; }
+            85% { transform: rotate(22.6deg) scale(1.18); opacity: 1; }
+            100% { transform: rotate(22.6deg) scale(1.8) translateZ(650px); opacity: 0; }
         }
-        @keyframes containerEpicMotion {
-            0% { transform: scale(0.15) rotateX(35deg) rotateY(-35deg); opacity: 0; filter: blur(25px); }
-            18% { transform: scale(0.85) rotateX(0deg); opacity: 1; filter: blur(0px); }
-            100% { transform: scale(2); opacity: 0; visibility: hidden; }
+        @keyframes containerDynamicMotion {
+            0% { transform: scale(0.15) rotate(-25deg) translateY(50px); opacity: 0; }
+            15% { transform: scale(1) rotate(0deg) translateY(0); opacity: 1; }
+            45% { transform: scale(1.06) rotate(2deg); opacity: 1; }
+            72% { transform: scale(1.12) rotate(-2deg); opacity: 1; }
+            88% { transform: scale(1.3) rotate(0deg); opacity: 0.95; }
+            100% { transform: scale(4.0) rotate(5deg); opacity: 0; }
         }
         @keyframes screenFadeOut {
-            0%, 85% { background-color: #020204; }[cite: 3]
-            100% { background-color: transparent; visibility: hidden; }
+            0%, 78% { background-color: #040102; opacity: 1; }
+            94% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        @keyframes cyberPulse {
+            0% { box-shadow: 0 0 10px var(--neon-glow); }
+            50% { box-shadow: 0 0 30px var(--neon-glow), inset 0 0 15px var(--neon-glow); }
+            100% { box-shadow: 0 0 10px var(--neon-glow); }
         }
 
         /* ---------------- ШАПКА И САЙДБАР ---------------- */
         .sidebar-trigger { position: fixed; top: 0; left: 0; width: 30px; height: 100%; z-index: 2000; }
         .sidebar {
             position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
-            background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(16px);
+            background: rgba(14, 14, 19, 0.98); backdrop-filter: blur(16px);
             z-index: 3000; transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex; flex-direction: column; padding: 30px 20px;
             box-shadow: 8px 0 30px rgba(0,0,0,0.9);
@@ -219,7 +183,7 @@
 
         .header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 18px 60px; background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
+            padding: 18px 60px; background: linear-gradient(to bottom, rgba(14,14,19,0.95) 0%, rgba(14,14,19,0) 100%);
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; transition: background 0.3s;
         }
         .header.scrolled { background: var(--bg-dark); box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
@@ -245,10 +209,6 @@
         .hero-badge span { background: var(--netflix-red); color: #000; padding: 3px 8px; border-radius: 4px; font-size: 12px; box-shadow: 0 0 10px var(--neon-glow); font-weight: 900; }
         .hero-desc { font-size: 15px; max-width: 580px; line-height: 1.45; color: #d1d1d1; margin-bottom: 15px; text-shadow: 1px 1px 6px rgba(0,0,0,0.9); }
 
-        .hero-progress-container { width: 100%; max-width: 450px; background: rgba(255,255,255,0.2); height: 5px; border-radius: 3px; margin-bottom: 20px; overflow: hidden; display: none; }
-        .hero-progress-bar { height: 100%; background: var(--netflix-red); width: 0%; box-shadow: 0 0 10px var(--neon-glow); }
-        .hero-progress-text { font-size: 12px; color: var(--text-muted); margin-bottom: 15px; display: none; }
-
         .hero-btns { display: flex; gap: 14px; }
         .btn-white { background: white; color: black; border: none; padding: 12px 30px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.25s; outline: none; }
         .btn-white:hover, .btn-white:focus { background: rgba(255,255,255,0.85); box-shadow: 0 0 18px rgba(255,255,255,0.7); transform: scale(1.02); }
@@ -258,7 +218,7 @@
         /* ---------------- КАТАЛОГИ И СЕТКИ ---------------- */
         .main-container { padding: 30px 60px; max-width: 1500px; margin: 0 auto; }
         .row-container { margin-bottom: 40px; }
-        .section-title { font-size: 20px; font-weight: bold; margin-bottom: 14px; color: #e5e5e5; }
+        .section-title { font-size: 20px; font-weight: bold; margin-bottom: 14px; color: #e5e5e5; display: flex; justify-content: space-between; align-items: center; }
 
         .row-carousel { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 18px; scroll-behavior: smooth; min-height: 145px; }
         .row-carousel::-webkit-scrollbar { height: 6px; }
@@ -266,48 +226,50 @@
 
         .movie-card {
             min-width: 230px; height: 130px; background: var(--bg-card); border-radius: 8px; overflow: hidden;
-            cursor: pointer; position: relative; flex-shrink: 0; transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s ease;
+            cursor: pointer; position: relative; flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
             border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
-        .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .movie-card:hover, .movie-card:focus { transform: scale(1.08); z-index: 10; box-shadow: 0 10px 30px var(--neon-glow); border-color: var(--netflix-red); }
-
-        .card-progress-line { position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.3); }
-        .card-progress-fill { height: 100%; background: var(--netflix-red); }
+        .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+        .movie-card:hover, .movie-card:focus { transform: scale(1.1); z-index: 10; box-shadow: 0 15px 35px var(--neon-glow); border-color: var(--netflix-red); }
+        .movie-card:hover img { transform: scale(1.05); }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
         .grid-card {
             background: var(--bg-card); border-radius: 8px; overflow: hidden; cursor: pointer;
-            transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s ease; position: relative;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease; position: relative;
             border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
-        .grid-card img { width: 100%; height: 275px; object-fit: cover; display: block; background: #1a1a24; }
+        .grid-card img { width: 100%; height: 275px; object-fit: cover; display: block; background: #1a1a24; transition: transform 0.4s ease; }
         .grid-card-info { padding: 12px; }
         .grid-card-title { font-size: 14px; font-weight: bold; margin: 0 0 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .grid-card-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
-        .grid-card:hover, .grid-card:focus { transform: scale(1.05); z-index: 10; box-shadow: 0 12px 35px var(--neon-glow); border-color: var(--netflix-red); }
+        .grid-card:hover, .grid-card:focus { transform: scale(1.06); z-index: 10; box-shadow: 0 15px 40px var(--neon-glow); border-color: var(--netflix-red); }
+        .grid-card:hover img { transform: scale(1.06); }
 
         .genre-chips { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; }
         .genre-chips::-webkit-scrollbar { display: none; }
-        .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.2s; color: #fff; outline: none; }
-        .genre-chip:hover, .genre-chip:focus, .genre-chip.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 12px var(--neon-glow); font-weight: bold; }
+        .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); color: #fff; outline: none; }
+        .genre-chip:hover, .genre-chip:focus, .genre-chip.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 15px var(--neon-glow); font-weight: bold; transform: translateY(-2px); }
 
         .search-wrapper { position: relative; width: 320px; }
         .search-history-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: 0 0 6px 6px; z-index: 100; display: none; max-height: 150px; overflow-y: auto; }
-        .search-history-item { padding: 8px 14px; font-size: 13px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); }
-        .search-history-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .search-history-item { padding: 8px 14px; font-size: 13px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); transition: 0.2s; }
+        .search-history-item:hover { background: rgba(255,255,255,0.08); color: #fff; padding-left: 18px; }
 
         /* ---------------- МОДАЛЬНОЕ ОКНО LAMPA ---------------- */
         #modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.88); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.88); z-index: 5000; justify-content: center; align-items: center; backdrop-filter: blur(10px);
+            animation: fadeInOverlay 0.3s ease;
         }
+        @keyframes fadeInOverlay { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(10px); } }
+
         .lampa-modal-layout {
             display: flex; background: var(--bg-card); width: 1150px; max-width: 95vw; height: 78vh; max-height: 720px;
-            border-radius: 14px; overflow: hidden; box-shadow: 0 25px 65px rgba(0,0,0,0.95), 0 0 35px var(--neon-glow);
-            border: 1px solid rgba(255,255,255,0.12); position: relative; animation: modalZoom 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 14px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,0.95), 0 0 45px var(--neon-glow);
+            border: 1px solid rgba(255,255,255,0.12); position: relative; animation: modalZoom 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        @keyframes modalZoom { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes modalZoom { from { transform: scale(0.85) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
 
         .lampa-left-pane {
             flex: 1.3; background-size: cover; background-position: center; position: relative;
@@ -316,7 +278,7 @@
         }
         .lampa-left-pane::before {
             content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
-            background: linear-gradient(0deg, var(--bg-card) 12%, rgba(12,12,16,0.65) 60%, rgba(12,12,16,0.3) 100%);
+            background: linear-gradient(0deg, var(--bg-card) 12%, rgba(22,22,31,0.65) 60%, rgba(22,22,31,0.3) 100%);
         }
         .lampa-content-info { position: relative; z-index: 2; }
         .lampa-title { font-size: 36px; font-weight: 900; line-height: 1.1; margin-bottom: 10px; text-shadow: 0 2px 12px rgba(0,0,0,0.9); }
@@ -326,63 +288,66 @@
         .lampa-desc { font-size: 13px; line-height: 1.45; color: #cfcfd8; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 25px; }
 
         .lampa-action-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
-        .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 11px 22px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; outline: none; }
-        .lampa-btn:hover, .lampa-btn:focus, .lampa-btn.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 18px var(--neon-glow); color: #000; }
+        .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 11px 22px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.25s ease; outline: none; }
+        .lampa-btn:hover, .lampa-btn:focus, .lampa-btn.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 20px var(--neon-glow); color: #000; transform: translateY(-2px); }
 
         .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 28px; overflow-y: auto; }
         .lampa-sources-header { font-size: 16px; font-weight: bold; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
         .source-option-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-            padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; outline: none;
+            padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.25s ease; outline: none;
         }
         .source-option-card:hover, .source-option-card:focus, .source-option-card.selected {
-            background: rgba(229,9,20,0.18); border-color: var(--netflix-red); box-shadow: 0 0 15px var(--neon-glow);
+            background: rgba(229,9,20,0.18); border-color: var(--netflix-red); box-shadow: 0 0 18px var(--neon-glow); transform: translateX(4px);
         }
         .source-info-title { font-weight: bold; font-size: 13.5px; color: #fff; }
         .source-info-langs { font-size: 11.5px; color: #46d369; margin-top: 4px; }
         .server-ping { font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .ping-good { background: rgba(0,255,102,0.2); color: #00ff66; }
 
-        .modal-close-abs { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: 0.2s; outline: none; }
-        .modal-close-abs:hover, .modal-close-abs:focus { background: var(--netflix-red); transform: scale(1.1); }
+        .modal-close-abs { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: all 0.25s ease; outline: none; }
+        .modal-close-abs:hover, .modal-close-abs:focus { background: var(--netflix-red); transform: scale(1.15) rotate(90deg); }
 
         /* ---------------- ПЛЕЕР ---------------- */
-        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0b0e; z-index: 20000; flex-direction: column; }
+        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0e0e13; z-index: 20000; flex-direction: column; animation: fadeInPlayer 0.3s ease; }
+        @keyframes fadeInPlayer { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
         .player-top-bar {
             display: flex; justify-content: space-between; align-items: center; padding: 12px 30px;
             background: var(--bg-card); border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 30; gap: 20px;
         }
         .player-title-block { display: flex; align-items: center; gap: 15px; }
-        .player-logo-badge { background: var(--netflix-red); color: #000; font-family: Impact, sans-serif; padding: 4px 10px; border-radius: 4px; font-size: 14px; font-weight: 900; }
+        .player-logo-badge { background: var(--netflix-red); color: #000; font-family: Impact, sans-serif; padding: 4px 10px; border-radius: 4px; font-size: 14px; font-weight: 900; box-shadow: 0 0 10px var(--neon-glow); }
         .player-media-name { font-size: 16px; font-weight: bold; color: #fff; }
 
         .player-controls { display: flex; gap: 12px; align-items: center; }
         .source-select { background: var(--bg-dark); color: white; border: 1px solid rgba(255,255,255,0.15); padding: 8px 14px; border-radius: 6px; font-size: 13px; outline: none; cursor: pointer; }
-        .player-close-btn { background: var(--netflix-red); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 0 12px var(--neon-glow); outline: none; }
+        .player-close-btn { background: var(--netflix-red); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 0 12px var(--neon-glow); outline: none; transition: 0.2s; }
+        .player-close-btn:hover { transform: scale(1.05); }
 
         .player-container-inner { position: relative; flex: 1; width: 100%; height: 100%; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
         .player-ambient-glow { position: absolute; inset: -30px; background: radial-gradient(circle at center, var(--neon-glow) 0%, transparent 70%); opacity: 0.4; filter: blur(50px); pointer-events: none; z-index: 1; transition: 1s; }
         #player-frame { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; z-index: 2; }
 
         .view-section { display: none; }
-        .view-section.active { display: block; }
+        .view-section.active { display: block; animation: fadeInSection 0.35s ease; }
+        @keyframes fadeInSection { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .settings-container { max-width: 680px; margin: 120px auto 40px auto; background: var(--bg-card); padding: 35px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 35px rgba(0,0,0,0.6); }
+        .settings-container { max-width: 680px; margin: 120px auto 40px auto; background: var(--bg-card); padding: 35px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 35px rgba(0,0,0,0.6); animation: cyberPulse 6s infinite ease-in-out; }
         .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 24px; text-shadow: 0 0 12px var(--neon-glow); }
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 18px 0; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 14.5px; }
         .setting-row input[type="text"], .setting-row select { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 9px 14px; border-radius: 6px; outline: none; }
 
         #toast {
             position: fixed; bottom: 30px; right: 30px; background: var(--bg-card); color: white; padding: 14px 26px;
-            border-radius: 8px; z-index: 999999; box-shadow: 0 5px 25px rgba(0,0,0,0.8), 0 0 18px var(--neon-glow); opacity: 0; transition: opacity 0.3s; pointer-events: none;
-            border-left: 4px solid var(--netflix-red); font-weight: bold; font-size: 13.5px;
+            border-radius: 8px; z-index: 999999; box-shadow: 0 5px 25px rgba(0,0,0,0.8), 0 0 18px var(--neon-glow); opacity: 0; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none;
+            border-left: 4px solid var(--netflix-red); font-weight: bold; font-size: 13.5px; transform: translateY(20px);
         }
-        #toast.show { opacity: 1; }
+        #toast.show { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
-<!-- Конфигурация Телеграм Бота (Бот активен, обрабатывает /start и команды) -->
 <script>
     const TELEGRAM_CONFIG = {
         botToken: "8903629752:AAGqGjpb3l71iGRq1RHjmH1-4cTSJnkUcd4",
@@ -393,11 +358,7 @@
 </script>
 
 <div id="intro-screen">
-    <div class="intro-side-ambience"></div>
-    <div class="side-light-beam left"></div>
-    <div class="side-light-beam right"></div>
-    <div class="intro-particles"></div>
-    <div class="intro-laser-bg"></div>
+    <div class="intro-bg-beams"></div>
     <div class="netflix-intro-container">
         <div class="n-bar left"></div>
         <div class="n-bar diagonal"></div>
@@ -426,7 +387,7 @@
         <li id="sideHome" class="active" tabindex="0" onclick="switchTab('home', this)" onkeydown="if(event.key==='Enter')switchTab('home', this)">🏠 Главная</li>
         <li id="sideHistory" tabindex="0" onclick="switchTab('history', this)" onkeydown="if(event.key==='Enter')switchTab('history', this)">🕒 История просмотров</li>
         <li id="sideSeries" tabindex="0" onclick="switchTab('series', this)" onkeydown="if(event.key==='Enter')switchTab('series', this)">📺 Сериалы</li>
-        <li id="sideCatalog" tabindex="0" onclick="switchTab('catalog', this)" onkeydown="if(event.key==='Enter')switchTab('catalog', this)">🎬 Фильмы и Каталог</li>
+        <li id="sideCatalog" tabindex="0" onclick="switchTab('catalog', this)" onkeydown="if(event.key==='Enter')switchTab('catalog', this)">🎬 Мега-Каталог (Гига-База)</li>
         <li id="sideMylist" tabindex="0" onclick="switchTab('mylist', this)" onkeydown="if(event.key==='Enter')switchTab('mylist', this)">⭐ Мой список</li>
         <li id="sideSettings" tabindex="0" onclick="switchTab('settings', this)" onkeydown="if(event.key==='Enter')switchTab('settings', this)">⚙️ Настройки</li>
     </ul>
@@ -439,7 +400,7 @@
             <li id="navHome" class="active" tabindex="0" onclick="switchTab('home', this)" onkeydown="if(event.key==='Enter')switchTab('home', this)">Главная</li>
             <li tabindex="0" onclick="switchTab('history', this)" onkeydown="if(event.key==='Enter')switchTab('history', this)">История</li>
             <li tabindex="0" onclick="switchTab('series', this)" onkeydown="if(event.key==='Enter')switchTab('series', this)">Сериалы</li>
-            <li tabindex="0" onclick="switchTab('catalog', this)" onkeydown="if(event.key==='Enter')switchTab('catalog', this)">Фильмы</li>
+            <li tabindex="0" onclick="switchTab('catalog', this)" onkeydown="if(event.key==='Enter')switchTab('catalog', this)">Мега-Каталог</li>
             <li tabindex="0" onclick="switchTab('mylist', this)" onkeydown="if(event.key==='Enter')switchTab('mylist', this)">Мой список</li>
             <li tabindex="0" onclick="switchTab('settings', this)" onkeydown="if(event.key==='Enter')switchTab('settings', this)">Настройки</li>
         </ul>
@@ -458,10 +419,7 @@
         <div class="hero-badge"><span>В тренде сегодня</span></div>
         <div class="hero-desc" id="heroDesc">Пол Атридес объединяется с Чани и фрименами...</div>
 
-        <div class="hero-progress-text" id="heroProgressText">Продолжить просмотр • Осталось 42 мин</div>
-        <div class="hero-progress-container" id="heroProgressContainer">
-            <div class="hero-progress-bar" id="heroProgressBar" style="width: 45%;"></div>
-        </div>
+        <!-- Надпись и блок прогресса под фильмом удалены -->
 
         <div class="hero-btns">
             <button class="btn-white" id="heroPlayBtn" tabindex="0">▶ Смотреть</button>
@@ -471,7 +429,10 @@
 
     <div class="main-container">
         <div class="row-container">
-            <div class="section-title">🔥 Топ недели / В тренде</div>
+            <div class="section-title">
+                <span>🔥 Топ недели / В тренде</span>
+                <span style="font-size:12px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)">Смотреть все →</span>
+            </div>
             <div class="row-carousel" id="trendingRow"></div>
         </div>
         <div class="row-container">
@@ -479,8 +440,12 @@
             <div class="row-carousel" id="myListRow"></div>
         </div>
         <div class="row-container">
-            <div class="section-title">🚀 Популярные фильмы и сериалы</div>
+            <div class="section-title">🚀 Популярные фильмы и блокбастеры</div>
             <div class="row-carousel" id="popularRow"></div>
+        </div>
+        <div class="row-container">
+            <div class="section-title">✨ Лучшие фантастические миры</div>
+            <div class="row-carousel" id="sciFiRow"></div>
         </div>
     </div>
 </div>
@@ -497,7 +462,7 @@
 
 <div id="tab-series" class="view-section">
     <div class="main-container" style="padding-top: 110px;">
-        <div class="section-title">📺 Популярные сериалы</div>
+        <div class="section-title">📺 Популярные сериалы (Гига-База)</div>
         <div class="grid" id="seriesGrid"></div>
     </div>
 </div>
@@ -505,10 +470,10 @@
 <div id="tab-catalog" class="view-section">
     <div class="main-container" style="padding-top: 110px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
-            <div class="section-title" style="margin:0;">🎬 Фильмы и расширенный каталог</div>
+            <div class="section-title" style="margin:0;">🎬 Мега-Каталог</div>
 
             <div class="search-wrapper">
-                <input type="text" id="searchInput" placeholder="Поиск по всей базе (1000+ фильмов)..." oninput="handleSearch(this.value)" onfocus="showSearchHistory()" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:10px 18px; border-radius:6px; width:100%; outline:none;">
+                <input type="text" id="searchInput" placeholder="Поиск по всей базе..." oninput="handleSearch(this.value)" onfocus="showSearchHistory()" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:10px 18px; border-radius:6px; width:100%; outline:none;">
                 <div class="search-history-dropdown" id="searchHistoryDropdown"></div>
             </div>
         </div>
@@ -520,6 +485,8 @@
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('27', this)" onkeydown="if(event.key==='Enter')filterByGenre('27', this)">👻 Ужасы</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('35', this)" onkeydown="if(event.key==='Enter')filterByGenre('35', this)">😂 Комедии</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('18', this)" onkeydown="if(event.key==='Enter')filterByGenre('18', this)">🎭 Драмы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('12', this)" onkeydown="if(event.key==='Enter')filterByGenre('12', this)">🗺️ Приключения</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('53', this)" onkeydown="if(event.key==='Enter')filterByGenre('53', this)">🔍 Триллеры</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('16', this)" onkeydown="if(event.key==='Enter')filterByGenre('16', this)">🌀 Аниме / Мультфильмы</div>
         </div>
 
@@ -554,12 +521,7 @@
         <div class="setting-row">
             <span>Основной онлайн-источник:</span>
             <select id="settingDefaultSource" onchange="saveSettings()">
-                <option value="kinohub">🎬 Kinohub Search (По названию)</option>
-                <option value="kinobox">🌐 Kinobox (Агрегатор всех баз)</option>
-                <option value="collaps">⚡ Collaps Direct</option>
-                <option value="vidsrc">🌐 Vidsrc (ENG)</option>
-                <option value="ashdi">🇺🇦 Ashdi Player (UA/RU)</option>
-                <option value="kodik">🌀 Kodik (Аниме и Сериалы)</option>
+                <option value="kinohub">🎬 Kinohub Search (Прямой поток)</option>
             </select>
         </div>
         <div class="setting-row">
@@ -588,17 +550,8 @@
 
         <div class="player-controls">
             <div id="sleepTimerBadge" style="font-size:12px; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:4px; display:none;">⏱️ Сон: <span id="sleepTimerCountdown">--:--</span></div>
-            <div id="seriesSelectors" style="display:none; gap:10px;">
-                <select id="seasonSelect" class="source-select" onchange="changeSeason()"></select>
-                <select id="episodeSelect" class="source-select" onchange="changeEpisode()"></select>
-            </div>
             <select id="playerSourceSelector" class="source-select" onchange="updatePlayerFrame()">
                 <option value="kinohub">Kinohub Search</option>
-                <option value="kinobox">Kinobox</option>
-                <option value="collaps">Collaps Direct</option>
-                <option value="vidsrc">Vidsrc (ENG)</option>
-                <option value="ashdi">Ashdi Player</option>
-                <option value="kodik">Kodik</option>
             </select>
             <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
         </div>
@@ -611,7 +564,6 @@
 </div>
 
 <script>
-    // Интеграция Телеграм WebApp и автоматический опрос бота (Long Polling для обработки команды /start в чате)
     let tg = window.Telegram?.WebApp;
     if (tg) {
         tg.expand();
@@ -627,7 +579,6 @@
         }
     }
 
-    // Автоматический фоновый опрос Телеграм-бота (исправляет проблему, когда бот "молчит" на /start)
     let lastUpdateId = 0;
     async function pollTelegramBot() {
         if (!TELEGRAM_CONFIG.botToken) return;
@@ -641,13 +592,12 @@
                         let chatId = update.message.chat.id;
                         let text = update.message.text.trim();
                         if (text.startsWith('/start')) {
-                            // Отправляем ответ пользователю через Telegram API с кнопкой запуска приложения
                             await fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
                                     chat_id: chatId,
-                                    text: "🎬 Добро пожаловать в Netflix & Lampa TV!\nВаш телевизор и система управления успешно синхронизированы.",
+                                    text: "🎬 Добро пожаловать в мега-каталог Netflix & Lampa TV!\nВаш телевизор и система управления успешно синхронизированы.",
                                     reply_markup: {
                                         inline_keyboard: [[
                                             { text: "🖥️ Открыть интерфейс на ТВ", web_app: { url: window.location.href } }
@@ -660,14 +610,11 @@
                     }
                 }
             }
-        } catch (e) {
-            // Ошибка сети или CORS обходится фоновым запросом
-        }
+        } catch (e) {}
         setTimeout(pollTelegramBot, 2000);
     }
     setTimeout(pollTelegramBot, 1500);
 
-    // Авто-скрытие интро-экрана (~15 секунд)
     window.addEventListener('load', () => {
         setTimeout(() => {
             const intro = document.getElementById('intro-screen');
@@ -675,13 +622,13 @@
                 intro.style.opacity = '0';
                 setTimeout(() => intro.remove(), 800);
             }
-        }, 14500);
+        }, 13500);
     });
 
     let cachedCatalog = [];
     let settings = JSON.parse(localStorage.getItem('netflixSettings') || '{"username":"Андрей","defaultSource":"kinohub","theme":"netflix","sleepTimer":"0"}');
 
-    document.getElementById('settingDefaultSource').value = settings.defaultSource || 'kinohub';
+    document.getElementById('settingDefaultSource').value = 'kinohub';
     document.getElementById('settingTheme').value = settings.theme || 'netflix';
     document.getElementById('settingSleepTimer').value = settings.sleepTimer || '0';
     applyTheme(settings.theme || 'netflix');
@@ -709,14 +656,14 @@
     function saveSettings() {
         settings.username = document.getElementById('settingUsername').value;
         settings.theme = document.getElementById('settingTheme').value;
-        settings.defaultSource = document.getElementById('settingDefaultSource').value;
+        settings.defaultSource = 'kinohub';
         settings.sleepTimer = document.getElementById('settingSleepTimer').value;
         localStorage.setItem('netflixSettings', JSON.stringify(settings));
 
         document.getElementById('usernameDisplay').innerText = settings.username;
         document.getElementById('sidebarUsername').innerText = settings.username;
         applyTheme(settings.theme);
-        showToast('Настройки синхронизированы с ботом!');
+        showToast('Настройки синхронизированы!');
     }
 
     function switchTab(tabId, el) {
@@ -732,18 +679,45 @@
         if(tabId === 'series') renderGrid('seriesGrid', cachedCatalog.filter(i => i.media_type === 'tv' || i.first_air_date));
     }
 
-    // Глубокий сбор каталога по жанрам (1000+ элементов со страниц TMDb)[cite: 3]
     async function fetchCatalog() {
         try {
             let multiResults = [];
-            for(let page = 1; page <= 10; page++) {
-                const res = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
-                const data = await res.json();
-                if(data && data.results) {
-                    multiResults = multiResults.concat(data.results);
-                }
+            for(let page = 1; page <= 55; page++) {
+                try {
+                    const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
+                    const data = await res.json();
+                    if(data && data.results) {
+                        data.results.forEach(item => item.media_type = 'movie');
+                        multiResults = multiResults.concat(data.results);
+                    }
+                } catch(err) {}
             }
-            cachedCatalog = multiResults.filter(item => item.poster_path);
+            for(let page = 1; page <= 35; page++) {
+                try {
+                    const res = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
+                    const data = await res.json();
+                    if(data && data.results) {
+                        data.results.forEach(item => item.media_type = 'tv');
+                        multiResults = multiResults.concat(data.results);
+                    }
+                } catch(err) {}
+            }
+            for(let page = 1; page <= 20; page++) {
+                try {
+                    const res = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
+                    const data = await res.json();
+                    if(data && data.results) {
+                        multiResults = multiResults.concat(data.results);
+                    }
+                } catch(err) {}
+            }
+
+            const uniqueMap = new Map();
+            multiResults.forEach(item => {
+                if(item.poster_path && item.id) uniqueMap.set(item.id, item);
+            });
+
+            cachedCatalog = Array.from(uniqueMap.values());
             initHome();
         } catch(e) {
             initHome();
@@ -752,15 +726,15 @@
 
     function initHome() {
         setupRandomHero(cachedCatalog);
-        renderCarousel('trendingRow', cachedCatalog);
-        renderCarousel('popularRow', cachedCatalog.slice().reverse());
+        renderCarousel('trendingRow', cachedCatalog.slice(0, 35));
+        renderCarousel('popularRow', cachedCatalog.slice(35, 90));
+        renderCarousel('sciFiRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(878)).slice(0, 35));
         renderCarousel('myListRow', getMyListItems());
-        checkHeroProgress();
     }
 
     function setupRandomHero(items) {
         if(!items.length) return;
-        const randomItem = items[Math.floor(Math.random() * items.length)];
+        const randomItem = items[Math.floor(Math.random() * Math.min(items.length, 50))];
         const title = randomItem.title || randomItem.name || 'Фильм';
         const desc = randomItem.overview || 'Описание отсутствует.';
         const bgUrl = randomItem.backdrop_path ? `https://image.tmdb.org/t/p/original${randomItem.backdrop_path}` : '';
@@ -777,17 +751,6 @@
     function getMyListItems() { return JSON.parse(localStorage.getItem('myList') || '[]'); }
     function getHistoryItems() { return JSON.parse(localStorage.getItem('watchHistory') || '[]'); }
 
-    function checkHeroProgress() {
-        let history = getHistoryItems();
-        if(history.length > 0) {
-            let last = history[0];
-            document.getElementById('heroProgressContainer').style.display = 'block';
-            document.getElementById('heroProgressText').style.display = 'block';
-            document.getElementById('heroProgressBar').style.width = (last.progress || 45) + '%';
-            document.getElementById('heroProgressText').innerText = `Продолжить просмотр: ${last.title} • Просмотрено ${last.progress || 45}%`;
-        }
-    }
-
     function addToHistory(item) {
         let history = getHistoryItems().filter(i => i.id !== item.id);
         item.progress = Math.floor(Math.random() * 60) + 20;
@@ -799,8 +762,6 @@
     function clearHistory() {
         localStorage.removeItem('watchHistory');
         renderHistoryGrid();
-        document.getElementById('heroProgressContainer').style.display = 'none';
-        document.getElementById('heroProgressText').style.display = 'none';
         showToast('История очищена');
     }
 
@@ -837,7 +798,7 @@
         const c = document.getElementById(containerId);
         if(!c) return;
         c.innerHTML = '';
-        if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 4; padding:20px;">Ничего не найдено.</p>'; return; }
+        if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 4; padding:20px;">Ничего не найдено в каталоге.</p>'; return; }
         list.forEach(m => {
             const title = m.title || m.name || 'Без названия';
             const date = m.release_date || m.first_air_date || '2026';
@@ -914,13 +875,20 @@
         if(history.length > 5) history.pop();
         localStorage.setItem('searchHistory', JSON.stringify(history));
 
-        try {
-            const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&query=${encodeURIComponent(query)}`);
-            const data = await res.json();
-            if(data && data.results) {
-                renderGrid('catalogGrid', data.results.filter(i => i.poster_path));
+        let localMatch = cachedCatalog.filter(i => (i.title || i.name || '').toLowerCase().includes(query.toLowerCase()));
+        if (localMatch.length >= 5) {
+            renderGrid('catalogGrid', localMatch);
+        } else {
+            try {
+                const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&query=${encodeURIComponent(query)}`);
+                const data = await res.json();
+                if(data && data.results) {
+                    renderGrid('catalogGrid', data.results.filter(i => i.poster_path));
+                }
+            } catch(e) {
+                renderGrid('catalogGrid', localMatch);
             }
-        } catch(e) {}
+        }
     }
 
     window.addEventListener('click', (e) => {
@@ -951,7 +919,7 @@
         const box = document.getElementById('modalBoxContent');
         let list = getMyListItems();
         const isFav = list.some(i => i.id === id);
-        selectedModalSourceKey = settings.defaultSource || 'kinohub';
+        selectedModalSourceKey = 'kinohub';
 
         box.innerHTML = `
             <button class="modal-close-abs" tabindex="0" onclick="closeModal()">✕</button>
@@ -975,33 +943,13 @@
             </div>
             <div class="lampa-sources-pane">
                 <div class="lampa-sources-header">
-                    <span>Источники / Пинг серверов</span>
+                    <span>Активный источник / Пинг</span>
                     <span style="font-size:11px; color:#46d369;">🟢 Онлайн</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
-                    <div class="source-option-card ${selectedModalSourceKey === 'kinohub' ? 'selected' : ''}" tabindex="0" onclick="selectModalSource(this, 'kinohub')">
+                    <div class="source-option-card selected" tabindex="0" onclick="selectModalSource(this, 'kinohub')">
                         <div><div class="source-info-title">🎬 Kinohub Search</div><div class="source-info-langs">Прямой поток</div></div>
                         <span class="server-ping ping-good">14ms</span>
-                    </div>
-                    <div class="source-option-card ${selectedModalSourceKey === 'kinobox' ? 'selected' : ''}" tabindex="0" onclick="selectModalSource(this, 'kinobox')">
-                        <div><div class="source-info-title">🌐 Kinobox Aggregator</div><div class="source-info-langs">Все базы</div></div>
-                        <span class="server-ping ping-good">19ms</span>
-                    </div>
-                    <div class="source-option-card ${selectedModalSourceKey === 'collaps' ? 'selected' : ''}" tabindex="0" onclick="selectModalSource(this, 'collaps')">
-                        <div><div class="source-info-title">⚡ Collaps Direct</div><div class="source-info-langs">Быстрый CDN</div></div>
-                        <span class="server-ping ping-good">22ms</span>
-                    </div>
-                    <div class="source-option-card ${selectedModalSourceKey === 'vidsrc' ? 'selected' : ''}" tabindex="0" onclick="selectModalSource(this, 'vidsrc')">
-                        <div><div class="source-info-title">🌐 Vidsrc (ENG)</div><div class="source-info-langs">Зарубежный HD</div></div>
-                        <span class="server-ping ping-good">35ms</span>
-                    </div>
-                    <div class="source-option-card ${selectedModalSourceKey === 'ashdi' ? 'selected' : ''}" tabindex="0" onclick="selectModalSource(this, 'ashdi')">
-                        <div><div class="source-info-title">🇺🇦 Ashdi Player</div><div class="source-info-langs">UA/RU дубляж</div></div>
-                        <span class="server-ping ping-good">16ms</span>
-                    </div>
-                    <div class="source-option-card ${selectedModalSourceKey === 'kodik' ? 'selected' : ''}" tabindex="0" onclick="selectModalSource(this, 'kodik')">
-                        <div><div class="source-info-title">🌀 Kodik Player</div><div class="source-info-langs">Аниме / Сериалы</div></div>
-                        <span class="server-ping ping-good">28ms</span>
                     </div>
                 </div>
             </div>
@@ -1018,8 +966,8 @@
 
     function startPlayFromModal(id, type) {
         closeModal();
-        settings.defaultSource = selectedModalSourceKey;
-        document.getElementById('playerSourceSelector').value = selectedModalSourceKey;
+        settings.defaultSource = 'kinohub';
+        document.getElementById('playerSourceSelector').value = 'kinohub';
         openPlayer(id, type);
     }
 
@@ -1049,15 +997,7 @@
         activeMedia = { id, type, title: titleText, season: 1, episode: 1 };
 
         document.getElementById('playerMediaTitle').innerText = titleText;
-        document.getElementById('playerSourceSelector').value = settings.defaultSource || 'kinohub';
-
-        const seriesSelectors = document.getElementById('seriesSelectors');
-        if(type === 'tv') {
-            seriesSelectors.style.display = 'flex';
-            loadSeasonsMock();
-        } else {
-            seriesSelectors.style.display = 'none';
-        }
+        document.getElementById('playerSourceSelector').value = 'kinohub';
 
         updatePlayerFrame();
         document.getElementById('player-screen').style.display = 'flex';
@@ -1089,54 +1029,13 @@
         }, 1000);
     }
 
-    function loadSeasonsMock() {
-        const sSelect = document.getElementById('seasonSelect');
-        sSelect.innerHTML = '<option value="1">Сезон 1</option><option value="2">Сезон 2</option>';
-        loadEpisodesMock(1);
-    }
-
-    function loadEpisodesMock(seasonNum) {
-        activeMedia.season = seasonNum;
-        const eSelect = document.getElementById('episodeSelect');
-        eSelect.innerHTML = '';
-        for(let i = 1; i <= 10; i++) {
-            eSelect.innerHTML += `<option value="${i}">Серия ${i}</option>`;
-        }
-        activeMedia.episode = 1;
-    }
-
-    function changeSeason() { loadEpisodesMock(document.getElementById('seasonSelect').value); updatePlayerFrame(); }
-    function changeEpisode() { activeMedia.episode = document.getElementById('episodeSelect').value; updatePlayerFrame(); }
-
     function updatePlayerFrame() {
-        const source = document.getElementById('playerSourceSelector').value;
         const frame = document.getElementById('player-frame');
         const { id, type, title, season, episode } = activeMedia;
 
-        let rawUrl = '';
-        switch(source) {
-            case 'kinohub':
-                rawUrl = (type === 'tv') ? `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}&season=${season}&episode=${episode}` : `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}`;
-                break;
-            case 'kinobox':
-                rawUrl = (type === 'tv') ? `https://kinobox.tv/api/players?tmdb=${id}&season=${season}&episode=${episode}` : `https://kinobox.tv/api/players?tmdb=${id}`;
-                break;
-            case 'collaps':
-                rawUrl = `https://api.strts.net/embed/tmdb/${id}`;
-                break;
-            case 'vidsrc':
-                rawUrl = (type === 'tv') ? `https://vidsrc.icu/embed/tv/${id}/${season}/${episode}` : `https://vidsrc.icu/embed/movie/${id}`;
-                break;
-            case 'ashdi':
-                rawUrl = (type === 'tv') ? `https://ashdi.su/embed/tv/${id}/${season}/${episode}` : `https://ashdi.su/embed/movie/${id}`;
-                break;
-            case 'kodik':
-                rawUrl = (type === 'tv') ? `https://kodik.cc/find-parser?tmdb=${id}&type=serial&season=${season}&episode=${episode}` : `https://kodik.cc/find-player?tmdb=${id}&type=movie`;
-                break;
-        }
-
+        let rawUrl = (type === 'tv') ? `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}&season=${season}&episode=${episode}` : `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}`;
         frame.src = rawUrl;
-        showToast('Плеер запущен');
+        showToast('Плеер запущен через Kinohub');
     }
 
     function closePlayer() {
