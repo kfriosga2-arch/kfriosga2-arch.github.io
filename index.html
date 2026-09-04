@@ -151,6 +151,11 @@
             100% { box-shadow: 0 0 10px var(--neon-glow); }
         }
 
+        /* ---------------- УЛУЧШЕННЫЕ ПЛАВНЫЕ АНИМАЦИИ ДВИЖЕНИЯ ФОКУСА ДЛЯ ТВ ---------------- */
+        .sidebar-links li, .nav-links li, .movie-card, .grid-card, .genre-chip, .lampa-btn, .source-option-card, .sidebar-profile, .logo, .sidebar-logo, .btn-white, .btn-gray, .modal-close-abs, .player-close-btn, .search-history-item {
+            will-change: transform, box-shadow, background-color, border-color;
+        }
+
         /* ---------------- ШАПКА И САЙДБАР ---------------- */
         .sidebar-trigger { position: fixed; top: 0; left: 0; width: 30px; height: 100%; z-index: 2000; }
         .sidebar {
@@ -163,10 +168,11 @@
         }
         .sidebar-trigger:hover ~ .sidebar, .sidebar:hover { left: 0; }
         .sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
-        .sidebar-logo { font-size: 26px; font-weight: bold; color: var(--netflix-red); font-family: Impact, sans-serif; letter-spacing: 1.5px; cursor: pointer; text-shadow: 0 0 12px var(--neon-glow); }
+        .sidebar-logo { font-size: 26px; font-weight: bold; color: var(--netflix-red); font-family: Impact, sans-serif; letter-spacing: 1.5px; cursor: pointer; text-shadow: 0 0 12px var(--neon-glow); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), text-shadow 0.3s ease; }
+        .sidebar-logo:focus { transform: scale(1.08) translateX(4px); text-shadow: 0 0 22px var(--neon-glow); outline: none; }
 
-        .sidebar-profile { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 25px; cursor: pointer; border: 1px solid rgba(255,255,255,0.08); outline: none; }
-        .sidebar-profile:focus { border-color: var(--netflix-red); box-shadow: 0 0 15px var(--neon-glow); }
+        .sidebar-profile { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 25px; cursor: pointer; border: 1px solid rgba(255,255,255,0.08); outline: none; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
+        .sidebar-profile:focus { transform: scale(1.03) translateX(6px); border-color: var(--netflix-red); background: rgba(229,9,20,0.12); box-shadow: 0 0 20px var(--neon-glow); }
         .sidebar-profile img { width: 36px; height: 36px; border-radius: 6px; }
         .sidebar-profile-info { display: flex; flex-direction: column; }
         .sidebar-profile-name { font-size: 14px; font-weight: bold; color: #fff; }
@@ -175,11 +181,12 @@
         .sidebar-section-title { font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin: 15px 0 8px 10px; }
         .sidebar-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
         .sidebar-links li {
-            font-size: 14px; color: #cccccc; cursor: pointer; transition: all 0.25s;
+            font-size: 14px; color: #cccccc; cursor: pointer; 
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
             padding: 12px 14px; border-radius: 6px; display: flex; align-items: center; gap: 12px;
             outline: none;
         }
-        .sidebar-links li:hover, .sidebar-links li:focus, .sidebar-links li.active { color: #fff; background: var(--netflix-red); font-weight: bold; transform: translateX(4px); box-shadow: 0 0 15px var(--neon-glow); }
+        .sidebar-links li:hover, .sidebar-links li:focus, .sidebar-links li.active { color: #fff; background: var(--netflix-red); font-weight: bold; transform: scale(1.05) translateX(8px); box-shadow: 0 0 20px var(--neon-glow); }
 
         .header {
             display: flex; justify-content: space-between; align-items: center;
@@ -188,15 +195,15 @@
         }
         .header.scrolled { background: var(--bg-dark); box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
         .logo-nav { display: flex; align-items: center; gap: 40px; }
-        .logo { font-size: 26px; font-weight: bold; color: var(--netflix-red); font-family: Impact, sans-serif; letter-spacing: 1.5px; cursor: pointer; text-shadow: 0 0 12px var(--neon-glow); outline: none; }
-        .logo:focus { text-shadow: 0 0 20px var(--neon-glow); }
+        .logo { font-size: 26px; font-weight: bold; color: var(--netflix-red); font-family: Impact, sans-serif; letter-spacing: 1.5px; cursor: pointer; text-shadow: 0 0 12px var(--neon-glow); outline: none; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), text-shadow 0.3s ease; }
+        .logo:focus { transform: scale(1.08); text-shadow: 0 0 22px var(--neon-glow); }
         .nav-links { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; font-size: 14px; }
-        .nav-links li { cursor: pointer; color: #e5e5e5; transition: 0.2s; outline: none; padding: 4px 8px; border-radius: 4px; }
-        .nav-links li:hover, .nav-links li:focus, .nav-links li.active { color: #fff; font-weight: bold; text-shadow: 0 0 10px var(--neon-glow); background: rgba(229,9,20,0.2); }
+        .nav-links li { cursor: pointer; color: #e5e5e5; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; outline: none; padding: 6px 12px; border-radius: 6px; }
+        .nav-links li:hover, .nav-links li:focus, .nav-links li.active { color: #fff; font-weight: bold; text-shadow: 0 0 10px var(--neon-glow); background: rgba(229,9,20,0.25); transform: scale(1.06) translateY(-2px); box-shadow: 0 0 15px var(--neon-glow); }
 
         .header-right { display: flex; align-items: center; gap: 20px; font-size: 14px; }
-        .user-profile { display: flex; align-items: center; gap: 8px; cursor: pointer; outline: none; padding: 4px 8px; border-radius: 4px; }
-        .user-profile:focus { background: rgba(255,255,255,0.1); }
+        .user-profile { display: flex; align-items: center; gap: 8px; cursor: pointer; outline: none; padding: 6px 12px; border-radius: 6px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease; }
+        .user-profile:focus { background: rgba(255,255,255,0.15); transform: scale(1.05); box-shadow: 0 0 15px var(--neon-glow); }
         .user-profile img { width: 28px; height: 28px; border-radius: 4px; }
 
         /* ---------------- HERO БАННЕР ---------------- */
@@ -212,51 +219,52 @@
         .hero-desc { font-size: 15px; max-width: 580px; line-height: 1.45; color: #d1d1d1; margin-bottom: 15px; text-shadow: 1px 1px 6px rgba(0,0,0,0.9); }
 
         .hero-btns { display: flex; gap: 14px; }
-        .btn-white { background: white; color: black; border: none; padding: 12px 30px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.25s; outline: none; }
-        .btn-white:hover, .btn-white:focus { background: rgba(255,255,255,0.85); box-shadow: 0 0 18px rgba(255,255,255,0.7); transform: scale(1.02); }
-        .btn-gray { background: rgba(109, 109, 110, 0.7); color: white; border: none; padding: 12px 26px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.25s; backdrop-filter: blur(5px); outline: none; }
-        .btn-gray:hover, .btn-gray:focus { background: rgba(109, 109, 110, 0.5); transform: scale(1.02); box-shadow: 0 0 15px rgba(255,255,255,0.4); }
+        .btn-white { background: white; color: black; border: none; padding: 12px 30px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease; outline: none; }
+        .btn-white:hover, .btn-white:focus { background: rgba(255,255,255,0.9); box-shadow: 0 0 25px rgba(255,255,255,0.8); transform: scale(1.08) translateY(-2px); }
+        .btn-gray { background: rgba(109, 109, 110, 0.7); color: white; border: none; padding: 12px 26px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease; backdrop-filter: blur(5px); outline: none; }
+        .btn-gray:hover, .btn-gray:focus { background: rgba(109, 109, 110, 0.5); transform: scale(1.08) translateY(-2px); box-shadow: 0 0 20px rgba(255,255,255,0.5); }
 
-        /* ---------------- КАТАЛОГИ И СЕТКИ ---------------- */
+        /* ---------------- КАТАЛОГИ И СЕТКИ С ПЛАВНЫМ МАСШТАБИРОВАНИЕМ ---------------- */
         .main-container { padding: 30px 60px; max-width: 1500px; margin: 0 auto; }
         .row-container { margin-bottom: 40px; }
         .section-title { font-size: 20px; font-weight: bold; margin-bottom: 14px; color: #e5e5e5; display: flex; justify-content: space-between; align-items: center; }
 
-        .row-carousel { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 18px; scroll-behavior: smooth; min-height: 145px; }
+        .row-carousel { display: flex; gap: 16px; overflow-x: auto; padding: 10px 4px 20px 4px; scroll-behavior: smooth; min-height: 155px; }
         .row-carousel::-webkit-scrollbar { height: 6px; }
         .row-carousel::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 
         .movie-card {
             min-width: 230px; height: 130px; background: var(--bg-card); border-radius: 8px; overflow: hidden;
-            cursor: pointer; position: relative; flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+            cursor: pointer; position: relative; flex-shrink: 0; 
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease;
             border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
-        .movie-card:hover, .movie-card:focus { transform: scale(1.1); z-index: 10; box-shadow: 0 15px 35px var(--neon-glow); border-color: var(--netflix-red); }
-        .movie-card:hover img { transform: scale(1.05); }
+        .movie-card:hover, .movie-card:focus { transform: scale(1.12) translateY(-4px); z-index: 10; box-shadow: 0 18px 40px var(--neon-glow); border-color: var(--netflix-red); }
+        .movie-card:hover img { transform: scale(1.06); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 20px; padding: 4px; }
         .grid-card {
             background: var(--bg-card); border-radius: 8px; overflow: hidden; cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease; position: relative;
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease; position: relative;
             border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
         .grid-card img { width: 100%; height: 275px; object-fit: cover; display: block; background: #1a1a24; transition: transform 0.4s ease; }
         .grid-card-info { padding: 12px; }
         .grid-card-title { font-size: 14px; font-weight: bold; margin: 0 0 6px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .grid-card-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
-        .grid-card:hover, .grid-card:focus { transform: scale(1.06); z-index: 10; box-shadow: 0 15px 40px var(--neon-glow); border-color: var(--netflix-red); }
+        .grid-card:hover, .grid-card:focus { transform: scale(1.08) translateY(-4px); z-index: 10; box-shadow: 0 20px 45px var(--neon-glow); border-color: var(--netflix-red); }
         .grid-card:hover img { transform: scale(1.06); }
 
-        .genre-chips { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; }
+        .genre-chips { display: flex; gap: 10px; overflow-x: auto; padding: 4px 4px 12px 4px; margin-bottom: 20px; }
         .genre-chips::-webkit-scrollbar { display: none; }
-        .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); color: #fff; outline: none; }
-        .genre-chip:hover, .genre-chip:focus, .genre-chip.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 15px var(--neon-glow); font-weight: bold; transform: translateY(-2px); }
+        .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 9px 18px; border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; color: #fff; outline: none; }
+        .genre-chip:hover, .genre-chip:focus, .genre-chip.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 20px var(--neon-glow); font-weight: bold; transform: scale(1.07) translateY(-3px); }
 
         .search-wrapper { position: relative; width: 320px; }
         .search-history-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: 0 0 6px 6px; z-index: 100; display: none; max-height: 150px; overflow-y: auto; }
-        .search-history-item { padding: 8px 14px; font-size: 13px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); transition: 0.2s; outline: none; }
-        .search-history-item:hover, .search-history-item:focus { background: rgba(255,255,255,0.08); color: #fff; padding-left: 18px; }
+        .search-history-item { padding: 9px 14px; font-size: 13px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease; outline: none; }
+        .search-history-item:hover, .search-history-item:focus { background: rgba(229,9,20,0.2); color: #fff; transform: translateX(6px); }
 
         /* ---------------- МОДАЛЬНОЕ ОКНО LAMPA ---------------- */
         #modal-overlay {
@@ -290,25 +298,25 @@
         .lampa-desc { font-size: 13px; line-height: 1.45; color: #cfcfd8; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 25px; }
 
         .lampa-action-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
-        .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 11px 22px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.25s ease; outline: none; }
-        .lampa-btn:hover, .lampa-btn:focus, .lampa-btn.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 20px var(--neon-glow); color: #000; transform: translateY(-2px); }
+        .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 11px 22px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; outline: none; }
+        .lampa-btn:hover, .lampa-btn:focus, .lampa-btn.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 22px var(--neon-glow); color: #000; transform: scale(1.06) translateY(-2px); }
 
         .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 28px; overflow-y: auto; }
         .lampa-sources-header { font-size: 16px; font-weight: bold; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
         .source-option-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-            padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.25s ease; outline: none;
+            padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; outline: none;
         }
         .source-option-card:hover, .source-option-card:focus, .source-option-card.selected {
-            background: rgba(229,9,20,0.18); border-color: var(--netflix-red); box-shadow: 0 0 18px var(--neon-glow); transform: translateX(4px);
+            background: rgba(229,9,20,0.18); border-color: var(--netflix-red); box-shadow: 0 0 20px var(--neon-glow); transform: scale(1.03) translateX(6px);
         }
         .source-info-title { font-weight: bold; font-size: 13.5px; color: #fff; }
         .source-info-langs { font-size: 11.5px; color: #46d369; margin-top: 4px; }
         .server-ping { font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .ping-good { background: rgba(0,255,102,0.2); color: #00ff66; }
 
-        .modal-close-abs { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: all 0.25s ease; outline: none; }
-        .modal-close-abs:hover, .modal-close-abs:focus { background: var(--netflix-red); transform: scale(1.15) rotate(90deg); box-shadow: 0 0 15px var(--neon-glow); }
+        .modal-close-abs { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease; outline: none; }
+        .modal-close-abs:hover, .modal-close-abs:focus { background: var(--netflix-red); transform: scale(1.2) rotate(90deg); box-shadow: 0 0 18px var(--neon-glow); }
 
         /* ---------------- ПЛЕЕР ---------------- */
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0e0e13; z-index: 20000; flex-direction: column; animation: fadeInPlayer 0.3s ease; }
@@ -325,8 +333,8 @@
         .player-controls { display: flex; gap: 12px; align-items: center; }
         .source-select { background: var(--bg-dark); color: white; border: 1px solid rgba(255,255,255,0.15); padding: 8px 14px; border-radius: 6px; font-size: 13px; outline: none; cursor: pointer; }
         .source-select:focus { border-color: var(--netflix-red); box-shadow: 0 0 10px var(--neon-glow); }
-        .player-close-btn { background: var(--netflix-red); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 0 12px var(--neon-glow); outline: none; transition: 0.2s; }
-        .player-close-btn:hover, .player-close-btn:focus { transform: scale(1.05); box-shadow: 0 0 18px var(--neon-glow); }
+        .player-close-btn { background: var(--netflix-red); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 0 12px var(--neon-glow); outline: none; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease; }
+        .player-close-btn:hover, .player-close-btn:focus { transform: scale(1.08); box-shadow: 0 0 20px var(--neon-glow); }
 
         .player-container-inner { position: relative; flex: 1; width: 100%; height: 100%; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
         .player-ambient-glow { position: absolute; inset: -30px; background: radial-gradient(circle at center, var(--neon-glow) 0%, transparent 70%); opacity: 0.4; filter: blur(50px); pointer-events: none; z-index: 1; transition: 1s; }
@@ -375,10 +383,10 @@
 <div class="sidebar-trigger"></div>
 <div class="sidebar">
     <div class="sidebar-header">
-        <div class="sidebar-logo" tabindex="0" onclick="switchTab('home', null)" onkeydown="if(event.key==='Enter')switchTab('home', null)">NETFLIX</div>
+        <div class="sidebar-logo" tabindex="0" onclick="switchTab('home', null)">NETFLIX</div>
     </div>
 
-    <div class="sidebar-profile" tabindex="0" onclick="switchTab('settings', null)" onkeydown="if(event.key==='Enter')switchTab('settings', null)">
+    <div class="sidebar-profile" tabindex="0" onclick="switchTab('settings', null)">
         <img id="sidebarAvatar" src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
         <div class="sidebar-profile-info">
             <span class="sidebar-profile-name" id="sidebarUsername">Андрей</span>
@@ -388,29 +396,29 @@
 
     <div class="sidebar-section-title">Меню</div>
     <ul class="sidebar-links">
-        <li id="sideHome" class="active" tabindex="0" onclick="switchTab('home', this)" onkeydown="if(event.key==='Enter')switchTab('home', this)">🏠 Главная</li>
-        <li id="sideHistory" tabindex="0" onclick="switchTab('history', this)" onkeydown="if(event.key==='Enter')switchTab('history', this)">🕒 История просмотров</li>
-        <li id="sideSeries" tabindex="0" onclick="switchTab('series', this)" onkeydown="if(event.key==='Enter')switchTab('series', this)">📺 Сериалы</li>
-        <li id="sideCatalog" tabindex="0" onclick="switchTab('catalog', this)" onkeydown="if(event.key==='Enter')switchTab('catalog', this)">🎬 Мега-Каталог (Гига-База)</li>
-        <li id="sideMylist" tabindex="0" onclick="switchTab('mylist', this)" onkeydown="if(event.key==='Enter')switchTab('mylist', this)">⭐ Мой список</li>
-        <li id="sideSettings" tabindex="0" onclick="switchTab('settings', this)" onkeydown="if(event.key==='Enter')switchTab('settings', this)">⚙️ Настройки</li>
+        <li id="sideHome" class="active" tabindex="0" onclick="switchTab('home', this)">🏠 Главная</li>
+        <li id="sideHistory" tabindex="0" onclick="switchTab('history', this)">🕒 История просмотров</li>
+        <li id="sideSeries" tabindex="0" onclick="switchTab('series', this)">📺 Сериалы</li>
+        <li id="sideCatalog" tabindex="0" onclick="switchTab('catalog', this)">🎬 Мега-Каталог (Гига-База)</li>
+        <li id="sideMylist" tabindex="0" onclick="switchTab('mylist', this)">⭐ Мой список</li>
+        <li id="sideSettings" tabindex="0" onclick="switchTab('settings', this)">⚙️ Настройки</li>
     </ul>
 </div>
 
 <div class="header" id="mainHeader">
     <div class="logo-nav">
-        <div class="logo" tabindex="0" onclick="switchTab('home', document.getElementById('navHome'))" onkeydown="if(event.key==='Enter')switchTab('home', document.getElementById('navHome'))">NETFLIX</div>
+        <div class="logo" tabindex="0" onclick="switchTab('home', document.getElementById('navHome'))">NETFLIX</div>
         <ul class="nav-links">
-            <li id="navHome" class="active" tabindex="0" onclick="switchTab('home', this)" onkeydown="if(event.key==='Enter')switchTab('home', this)">Главная</li>
-            <li tabindex="0" onclick="switchTab('history', this)" onkeydown="if(event.key==='Enter')switchTab('history', this)">История</li>
-            <li tabindex="0" onclick="switchTab('series', this)" onkeydown="if(event.key==='Enter')switchTab('series', this)">Сериалы</li>
-            <li tabindex="0" onclick="switchTab('catalog', this)" onkeydown="if(event.key==='Enter')switchTab('catalog', this)">Мега-Каталог</li>
-            <li tabindex="0" onclick="switchTab('mylist', this)" onkeydown="if(event.key==='Enter')switchTab('mylist', this)">Мой список</li>
-            <li tabindex="0" onclick="switchTab('settings', this)" onkeydown="if(event.key==='Enter')switchTab('settings', this)">Настройки</li>
+            <li id="navHome" class="active" tabindex="0" onclick="switchTab('home', this)">Главная</li>
+            <li tabindex="0" onclick="switchTab('history', this)">История</li>
+            <li tabindex="0" onclick="switchTab('series', this)">Сериалы</li>
+            <li tabindex="0" onclick="switchTab('catalog', this)">Мега-Каталог</li>
+            <li tabindex="0" onclick="switchTab('mylist', this)">Мой список</li>
+            <li tabindex="0" onclick="switchTab('settings', this)">Настройки</li>
         </ul>
     </div>
     <div class="header-right">
-        <div class="user-profile" tabindex="0" onclick="switchTab('settings')" onkeydown="if(event.key==='Enter')switchTab('settings')">
+        <div class="user-profile" tabindex="0" onclick="switchTab('settings', document.getElementById('sideSettings'))">
             <img id="headerAvatar" src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
             <span id="usernameDisplay">Андрей</span>
         </div>
@@ -433,7 +441,7 @@
         <div class="row-container">
             <div class="section-title">
                 <span>🔥 Топ недели / В тренде</span>
-                <span tabindex="0" style="font-size:12px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)" onkeydown="if(event.key==='Enter')switchTab('catalog', null)">Смотреть все →</span>
+                <span tabindex="0" style="font-size:12px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', document.getElementById('sideCatalog'))">Смотреть все →</span>
             </div>
             <div class="row-carousel" id="trendingRow"></div>
         </div>
@@ -456,7 +464,7 @@
     <div class="main-container" style="padding-top: 110px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
             <div class="section-title" style="margin:0;">🕒 История просмотров</div>
-            <button class="btn-white" tabindex="0" style="padding: 8px 18px; font-size:13px; background:var(--netflix-red); color:#000;" onclick="clearHistory()" onkeydown="if(event.key==='Enter')clearHistory()">Очистить историю</button>
+            <button class="btn-white" tabindex="0" style="padding: 8px 18px; font-size:13px; background:var(--netflix-red); color:#000;" onclick="clearHistory()">Очистить историю</button>
         </div>
         <div class="grid" id="historyGrid"></div>
     </div>
@@ -481,15 +489,15 @@
         </div>
 
         <div class="genre-chips" id="genreChipsContainer">
-            <div class="genre-chip active" tabindex="0" onclick="filterByGenre('all', this)" onkeydown="if(event.key==='Enter')filterByGenre('all', this)">Все жанры</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('28', this)" onkeydown="if(event.key==='Enter')filterByGenre('28', this)">💥 Боевики</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('878', this)" onkeydown="if(event.key==='Enter')filterByGenre('878', this)">🚀 Фантастика</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('27', this)" onkeydown="if(event.key==='Enter')filterByGenre('27', this)">👻 Ужасы</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('35', this)" onkeydown="if(event.key==='Enter')filterByGenre('35', this)">😂 Комедии</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('18', this)" onkeydown="if(event.key==='Enter')filterByGenre('18', this)">🎭 Драмы</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('12', this)" onkeydown="if(event.key==='Enter')filterByGenre('12', this)">🗺️ Приключения</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('53', this)" onkeydown="if(event.key==='Enter')filterByGenre('53', this)">🔍 Триллеры</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('16', this)" onkeydown="if(event.key==='Enter')filterByGenre('16', this)">🌀 Аниме / Мультфильмы</div>
+            <div class="genre-chip active" tabindex="0" onclick="filterByGenre('all', this)">Все жанры</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('28', this)">💥 Боевики</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('878', this)">🚀 Фантастика</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('27', this)">👻 Ужасы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('35', this)">😂 Комедии</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('18', this)">🎭 Драмы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('12', this)">🗺️ Приключения</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('53', this)">🔍 Триллеры</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('16', this)">🌀 Аниме / Мультфильмы</div>
         </div>
 
         <div class="grid" id="catalogGrid"></div>
@@ -555,7 +563,7 @@
             <select id="playerSourceSelector" class="source-select" onchange="updatePlayerFrame()">
                 <option value="kinohub">Kinohub Search</option>
             </select>
-            <button class="player-close-btn" tabindex="0" onclick="closePlayer()" onkeydown="if(event.key==='Enter')closePlayer()">✕ Закрыть</button>
+            <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
         </div>
     </div>
 
@@ -750,10 +758,7 @@
         const infoBtn = document.getElementById('heroInfoBtn');
 
         playBtn.onclick = () => { openModal(randomItem.id, type); };
-        playBtn.onkeydown = (e) => { if(e.key==='Enter') openModal(randomItem.id, type); };
-
         infoBtn.onclick = () => { openModal(randomItem.id, type); };
-        infoBtn.onkeydown = (e) => { if(e.key==='Enter') openModal(randomItem.id, type); };
     }
 
     function getMyListItems() { return JSON.parse(localStorage.getItem('myList') || '[]'); }
@@ -797,7 +802,6 @@
                 ${inHistory ? `<div class="card-progress-line"><div class="card-progress-fill" style="width: ${inHistory.progress || 40}%;"></div></div>` : ''}
             `;
             card.onclick = () => { openModal(m.id, type); };
-            card.onkeydown = (e) => { if(e.key==='Enter') openModal(m.id, type); };
             c.appendChild(card);
         });
     }
@@ -830,7 +834,6 @@
                 </div>
             `;
             card.onclick = () => { openModal(m.id, type); };
-            card.onkeydown = (e) => { if(e.key==='Enter') openModal(m.id, type); };
             c.appendChild(card);
         });
     }
@@ -859,7 +862,7 @@
 
         drop.innerHTML = '<div style="padding:6px 14px; font-size:11px; color:var(--netflix-red); font-weight:bold;">История запросов:</div>';
         history.forEach(term => {
-            drop.innerHTML += `<div class="search-history-item" tabindex="0" onclick="selectSearchTerm('${term}')" onkeydown="if(event.key==='Enter')selectSearchTerm('${term}')">${term}</div>`;
+            drop.innerHTML += `<div class="search-history-item" tabindex="0" onclick="selectSearchTerm('${term}')">${term}</div>`;
         });
         drop.style.display = 'block';
     }
@@ -930,7 +933,7 @@
         selectedModalSourceKey = 'kinohub';
 
         box.innerHTML = `
-            <button class="modal-close-abs" tabindex="0" onclick="closeModal()" onkeydown="if(event.key==='Enter')closeModal()">✕</button>
+            <button class="modal-close-abs" tabindex="0" onclick="closeModal()">✕</button>
             <div class="lampa-left-pane" style="background-image: url('${poster}');">
                 <div class="lampa-content-info">
                     <div class="lampa-title">${title}</div>
@@ -942,8 +945,8 @@
                     </div>
                     <div class="lampa-desc">${desc}</div>
                     <div class="lampa-action-buttons">
-                        <button class="lampa-btn active" tabindex="0" onclick="startPlayFromModal(${id}, '${type}')" onkeydown="if(event.key==='Enter')startPlayFromModal(${id}, '${type}')">▶ Смотреть</button>
-                        <button class="lampa-btn" tabindex="0" onclick="toggleFavorite(${id}, '${type}', '${title.replace(/'/g, "")}', '${m.poster_path || ''}', '${year}', '${rating}')" onkeydown="if(event.key==='Enter')toggleFavorite(${id}, '${type}', '${title.replace(/'/g, "")}', '${m.poster_path || ''}', '${year}', '${rating}')">
+                        <button class="lampa-btn active" tabindex="0" onclick="startPlayFromModal(${id}, '${type}')">▶ Смотреть</button>
+                        <button class="lampa-btn" tabindex="0" onclick="toggleFavorite(${id}, '${type}', '${title.replace(/'/g, "")}', '${m.poster_path || ''}', '${year}', '${rating}')">
                             ${isFav ? '✓ В избранном' : '+ В список'}
                         </button>
                     </div>
@@ -955,7 +958,7 @@
                     <span style="font-size:11px; color:#46d369;">🟢 Онлайн</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
-                    <div class="source-option-card selected" tabindex="0" onclick="selectModalSource(this, 'kinohub')" onkeydown="if(event.key==='Enter')selectModalSource(this, 'kinohub')">
+                    <div class="source-option-card selected" tabindex="0" onclick="selectModalSource(this, 'kinohub')">
                         <div><div class="source-info-title">🎬 Kinohub Search</div><div class="source-info-langs">Прямой поток</div></div>
                         <span class="server-ping ping-good">14ms</span>
                     </div>
@@ -1051,6 +1054,17 @@
         document.getElementById('player-frame').src = 'about:blank';
         document.getElementById('player-screen').style.display = 'none';
     }
+
+    // УНИВЕРСАЛЬНЫЙ ПЕРЕХВАТЧИК ПУЛЬТА СМАРТ-ТВ (KEYDOWN / KEYCODE)
+    window.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13 || event.key === 'Enter' || event.keyCode === 32 || event.keyCode === 294 || event.keyCode === 4) {
+            const active = document.activeElement;
+            if (active && typeof active.click === 'function') {
+                active.click();
+                event.preventDefault();
+            }
+        }
+    });
 
     fetchCatalog();
 </script>
