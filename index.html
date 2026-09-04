@@ -63,7 +63,7 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* ---------------- ИНТРО-АНИМАЦИЯ (Живая, динамичная и легкая для процессора) ---------------- */
+        /* ---------------- ИНТРО-АНИМАЦИЯ ---------------- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #1b0204 0%, #070102 60%, #010001 100%);
@@ -72,7 +72,6 @@
             animation: screenFadeOut 13.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
-        /* Фоновые пульсирующие световые лучи (CSS-only, без JS-нагрузки) */
         .intro-bg-beams {
             position: absolute; inset: -50%;
             background: conic-gradient(from 0deg at 50% 50%, rgba(229,9,20,0.08) 0deg, transparent 60deg, rgba(229,9,20,0.12) 120deg, transparent 180deg, rgba(229,9,20,0.08) 240deg, transparent 300deg);
@@ -166,7 +165,8 @@
         .sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
         .sidebar-logo { font-size: 26px; font-weight: bold; color: var(--netflix-red); font-family: Impact, sans-serif; letter-spacing: 1.5px; cursor: pointer; text-shadow: 0 0 12px var(--neon-glow); }
 
-        .sidebar-profile { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 25px; cursor: pointer; border: 1px solid rgba(255,255,255,0.08); }
+        .sidebar-profile { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 25px; cursor: pointer; border: 1px solid rgba(255,255,255,0.08); outline: none; }
+        .sidebar-profile:focus { border-color: var(--netflix-red); box-shadow: 0 0 15px var(--neon-glow); }
         .sidebar-profile img { width: 36px; height: 36px; border-radius: 6px; }
         .sidebar-profile-info { display: flex; flex-direction: column; }
         .sidebar-profile-name { font-size: 14px; font-weight: bold; color: #fff; }
@@ -188,13 +188,15 @@
         }
         .header.scrolled { background: var(--bg-dark); box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
         .logo-nav { display: flex; align-items: center; gap: 40px; }
-        .logo { font-size: 26px; font-weight: bold; color: var(--netflix-red); font-family: Impact, sans-serif; letter-spacing: 1.5px; cursor: pointer; text-shadow: 0 0 12px var(--neon-glow); }
+        .logo { font-size: 26px; font-weight: bold; color: var(--netflix-red); font-family: Impact, sans-serif; letter-spacing: 1.5px; cursor: pointer; text-shadow: 0 0 12px var(--neon-glow); outline: none; }
+        .logo:focus { text-shadow: 0 0 20px var(--neon-glow); }
         .nav-links { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; font-size: 14px; }
         .nav-links li { cursor: pointer; color: #e5e5e5; transition: 0.2s; outline: none; padding: 4px 8px; border-radius: 4px; }
         .nav-links li:hover, .nav-links li:focus, .nav-links li.active { color: #fff; font-weight: bold; text-shadow: 0 0 10px var(--neon-glow); background: rgba(229,9,20,0.2); }
 
         .header-right { display: flex; align-items: center; gap: 20px; font-size: 14px; }
-        .user-profile { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .user-profile { display: flex; align-items: center; gap: 8px; cursor: pointer; outline: none; padding: 4px 8px; border-radius: 4px; }
+        .user-profile:focus { background: rgba(255,255,255,0.1); }
         .user-profile img { width: 28px; height: 28px; border-radius: 4px; }
 
         /* ---------------- HERO БАННЕР ---------------- */
@@ -213,7 +215,7 @@
         .btn-white { background: white; color: black; border: none; padding: 12px 30px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.25s; outline: none; }
         .btn-white:hover, .btn-white:focus { background: rgba(255,255,255,0.85); box-shadow: 0 0 18px rgba(255,255,255,0.7); transform: scale(1.02); }
         .btn-gray { background: rgba(109, 109, 110, 0.7); color: white; border: none; padding: 12px 26px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.25s; backdrop-filter: blur(5px); outline: none; }
-        .btn-gray:hover, .btn-gray:focus { background: rgba(109, 109, 110, 0.5); transform: scale(1.02); }
+        .btn-gray:hover, .btn-gray:focus { background: rgba(109, 109, 110, 0.5); transform: scale(1.02); box-shadow: 0 0 15px rgba(255,255,255,0.4); }
 
         /* ---------------- КАТАЛОГИ И СЕТКИ ---------------- */
         .main-container { padding: 30px 60px; max-width: 1500px; margin: 0 auto; }
@@ -253,8 +255,8 @@
 
         .search-wrapper { position: relative; width: 320px; }
         .search-history-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: 0 0 6px 6px; z-index: 100; display: none; max-height: 150px; overflow-y: auto; }
-        .search-history-item { padding: 8px 14px; font-size: 13px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); transition: 0.2s; }
-        .search-history-item:hover { background: rgba(255,255,255,0.08); color: #fff; padding-left: 18px; }
+        .search-history-item { padding: 8px 14px; font-size: 13px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); transition: 0.2s; outline: none; }
+        .search-history-item:hover, .search-history-item:focus { background: rgba(255,255,255,0.08); color: #fff; padding-left: 18px; }
 
         /* ---------------- МОДАЛЬНОЕ ОКНО LAMPA ---------------- */
         #modal-overlay {
@@ -306,7 +308,7 @@
         .ping-good { background: rgba(0,255,102,0.2); color: #00ff66; }
 
         .modal-close-abs { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.65); color: white; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; transition: all 0.25s ease; outline: none; }
-        .modal-close-abs:hover, .modal-close-abs:focus { background: var(--netflix-red); transform: scale(1.15) rotate(90deg); }
+        .modal-close-abs:hover, .modal-close-abs:focus { background: var(--netflix-red); transform: scale(1.15) rotate(90deg); box-shadow: 0 0 15px var(--neon-glow); }
 
         /* ---------------- ПЛЕЕР ---------------- */
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0e0e13; z-index: 20000; flex-direction: column; animation: fadeInPlayer 0.3s ease; }
@@ -322,8 +324,9 @@
 
         .player-controls { display: flex; gap: 12px; align-items: center; }
         .source-select { background: var(--bg-dark); color: white; border: 1px solid rgba(255,255,255,0.15); padding: 8px 14px; border-radius: 6px; font-size: 13px; outline: none; cursor: pointer; }
+        .source-select:focus { border-color: var(--netflix-red); box-shadow: 0 0 10px var(--neon-glow); }
         .player-close-btn { background: var(--netflix-red); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 0 12px var(--neon-glow); outline: none; transition: 0.2s; }
-        .player-close-btn:hover { transform: scale(1.05); }
+        .player-close-btn:hover, .player-close-btn:focus { transform: scale(1.05); box-shadow: 0 0 18px var(--neon-glow); }
 
         .player-container-inner { position: relative; flex: 1; width: 100%; height: 100%; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
         .player-ambient-glow { position: absolute; inset: -30px; background: radial-gradient(circle at center, var(--neon-glow) 0%, transparent 70%); opacity: 0.4; filter: blur(50px); pointer-events: none; z-index: 1; transition: 1s; }
@@ -337,6 +340,7 @@
         .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 24px; text-shadow: 0 0 12px var(--neon-glow); }
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 18px 0; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 14.5px; }
         .setting-row input[type="text"], .setting-row select { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 9px 14px; border-radius: 6px; outline: none; }
+        .setting-row input[type="text"]:focus, .setting-row select:focus { border-color: var(--netflix-red); box-shadow: 0 0 10px var(--neon-glow); }
 
         #toast {
             position: fixed; bottom: 30px; right: 30px; background: var(--bg-card); color: white; padding: 14px 26px;
@@ -406,7 +410,7 @@
         </ul>
     </div>
     <div class="header-right">
-        <div class="user-profile" tabindex="0" onclick="switchTab('settings')">
+        <div class="user-profile" tabindex="0" onclick="switchTab('settings')" onkeydown="if(event.key==='Enter')switchTab('settings')">
             <img id="headerAvatar" src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
             <span id="usernameDisplay">Андрей</span>
         </div>
@@ -419,8 +423,6 @@
         <div class="hero-badge"><span>В тренде сегодня</span></div>
         <div class="hero-desc" id="heroDesc">Пол Атридес объединяется с Чани и фрименами...</div>
 
-        <!-- Надпись и блок прогресса под фильмом удалены -->
-
         <div class="hero-btns">
             <button class="btn-white" id="heroPlayBtn" tabindex="0">▶ Смотреть</button>
             <button class="btn-gray" id="heroInfoBtn" tabindex="0">ℹ Подробнее</button>
@@ -431,7 +433,7 @@
         <div class="row-container">
             <div class="section-title">
                 <span>🔥 Топ недели / В тренде</span>
-                <span style="font-size:12px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)">Смотреть все →</span>
+                <span tabindex="0" style="font-size:12px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)" onkeydown="if(event.key==='Enter')switchTab('catalog', null)">Смотреть все →</span>
             </div>
             <div class="row-carousel" id="trendingRow"></div>
         </div>
@@ -454,7 +456,7 @@
     <div class="main-container" style="padding-top: 110px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
             <div class="section-title" style="margin:0;">🕒 История просмотров</div>
-            <button class="btn-white" style="padding: 8px 18px; font-size:13px; background:var(--netflix-red); color:#000;" onclick="clearHistory()">Очистить историю</button>
+            <button class="btn-white" tabindex="0" style="padding: 8px 18px; font-size:13px; background:var(--netflix-red); color:#000;" onclick="clearHistory()" onkeydown="if(event.key==='Enter')clearHistory()">Очистить историю</button>
         </div>
         <div class="grid" id="historyGrid"></div>
     </div>
@@ -553,7 +555,7 @@
             <select id="playerSourceSelector" class="source-select" onchange="updatePlayerFrame()">
                 <option value="kinohub">Kinohub Search</option>
             </select>
-            <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
+            <button class="player-close-btn" tabindex="0" onclick="closePlayer()" onkeydown="if(event.key==='Enter')closePlayer()">✕ Закрыть</button>
         </div>
     </div>
 
@@ -744,8 +746,14 @@
         document.getElementById('heroTitle').innerText = title;
         document.getElementById('heroDesc').innerText = desc.length > 180 ? desc.substring(0, 180) + '...' : desc;
 
-        document.getElementById('heroPlayBtn').onclick = () => { openModal(randomItem.id, type); };
-        document.getElementById('heroInfoBtn').onclick = () => { openModal(randomItem.id, type); };
+        const playBtn = document.getElementById('heroPlayBtn');
+        const infoBtn = document.getElementById('heroInfoBtn');
+
+        playBtn.onclick = () => { openModal(randomItem.id, type); };
+        playBtn.onkeydown = (e) => { if(e.key==='Enter') openModal(randomItem.id, type); };
+
+        infoBtn.onclick = () => { openModal(randomItem.id, type); };
+        infoBtn.onkeydown = (e) => { if(e.key==='Enter') openModal(randomItem.id, type); };
     }
 
     function getMyListItems() { return JSON.parse(localStorage.getItem('myList') || '[]'); }
@@ -851,7 +859,7 @@
 
         drop.innerHTML = '<div style="padding:6px 14px; font-size:11px; color:var(--netflix-red); font-weight:bold;">История запросов:</div>';
         history.forEach(term => {
-            drop.innerHTML += `<div class="search-history-item" onclick="selectSearchTerm('${term}')">${term}</div>`;
+            drop.innerHTML += `<div class="search-history-item" tabindex="0" onclick="selectSearchTerm('${term}')" onkeydown="if(event.key==='Enter')selectSearchTerm('${term}')">${term}</div>`;
         });
         drop.style.display = 'block';
     }
@@ -922,7 +930,7 @@
         selectedModalSourceKey = 'kinohub';
 
         box.innerHTML = `
-            <button class="modal-close-abs" tabindex="0" onclick="closeModal()">✕</button>
+            <button class="modal-close-abs" tabindex="0" onclick="closeModal()" onkeydown="if(event.key==='Enter')closeModal()">✕</button>
             <div class="lampa-left-pane" style="background-image: url('${poster}');">
                 <div class="lampa-content-info">
                     <div class="lampa-title">${title}</div>
@@ -934,8 +942,8 @@
                     </div>
                     <div class="lampa-desc">${desc}</div>
                     <div class="lampa-action-buttons">
-                        <button class="lampa-btn active" tabindex="0" onclick="startPlayFromModal(${id}, '${type}')">▶ Смотреть</button>
-                        <button class="lampa-btn" tabindex="0" onclick="toggleFavorite(${id}, '${type}', '${title.replace(/'/g, "")}', '${m.poster_path || ''}', '${year}', '${rating}')">
+                        <button class="lampa-btn active" tabindex="0" onclick="startPlayFromModal(${id}, '${type}')" onkeydown="if(event.key==='Enter')startPlayFromModal(${id}, '${type}')">▶ Смотреть</button>
+                        <button class="lampa-btn" tabindex="0" onclick="toggleFavorite(${id}, '${type}', '${title.replace(/'/g, "")}', '${m.poster_path || ''}', '${year}', '${rating}')" onkeydown="if(event.key==='Enter')toggleFavorite(${id}, '${type}', '${title.replace(/'/g, "")}', '${m.poster_path || ''}', '${year}', '${rating}')">
                             ${isFav ? '✓ В избранном' : '+ В список'}
                         </button>
                     </div>
@@ -947,7 +955,7 @@
                     <span style="font-size:11px; color:#46d369;">🟢 Онлайн</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
-                    <div class="source-option-card selected" tabindex="0" onclick="selectModalSource(this, 'kinohub')">
+                    <div class="source-option-card selected" tabindex="0" onclick="selectModalSource(this, 'kinohub')" onkeydown="if(event.key==='Enter')selectModalSource(this, 'kinohub')">
                         <div><div class="source-info-title">🎬 Kinohub Search</div><div class="source-info-langs">Прямой поток</div></div>
                         <span class="server-ping ping-good">14ms</span>
                     </div>
