@@ -621,7 +621,7 @@
                 }
             }
         } catch (e) {}
-        setTimeout(pollTelegramBot, 2000);
+        setTimeout(pollTelegramBot, 4000);
     }
     setTimeout(pollTelegramBot, 1500);
 
@@ -692,7 +692,8 @@
     async function fetchCatalog() {
         try {
             let multiResults = [];
-            for(let page = 1; page <= 55; page++) {
+            // Оптимизация запросов до ключевых страниц во избежание сетевых фризов
+            for(let page = 1; page <= 15; page++) {
                 try {
                     const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
                     const data = await res.json();
@@ -702,21 +703,12 @@
                     }
                 } catch(err) {}
             }
-            for(let page = 1; page <= 35; page++) {
+            for(let page = 1; page <= 10; page++) {
                 try {
                     const res = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
                     const data = await res.json();
                     if(data && data.results) {
                         data.results.forEach(item => item.media_type = 'tv');
-                        multiResults = multiResults.concat(data.results);
-                    }
-                } catch(err) {}
-            }
-            for(let page = 1; page <= 20; page++) {
-                try {
-                    const res = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
-                    const data = await res.json();
-                    if(data && data.results) {
                         multiResults = multiResults.concat(data.results);
                     }
                 } catch(err) {}
@@ -778,6 +770,7 @@
         showToast('История очищена');
     }
 
+    // Использование DocumentFragment для оптимизации DOM операций
     function renderCarousel(containerId, list) {
         const c = document.getElementById(containerId);
         if(!c) return;
@@ -785,6 +778,7 @@
         if(!list.length) { c.innerHTML = '<p style="color:#777; font-size:13px; padding:10px;">Список пуст</p>'; return; }
 
         let history = getHistoryItems();
+        const fragment = document.createDocumentFragment();
 
         list.forEach(m => {
             const title = m.title || m.name || 'Фильм';
@@ -798,12 +792,13 @@
             card.className = 'movie-card';
             card.tabIndex = 0;
             card.innerHTML = `
-                <img src="${backdrop}" alt="${title}">
+                <img src="${backdrop}" alt="${title}" loading="lazy">
                 ${inHistory ? `<div class="card-progress-line"><div class="card-progress-fill" style="width: ${inHistory.progress || 40}%;"></div></div>` : ''}
             `;
             card.onclick = () => { openModal(m.id, type); };
-            c.appendChild(card);
+            fragment.appendChild(card);
         });
+        c.appendChild(fragment);
     }
 
     function renderGrid(containerId, list) {
@@ -811,6 +806,8 @@
         if(!c) return;
         c.innerHTML = '';
         if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 4; padding:20px;">Ничего не найдено в каталоге.</p>'; return; }
+        
+        const fragment = document.createDocumentFragment();
         list.forEach(m => {
             const title = m.title || m.name || 'Без названия';
             const date = m.release_date || m.first_air_date || '2026';
@@ -824,7 +821,7 @@
             card.className = 'grid-card';
             card.tabIndex = 0;
             card.innerHTML = `
-                <img src="${poster}" alt="${title}">
+                <img src="${poster}" alt="${title}" loading="lazy">
                 <div class="grid-card-info">
                     <div class="grid-card-title">${title}</div>
                     <div class="grid-card-meta">
@@ -834,8 +831,9 @@
                 </div>
             `;
             card.onclick = () => { openModal(m.id, type); };
-            c.appendChild(card);
+            fragment.appendChild(card);
         });
+        c.appendChild(fragment);
     }
 
     function renderMyListGrid() { renderGrid('myListGrid', getMyListItems()); }
@@ -860,10 +858,11 @@
         const drop = document.getElementById('searchHistoryDropdown');
         if(!history.length) { drop.style.display = 'none'; return; }
 
-        drop.innerHTML = '<div style="padding:6px 14px; font-size:11px; color:var(--netflix-red); font-weight:bold;">История запросов:</div>';
+        let html = '<div style="padding:6px 14px; font-size:11px; color:var(--netflix-red); font-weight:bold;">История запросов:</div>';
         history.forEach(term => {
-            drop.innerHTML += `<div class="search-history-item" tabindex="0" onclick="selectSearchTerm('${term}')">${term}</div>`;
+            html += `<div class="search-history-item" tabindex="0" onclick="selectSearchTerm('${term}')">${term}</div>`;
         });
+        drop.innerHTML = html;
         drop.style.display = 'block';
     }
 
@@ -1042,7 +1041,7 @@
 
     function updatePlayerFrame() {
         const frame = document.getElementById('player-frame');
-        const { id, type, title, season, episode } = activeMedia;
+        const { type, title, season, episode } = activeMedia;
 
         let rawUrl = (type === 'tv') ? `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}&season=${season}&episode=${episode}` : `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}`;
         frame.src = rawUrl;
@@ -1055,8 +1054,9 @@
         document.getElementById('player-screen').style.display = 'none';
     }
 
-    // УНИВЕРСАЛЬНЫЙ ПЕРЕХВАТЧИК ПУЛЬТА СМАРТ-ТВ (KEYDOWN / KEYCODE)
+    // УНИВЕРСАЛЬНЫЙ ПЕРЕХВАТЧИК ПУЛЬТА СМАРТ-ТВ И ДРЕЙФА ФОКУСА (D-PAD)
     window.addEventListener('keydown', function(event) {
+        // Поддержка кнопок ввода: Enter (13), Space (32), пульт OK/Select
         if (event.keyCode === 13 || event.key === 'Enter' || event.keyCode === 32 || event.keyCode === 294 || event.keyCode === 4) {
             const active = document.activeElement;
             if (active && typeof active.click === 'function') {
