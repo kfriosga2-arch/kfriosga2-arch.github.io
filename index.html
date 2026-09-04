@@ -6,6 +6,18 @@
     <title>Netflix Ultra & Lampa (Telegram Mini App)</title>
     <!-- Подключаем Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Встроенный PWA Manifest для мгновенного определения в PWABuilder -->
+    <link rel="manifest" href='data:application/manifest+json,{
+        "name": "Netflix Lampa",
+        "short_name": "Lampa",
+        "start_url": "./index.html",
+        "display": "standalone",
+        "background_color": "#0e0e13",
+        "theme_color": "#E50914",
+        "icons": []
+    }'>
+
     <style>
         * { box-sizing: border-box; }
         :root {
