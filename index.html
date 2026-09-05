@@ -226,12 +226,16 @@
         .modal-close-abs { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
         .modal-close-abs:hover, .modal-close-abs:focus { background: var(--netflix-red); outline: 2px solid #fff; }
 
-        /* ПЛЕЕР */
+        /* ПЛЕЕР С ПУЛЬТОВЫМ УПРАВЛЕНИЕМ */
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0e0e13; z-index: 20000; flex-direction: column; }
+        
         .player-top-bar {
             display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;
             background: var(--bg-card); border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 30; gap: 15px;
+            transition: opacity 0.3s ease;
         }
+        .player-top-bar.tv-hidden { opacity: 0; pointer-events: none; }
+
         .player-title-block { display: flex; align-items: center; gap: 10px; }
         .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 12px; font-weight: bold; }
         .player-media-name { font-size: 14px; font-weight: bold; color: #fff; }
@@ -244,6 +248,20 @@
 
         .player-container-inner { position: relative; flex: 1; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; }
         #player-frame { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; z-index: 2; }
+
+        /* Меню пульта наложения (Overlay для пульта) */
+        .tv-remote-osd {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(14, 14, 19, 0.9); border: 1px solid rgba(255,255,255,0.15);
+            padding: 12px 24px; border-radius: 30px; z-index: 100; display: flex; gap: 20px; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: opacity 0.3s ease;
+        }
+        .tv-remote-osd.tv-hidden { opacity: 0; pointer-events: none; }
+        .osd-btn {
+            background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; outline: none;
+        }
+        .osd-btn:focus, .osd-btn:hover { background: var(--netflix-red); border-color: var(--netflix-red); outline: 2px solid #fff; }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
@@ -425,7 +443,8 @@
         <div class="setting-row">
             <span>Основной онлайн-источник:</span>
             <select id="settingDefaultSource" onchange="saveSettings()">
-                <option value="kinohub">🎬 Kinohub Search (Прямой поток)</option>
+                <option value="kinohub">🎬 Kinohub (Прямой поток)</option>
+                <option value="filmix">⚡ Filmix (Альтернативный поток)</option>
             </select>
         </div>
         <div class="setting-row">
@@ -445,8 +464,9 @@
     <div class="lampa-modal-layout" id="modalBoxContent"></div>
 </div>
 
+<!-- ПЛЕЕР С ПУЛЬТОВЫМ УПРАВЛЕНИЕМ -->
 <div id="player-screen">
-    <div class="player-top-bar">
+    <div class="player-top-bar" id="playerTopBar">
         <div class="player-title-block">
             <div class="player-logo-badge">NETFLIX</div>
             <div class="player-media-name" id="playerMediaTitle">Название фильма</div>
@@ -456,13 +476,20 @@
             <div id="sleepTimerBadge" style="font-size:11px; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:4px 8px; border-radius:3px; display:none;">⏱️ Сон: <span id="sleepTimerCountdown">--:--</span></div>
             <select id="playerSourceSelector" class="source-select" onchange="updatePlayerFrame()">
                 <option value="kinohub">Kinohub Search</option>
+                <option value="filmix">Filmix Search</option>
             </select>
             <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
         </div>
     </div>
 
-    <div class="player-container-inner">
+    <div class="player-container-inner" onclick="togglePlayerOSD()">
         <iframe id="player-frame" src="" allowfullscreen referrerpolicy="no-referrer" allow="autoplay; encrypted-media"></iframe>
+        
+        <!-- Наэкранное меню пульта (появляется по ОК / Назад / Клик) -->
+        <div class="tv-remote-osd" id="playerOSD">
+            <button class="osd-btn" tabindex="1000" id="osdToggleSourceBtn" onclick="togglePlayerSourceFromOSD()">🔄 Сменить источник</button>
+            <button class="osd-btn" tabindex="1001" onclick="closePlayer()">⏹ Закрыть плеер</button>
+        </div>
     </div>
 </div>
 
@@ -477,7 +504,7 @@
     let cachedCatalog = [];
     let settings = JSON.parse(localStorage.getItem('netflixSettings') || '{"username":"Андрей","defaultSource":"kinohub","theme":"netflix","sleepTimer":"0"}');
 
-    document.getElementById('settingDefaultSource').value = 'kinohub';
+    document.getElementById('settingDefaultSource').value = settings.defaultSource || 'kinohub';
     document.getElementById('settingTheme').value = settings.theme || 'netflix';
     document.getElementById('settingSleepTimer').value = settings.sleepTimer || '0';
     document.getElementById('usernameDisplay').innerText = settings.username || 'Андрей';
@@ -503,7 +530,7 @@
     function saveSettings() {
         settings.username = document.getElementById('settingUsername').value;
         settings.theme = document.getElementById('settingTheme').value;
-        settings.defaultSource = 'kinohub';
+        settings.defaultSource = document.getElementById('settingDefaultSource').value;
         settings.sleepTimer = document.getElementById('settingSleepTimer').value;
         localStorage.setItem('netflixSettings', JSON.stringify(settings));
 
@@ -762,13 +789,17 @@
             </div>
             <div class="lampa-sources-pane">
                 <div class="lampa-sources-header">
-                    <span>Активный источник</span>
+                    <span>Доступные источники</span>
                     <span style="font-size:10px; color:#46d369;">🟢 Онлайн</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
-                    <div class="source-option-card selected" tabindex="0">
-                        <div><div class="source-info-title">🎬 Kinohub Search</div><div class="source-info-langs">Прямой поток</div></div>
+                    <div class="source-option-card ${settings.defaultSource === 'kinohub' ? 'selected' : ''}" tabindex="0" onclick="setModalSource('kinohub', this)">
+                        <div><div class="source-info-title">🎬 Kinohub Search</div><div class="source-info-langs">Основной поток</div></div>
                         <span class="server-ping ping-good">12ms</span>
+                    </div>
+                    <div class="source-option-card ${settings.defaultSource === 'filmix' ? 'selected' : ''}" tabindex="0" onclick="setModalSource('filmix', this)">
+                        <div><div class="source-info-title">⚡ Filmix Search</div><div class="source-info-langs">Альтернативный поток</div></div>
+                        <span class="server-ping ping-good">15ms</span>
                     </div>
                 </div>
             </div>
@@ -778,6 +809,14 @@
             const btn = box.querySelector('.lampa-btn.active');
             if(btn) btn.focus();
         }, 100);
+    }
+
+    function setModalSource(sourceKey, el) {
+        document.querySelectorAll('.source-option-card').forEach(card => card.classList.remove('selected'));
+        el.classList.add('selected');
+        settings.defaultSource = sourceKey;
+        document.getElementById('playerSourceSelector').value = sourceKey;
+        showToast('Источник изменен на: ' + sourceKey);
     }
 
     function startPlayFromModal(id, type) {
@@ -799,6 +838,7 @@
 
     let activeMedia = { id: 0, type: 'movie', title: '', season: 1, episode: 1 };
     let sleepTimerInterval = null;
+    let osdTimeout = null;
 
     function openPlayer(id, type = 'movie') {
         let titleText = "Фильм";
@@ -811,11 +851,45 @@
         activeMedia = { id, type, title: titleText, season: 1, episode: 1 };
 
         document.getElementById('playerMediaTitle').innerText = titleText;
-        document.getElementById('playerSourceSelector').value = 'kinohub';
+        document.getElementById('playerSourceSelector').value = settings.defaultSource || 'kinohub';
 
         updatePlayerFrame();
         document.getElementById('player-screen').style.display = 'flex';
         initSleepTimer();
+        showPlayerOSD();
+    }
+
+    function showPlayerOSD() {
+        const topBar = document.getElementById('playerTopBar');
+        const osd = document.getElementById('playerOSD');
+        topBar.classList.remove('tv-hidden');
+        osd.classList.remove('tv-hidden');
+
+        if(osdTimeout) clearTimeout(osdTimeout);
+        osdTimeout = setTimeout(() => {
+            topBar.classList.add('tv-hidden');
+            osd.classList.add('tv-hidden');
+        }, 5000); // автоскрытие через 5 секунд пульта
+    }
+
+    function togglePlayerOSD() {
+        const topBar = document.getElementById('playerTopBar');
+        if(topBar.classList.contains('tv-hidden')) {
+            showPlayerOSD();
+        } else {
+            topBar.classList.add('tv-hidden');
+            document.getElementById('playerOSD').classList.add('tv-hidden');
+        }
+    }
+
+    function togglePlayerSourceFromOSD() {
+        const selector = document.getElementById('playerSourceSelector');
+        if(selector.value === 'kinohub') {
+            selector.value = 'filmix';
+        } else {
+            selector.value = 'kinohub';
+        }
+        updatePlayerFrame();
     }
 
     function initSleepTimer() {
@@ -845,20 +919,44 @@
 
     function updatePlayerFrame() {
         const frame = document.getElementById('player-frame');
-        const { id, type, title, season, episode } = activeMedia;
+        const source = document.getElementById('playerSourceSelector').value;
+        const { type, title, season, episode } = activeMedia;
 
-        let rawUrl = (type === 'tv') ? `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}&season=${season}&episode=${episode}` : `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}`;
+        let rawUrl = '';
+        if (source === 'filmix') {
+            rawUrl = (type === 'tv') ? `https://filmix.gg/search/${encodeURIComponent(title)}` : `https://filmix.gg/search/${encodeURIComponent(title)}`;
+        } else {
+            rawUrl = (type === 'tv') ? `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}&season=${season}&episode=${episode}` : `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}`;
+        }
+
         frame.src = rawUrl;
-        showToast('Плеер запущен через Kinohub');
+        showToast(`Плеер запущен через ${source === 'filmix' ? 'Filmix' : 'Kinohub'}`);
+        showPlayerOSD();
     }
 
     function closePlayer() {
         if(sleepTimerInterval) clearInterval(sleepTimerInterval);
+        if(osdTimeout) clearTimeout(osdTimeout);
         document.getElementById('player-frame').src = 'about:blank';
         document.getElementById('player-screen').style.display = 'none';
     }
 
+    // Обработка пульта ДУ (Кнопки OK, Back, Стрелки)
     window.addEventListener('keydown', function(event) {
+        const playerActive = document.getElementById('player-screen').style.display === 'flex';
+
+        if (playerActive) {
+            // Если открыт плеер, любые нажатия пульта (ОК, Вверх, Вниз, Меню) показывают элементы управления
+            showPlayerOSD();
+            
+            // Кнопка Назад / Back (keyCode 8, 27, 461) закрывает плеер
+            if (event.keyCode === 8 || event.keyCode === 27 || event.keyCode === 461) {
+                closePlayer();
+                event.preventDefault();
+                return;
+            }
+        }
+
         if (event.keyCode === 13 || event.key === 'Enter' || event.keyCode === 32 || event.keyCode === 294 || event.keyCode === 4) {
             const active = document.activeElement;
             if (active && typeof active.click === 'function') {
