@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Золотая Коллекция (50+ и Классика)</title>
+    <title>Netflix Ультиматум (4500+ Фильмов и Сериалов)</title>
     <style>
         * { box-sizing: border-box; }
         :root {
             --netflix-red: #E50914;
-            --bg-dark: #0e0e13;
-            --bg-card: #16161f;
+            --bg-dark: #070709;
+            --bg-card: #12121a;
             --text-main: #ffffff;
             --text-muted: #8a8a9d;
+            --bg-gradient: linear-gradient(135deg, #070709 0%, #12121a 100%);
         }
 
+        /* Динамические живые темы оформления */
         body.theme-cyberpunk {
             --bg-dark: #050508;
             --bg-card: #0c0c16;
             --netflix-red: #00f3ff;
             --text-main: #f0fbff;
             --text-muted: #6b8c99;
+            --bg-gradient: linear-gradient(120deg, #050508, #100520, #002233);
+            background-size: 400% 400%;
+            animation: liveGradient 15s ease infinite;
         }
 
         body.theme-gold {
@@ -28,15 +33,70 @@
             --netflix-red: #ffb700;
             --text-main: #fffdf5;
             --text-muted: #998a6b;
+            --bg-gradient: linear-gradient(120deg, #100c06, #2a1b05, #140d02);
+            background-size: 400% 400%;
+            animation: liveGradient 15s ease infinite;
+        }
+
+        body.theme-emerald {
+            --bg-dark: #04100c;
+            --bg-card: #0a1f18;
+            --netflix-red: #00ff88;
+            --text-main: #f0fff8;
+            --text-muted: #6b9986;
+            --bg-gradient: linear-gradient(120deg, #04100c, #02261a, #010f0a);
+            background-size: 400% 400%;
+            animation: liveGradient 15s ease infinite;
+        }
+
+        body.theme-amethyst {
+            --bg-dark: #0d0610;
+            --bg-card: #1a0c20;
+            --netflix-red: #d400ff;
+            --text-main: #fbf0ff;
+            --text-muted: #946b99;
+            --bg-gradient: linear-gradient(120deg, #0d0610, #240833, #0a0210);
+            background-size: 400% 400%;
+            animation: liveGradient 15s ease infinite;
+        }
+
+        body.theme-aurora {
+            --bg-dark: #020b14;
+            --bg-card: #07182b;
+            --netflix-red: #00ffcc;
+            --text-main: #e6ffff;
+            --text-muted: #6b9999;
+            --bg-gradient: linear-gradient(-45deg, #020b14, #05263b, #001a1a, #003326);
+            background-size: 400% 400%;
+            animation: liveGradient 12s ease infinite;
+        }
+
+        body.theme-fire {
+            --bg-dark: #140505;
+            --bg-card: #260a0a;
+            --netflix-red: #ff3300;
+            --text-main: #fff0f0;
+            --text-muted: #996b6b;
+            --bg-gradient: linear-gradient(135deg, #140505, #380d0d, #1a0303, #4d1a00);
+            background-size: 400% 400%;
+            animation: liveGradient 10s ease infinite;
+        }
+
+        @keyframes liveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         body {
+            background: var(--bg-gradient);
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: Arial, sans-serif;
             margin: 0; padding: 0;
             overflow-x: hidden;
             user-select: none;
+            min-height: 100vh;
         }
 
         #intro-screen {
@@ -45,61 +105,47 @@
             z-index: 99999; display: flex; justify-content: center; align-items: center;
         }
         .netflix-intro-container {
-            position: relative; width: 120px; height: 180px;
-            display: flex; justify-content: center; align-items: center;
+            font-size: 48px; font-weight: 900; color: #E50914; font-family: Arial, sans-serif; letter-spacing: 2px;
         }
-        .n-bar {
-            position: absolute; width: 30px; height: 150px;
-            background: #E50914; border-radius: 4px;
-        }
-        .n-bar.left { transform: translateX(-38px); }
-        .n-bar.right { transform: translateX(38px); }
-        .n-bar.diagonal {
-            width: 30px; height: 185px; transform: rotate(22.6deg);
-            background: #ff3344;
-        }
-
-        .sidebar-trigger { position: fixed; top: 0; left: 0; width: 20px; height: 100%; z-index: 2000; }
-        .sidebar {
-            position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
-            background: #0e0e13;
-            z-index: 3000; transition: left 0.25s ease;
-            display: flex; flex-direction: column; padding: 20px;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.8);
-            border-right: 1px solid rgba(255,255,255,0.08); overflow-y: auto;
-        }
-        .sidebar-trigger:hover ~ .sidebar, .sidebar:hover { left: 0; }
-        .sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-        .sidebar-logo { font-size: 22px; font-weight: bold; color: var(--netflix-red); font-family: Arial, sans-serif; cursor: pointer; }
-
-        .sidebar-profile { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; margin-bottom: 20px; cursor: pointer; outline: none; }
-        .sidebar-profile img { width: 32px; height: 32px; border-radius: 4px; }
-        .sidebar-profile-info { display: flex; flex-direction: column; }
-        .sidebar-profile-name { font-size: 13px; font-weight: bold; color: #fff; }
-        .sidebar-profile-sub { font-size: 10px; color: var(--text-muted); }
-
-        .sidebar-section-title { font-size: 10px; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 5px 5px; }
-        .sidebar-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
-        .sidebar-links li {
-            font-size: 13px; color: #cccccc; cursor: pointer; 
-            padding: 10px 12px; border-radius: 4px; display: flex; align-items: center; gap: 10px;
-            outline: none;
-        }
-        .sidebar-links li:hover, .sidebar-links li:focus, .sidebar-links li.active { color: #fff; background: var(--netflix-red); font-weight: bold; }
 
         .header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 40px; background: #0e0e13;
+            padding: 15px 40px; background: rgba(14, 14, 19, 0.95); backdrop-filter: blur(10px);
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
         }
         .logo-nav { display: flex; align-items: center; gap: 30px; }
-        .logo { font-size: 22px; font-weight: bold; color: var(--netflix-red); font-family: Arial, sans-serif; cursor: pointer; outline: none; }
-        .nav-links { display: flex; gap: 15px; list-style: none; margin: 0; padding: 0; font-size: 13px; }
-        .nav-links li { cursor: pointer; color: #e5e5e5; outline: none; padding: 5px 10px; border-radius: 4px; }
-        .nav-links li:hover, .nav-links li:focus, .nav-links li.active { color: #fff; font-weight: bold; background: rgba(229,9,20,0.3); }
+        
+        .logo { 
+            font-size: 28px; 
+            font-weight: 900; 
+            color: var(--netflix-red); 
+            font-family: 'Arial Black', Arial, sans-serif; 
+            cursor: pointer; 
+            outline: none; 
+            padding: 0; 
+            border: none; 
+            background: transparent; 
+            letter-spacing: 3px;
+            border-radius: 0;
+            text-shadow: none;
+            box-shadow: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover { opacity: 0.8; transform: none; color: var(--netflix-red); }
+        .logo:focus { outline: none !important; color: var(--netflix-red); }
+        .logo.tv-focused { outline: none !important; color: var(--netflix-red); background: transparent; }
+        
+        .nav-links { display: flex; gap: 12px; list-style: none; margin: 0; padding: 0; font-size: 13px; align-items: center; flex-wrap: wrap; }
+        .nav-links li { cursor: pointer; color: #e5e5e5; outline: none; padding: 5px 10px; border-radius: 4px; transition: background 0.2s; }
+        .nav-links li:hover, .nav-links li.active { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); }
+        .nav-links li:focus { outline: none !important; }
+        .nav-links li.tv-focused { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); outline: 3px solid #fff; }
+
+        :focus:not(:focus-visible) { outline: none !important; }
 
         .header-right { display: flex; align-items: center; gap: 15px; font-size: 13px; }
         .user-profile { display: flex; align-items: center; gap: 6px; cursor: pointer; outline: none; padding: 5px 10px; border-radius: 4px; }
+        .user-profile.tv-focused { outline: 3px solid #fff; background: rgba(255,255,255,0.1); }
         .user-profile img { width: 24px; height: 24px; border-radius: 4px; }
 
         .hero {
@@ -119,9 +165,12 @@
 
         .hero-btns { display: flex; gap: 10px; }
         .btn-white { background: white; color: black; border: none; padding: 10px 24px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .btn-white:hover, .btn-white:focus { background: #e0e0e0; outline: 2px solid var(--netflix-red); }
+        .btn-white:hover { background: #e0e0e0; box-shadow: 0 0 15px rgba(255,255,255,0.6); }
+        .btn-white.tv-focused { background: #e0e0e0; outline: 3px solid var(--netflix-red); box-shadow: 0 0 15px rgba(255,255,255,0.6); }
+        
         .btn-gray { background: rgba(109, 109, 110, 0.8); color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .btn-gray:hover, .btn-gray:focus { background: rgba(109, 109, 110, 0.5); outline: 2px solid #fff; }
+        .btn-gray:hover { background: rgba(109, 109, 110, 0.5); box-shadow: 0 0 15px rgba(255,255,255,0.4); }
+        .btn-gray.tv-focused { background: rgba(109, 109, 110, 0.5); outline: 3px solid #fff; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
 
         .main-container { padding: 20px 40px; max-width: 1400px; margin: 0 auto; }
         .row-container { margin-bottom: 30px; }
@@ -137,7 +186,8 @@
             border: 1px solid rgba(255,255,255,0.06); outline: none; transition: transform 0.2s, border-color 0.2s;
         }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .movie-card:hover, .movie-card:focus, .movie-card.tv-focused { transform: scale(1.08); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
+        .movie-card:hover { transform: scale(1.08); z-index: 10; border-color: var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
+        .movie-card.tv-focused { transform: scale(1.08); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 4px; }
         .grid-card {
@@ -148,17 +198,21 @@
         .grid-card-info { padding: 10px; }
         .grid-card-title { font-size: 13px; font-weight: bold; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .grid-card-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
-        .grid-card:hover, .grid-card:focus, .grid-card.tv-focused { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
+        .grid-card:hover { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
+        .grid-card.tv-focused { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
 
         .genre-chips { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 10px 2px; margin-bottom: 15px; }
         .genre-chips::-webkit-scrollbar { display: none; }
         .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 7px 14px; border-radius: 16px; font-size: 12px; cursor: pointer; white-space: nowrap; color: #fff; outline: none; }
-        .genre-chip:hover, .genre-chip:focus, .genre-chip.active, .genre-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 3px solid #fff; }
+        .genre-chip:hover, .genre-chip.active { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; }
+        .genre-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 3px solid #fff; }
 
         .search-wrapper { position: relative; width: 280px; }
+        .search-wrapper input.tv-focused { border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
         .search-history-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: 0 0 4px 4px; z-index: 100; display: none; max-height: 130px; overflow-y: auto; }
         .search-history-item { padding: 8px 12px; font-size: 12px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); outline: none; }
-        .search-history-item:hover, .search-history-item:focus, .search-history-item.tv-focused { background: rgba(229,9,20,0.3); color: #fff; }
+        .search-history-item:hover { background: rgba(229,9,20,0.3); color: #fff; }
+        .search-history-item.tv-focused { background: rgba(229,9,20,0.3); color: #fff; outline: 2px solid #fff; }
 
         #modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -186,7 +240,8 @@
 
         .lampa-action-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
         .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 9px 18px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .lampa-btn:hover, .lampa-btn:focus, .lampa-btn.active, .lampa-btn.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 3px solid #fff; }
+        .lampa-btn:hover, .lampa-btn.active { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; }
+        .lampa-btn.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 3px solid #fff; }
 
         .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
         .lampa-sources-header { font-size: 14px; font-weight: bold; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px; }
@@ -194,40 +249,46 @@
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
             padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; outline: none;
         }
-        .source-option-card.selected, .source-option-card.tv-focused {
-            background: rgba(229,9,20,0.3); border-color: var(--netflix-red); outline: 3px solid var(--netflix-red);
-        }
+        .source-option-card.selected { background: rgba(229,9,20,0.3); border-color: var(--netflix-red); }
+        .source-option-card.tv-focused { background: rgba(229,9,20,0.3); border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
         .source-info-title { font-weight: bold; font-size: 12px; color: #fff; }
         .source-info-langs { font-size: 10px; color: #46d369; margin-top: 2px; }
         .server-ping { font-size: 10px; padding: 2px 5px; border-radius: 3px; font-weight: bold; }
         .ping-good { background: rgba(0,255,102,0.2); color: #00ff66; }
 
         .modal-close-abs { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
-        .modal-close-abs:hover, .modal-close-abs:focus, .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
+        .modal-close-abs:hover { background: var(--netflix-red); }
+        .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
 
-        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0e0e13; z-index: 20000; flex-direction: column; }
+        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 20000; flex-direction: column; }
         .player-top-bar {
-            display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;
-            background: var(--bg-card); border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 30; gap: 15px;
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 25px;
+            background: rgba(14, 14, 19, 0.9); border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 30; gap: 15px; flex-shrink: 0;
         }
-        .player-title-block { display: flex; align-items: center; gap: 10px; }
-        .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 12px; font-weight: bold; }
-        .player-media-name { font-size: 14px; font-weight: bold; color: #fff; }
+        .player-title-block { display: flex; align-items: center; gap: 12px; }
+        .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 4px 10px; border-radius: 3px; font-size: 13px; font-weight: bold; }
+        .player-media-name { font-size: 16px; font-weight: bold; color: #fff; }
 
-        .player-controls { display: flex; gap: 10px; align-items: center; }
-        .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; outline: none; }
-        .player-close-btn:hover, .player-close-btn:focus, .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
+        .player-controls { display: flex; gap: 15px; align-items: center; }
+        .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 13px; cursor: pointer; outline: none; }
+        .player-close-btn:hover { background: #ff1e2b; }
+        .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
 
-        .player-container-inner { position: relative; flex: 1; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; }
+        .player-container-inner { position: relative; width: 100%; flex: 1; background: #000; display: flex; justify-content: center; align-items: center; }
+        .player-container-inner > div { width: 100% !important; height: 100% !important; }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
 
-        .settings-container { max-width: 600px; margin: 100px auto 30px auto; background: var(--bg-card); padding: 25px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); }
-        .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 20px; }
-        .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 14px 0; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
-        .setting-row input[type="text"], .setting-row select { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 7px 10px; border-radius: 4px; outline: none; }
-        .setting-row input[type="text"]:focus, .setting-row select:focus, .setting-row.tv-focused { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+        .settings-container { max-width: 700px; margin: 90px auto 40px auto; background: var(--bg-card); padding: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); }
+        .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 22px; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 14px 0; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; outline: none; }
+        .setting-row.tv-focused { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); background: rgba(229,9,20,0.1); border-radius: 4px; padding: 6px; }
+        .setting-row input[type="text"], .setting-row select, .setting-row input[type="range"] { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 7px 10px; border-radius: 4px; outline: none; }
+        .setting-row input[type="text"]:focus, .setting-row select:focus { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+
+        .settings-section-heading { font-size: 14px; font-weight: bold; color: var(--netflix-red); margin: 25px 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px; border-left: 3px solid var(--netflix-red); padding-left: 8px; }
+        .setting-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; max-width: 380px; }
 
         #toast {
             position: fixed; bottom: 20px; right: 20px; background: var(--bg-card); color: white; padding: 10px 18px;
@@ -240,63 +301,38 @@
 <body>
 
 <div id="intro-screen">
-    <div class="netflix-intro-container">
-        <div class="n-bar left"></div>
-        <div class="n-bar diagonal"></div>
-        <div class="n-bar right"></div>
-    </div>
+    <div class="netflix-intro-container">NETFLIX</div>
 </div>
 
 <div id="toast">Уведомление</div>
 
-<div class="sidebar-trigger"></div>
-<div class="sidebar">
-    <div class="sidebar-header">
-        <div class="sidebar-logo" tabindex="0" onclick="switchTab('home', null)">NETFLIX</div>
-    </div>
-
-    <div class="sidebar-profile" tabindex="0" onclick="switchTab('settings', null)">
-        <img src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
-        <div class="sidebar-profile-info">
-            <span class="sidebar-profile-name">Андрей</span>
-            <span class="sidebar-profile-sub">Золотой фонд 50+</span>
-        </div>
-    </div>
-
-    <div class="sidebar-section-title">Меню</div>
-    <ul class="sidebar-links">
-        <li id="sideHome" class="active" tabindex="0" onclick="switchTab('home', this)">🏠 Главная</li>
-        <li id="sideClassic" tabindex="0" onclick="switchTab('classic', this)">🎩 Золотой фонд (50+)</li>
-        <li id="sideCatalog" tabindex="0" onclick="switchTab('catalog', this)">🎬 Мега-Каталог (3500+ Фильмов)</li>
-        <li id="sideMylist" tabindex="0" onclick="switchTab('mylist', this)">⭐ Мой список</li>
-        <li id="sideSettings" tabindex="0" onclick="switchTab('settings', this)">⚙️ Настройки</li>
-    </ul>
-</div>
-
 <div class="header" id="mainHeader">
     <div class="logo-nav">
-        <div class="logo" tabindex="0" onclick="switchTab('home', document.getElementById('navHome'))">NETFLIX</div>
+        <button class="logo" tabindex="0" onclick="switchTab('home', document.getElementById('navHome'))">NETFLIX</button>
         <ul class="nav-links">
             <li id="navHome" class="active" tabindex="0" onclick="switchTab('home', this)">Главная</li>
-            <li tabindex="0" onclick="switchTab('classic', this)">Золотой фонд 50+</li>
-            <li tabindex="0" onclick="switchTab('catalog', this)">Мега-Каталог</li>
+            <li tabindex="0" onclick="switchTab('catalog', this)">Мега-Каталог (6000+)</li>
+            <li tabindex="0" onclick="switchTab('russian', this)">🇷🇺 Русское кино</li>
+            <li tabindex="0" onclick="switchTab('thrillers', this)">🔍 Триллеры</li>
+            <li tabindex="0" onclick="switchTab('radio', this)">📻 Радио ТВ</li>
+            <li tabindex="0" onclick="switchTab('history', this)">🕒 История</li>
             <li tabindex="0" onclick="switchTab('mylist', this)">Мой список</li>
             <li tabindex="0" onclick="switchTab('settings', this)">Настройки</li>
         </ul>
     </div>
     <div class="header-right">
-        <div class="user-profile" tabindex="0" onclick="switchTab('settings', document.getElementById('sideSettings'))">
+        <div class="user-profile" tabindex="0" onclick="switchTab('settings', document.getElementById('sideSettings') || null)">
             <img src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
-            <span>Андрей</span>
+            <span id="headerUsernameLabel">Андрей</span>
         </div>
     </div>
 </div>
 
 <div id="tab-home" class="view-section active">
     <div class="hero" id="heroBanner">
-        <div class="hero-title" id="heroTitle">Загрузка шедевров...</div>
-        <div class="hero-badge"><span>Золотая классика кинематографа</span></div>
-        <div class="hero-desc" id="heroDesc">Лучшие проверенные временем фильмы для взрослых зрителей.</div>
+        <div class="hero-title" id="heroTitle">Загрузка ультимативной коллекции...</div>
+        <div class="hero-badge"><span>Эпохальный сборник блокбастеров</span></div>
+        <div class="hero-desc" id="heroDesc">Коллекция из более чем 6000 фильмов, сериалов и анимации динамически загружается в реальном времени.</div>
 
         <div class="hero-btns">
             <button class="btn-white" id="heroPlayBtn" tabindex="0">▶ Смотреть</button>
@@ -307,87 +343,261 @@
     <div class="main-container">
         <div class="row-container">
             <div class="section-title">
-                <span>🏆 Шедевры мирового кино (50+)</span>
-                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('classic', document.getElementById('sideClassic'))">Смотреть все →</span>
+                <span>🔥 Мировые лидеры проката</span>
+                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)">Смотреть все →</span>
             </div>
-            <div class="row-carousel" id="classicRow"></div>
+            <div class="row-carousel" id="trendingRow"></div>
         </div>
         <div class="row-container">
-            <div class="section-title">⭐ Мой список (Избранное)</div>
+            <div class="section-title">
+                <span>🇷🇺 Лучшие российские фильмы</span>
+                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('russian', null)">Смотреть все →</span>
+            </div>
+            <div class="row-carousel" id="homeRussianRow"></div>
+        </div>
+        <div class="row-container">
+            <div class="section-title">
+                <span>🔍 Напряженные триллеры</span>
+                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('thrillers', null)">Смотреть все →</span>
+            </div>
+            <div class="row-carousel" id="homeThrillersRow"></div>
+        </div>
+        <div class="row-container">
+            <div class="section-title">⭐ Ваш сохраненный список</div>
             <div class="row-carousel" id="myListRow"></div>
+        </div>
+        <div class="row-container">
+            <div class="section-title">🩸 Ужасы, Слэшеры и Мистика</div>
+            <div class="row-carousel" id="horrorRow"></div>
+        </div>
+        <div class="row-container">
+            <div class="section-title">🌌 Научная фантастика и Киберпанк</div>
+            <div class="row-carousel" id="scifiRow"></div>
+        </div>
+        <div class="row-container">
+            <div class="section-title">⚡ Экшен и Динамичные блокбастеры</div>
+            <div class="row-carousel" id="actionRow"></div>
         </div>
         <div class="row-container">
             <div class="section-title">🎭 Драмы и Жизненные истории</div>
             <div class="row-carousel" id="dramaRow"></div>
         </div>
-        <div class="row-container">
-            <div class="section-title">🕵️‍♂️ Детективы и Захватывающие триллеры</div>
-            <div class="row-carousel" id="thrillerRow"></div>
-        </div>
-    </div>
-</div>
-
-<div id="tab-classic" class="view-section">
-    <div class="main-container" style="padding-top: 90px;">
-        <div class="section-title">🎩 Золотой фонд кинематографа (Идеально для зрителей 50+)</div>
-        <div class="grid" id="classicGrid"></div>
     </div>
 </div>
 
 <div id="tab-catalog" class="view-section">
     <div class="main-container" style="padding-top: 90px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-            <div class="section-title" style="margin:0;">🎬 Мега-Каталог (3500+ Фильмов)</div>
+            <div class="section-title" style="margin:0;" id="catalogHeaderTitle">🎬 Ультимативный Мега-Каталог (6000+ фильмов)</div>
 
             <div class="search-wrapper">
-                <input type="text" id="searchInput" placeholder="Поиск по названию..." oninput="handleSearch(this.value)" onfocus="showSearchHistory()" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:8px 12px; border-radius:4px; width:100%; outline:none;">
+                <input type="text" id="searchInput" placeholder="Поиск по названию..." oninput="handleSearch(this.value)" onfocus="showSearchHistory()" tabindex="0" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:8px 12px; border-radius:4px; width:100%; outline:none;">
                 <div class="search-history-dropdown" id="searchHistoryDropdown"></div>
             </div>
         </div>
 
         <div class="genre-chips" id="genreChipsContainer">
             <div class="genre-chip active" tabindex="0" onclick="filterByGenre('all', this)">Все</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('18', this)">🎭 Драмы</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('80', this)">🔍 Криминал / Детективы</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('53', this)">⚡ Триллеры</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('36', this)">📜 Исторические</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('28', this)">💥 Боевики</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('35', this)">😂 Комедии</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('10749', this)">❤️ Мелодрамы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('18', this)">🎭 Драмы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('878', this)">🚀 Фантастика</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('12', this)">🗺️ Приключения</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('16', this)">🎨 Анимация</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('99', this)">📜 Документальные</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('27', this)">🔪 Ужасы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('53', this)">🔍 Триллеры</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('10749', this)">💖 Мелодрамы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('80', this)">🕵️ Криминал</div>
         </div>
 
         <div class="grid" id="catalogGrid"></div>
+        <div id="paginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 30px 0; align-items: center;"></div>
+    </div>
+</div>
+
+<div id="tab-russian" class="view-section">
+    <div class="main-container" style="padding-top: 90px;">
+        <div class="section-title" id="russianHeaderTitle">🇷🇺 Российское кино (1500+ фильмов)</div>
+        <div class="grid" id="russianGrid"></div>
+        <div id="russianPaginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 30px 0; align-items: center;"></div>
+    </div>
+</div>
+
+<div id="tab-thrillers" class="view-section">
+    <div class="main-container" style="padding-top: 90px;">
+        <div class="section-title" id="thrillersHeaderTitle">🔍 Триллеры</div>
+        <div class="grid" id="thrillersGrid"></div>
+        <div id="thrillersPaginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 30px 0; align-items: center;"></div>
+    </div>
+</div>
+
+<div id="tab-radio" class="view-section">
+    <div class="main-container" style="padding-top: 90px;">
+        <div class="section-title">📻 Українські Онлайн Радіостанції для ТБ</div>
+        <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Найпопулярніші музичні та інформаційні українські радіостанції в прямому ефірі.</p>
+        <div class="grid" id="radioGrid"></div>
+    </div>
+</div>
+
+<div id="tab-history" class="view-section">
+    <div class="main-container" style="padding-top: 90px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div class="section-title" style="margin:0;">🕒 История просмотров</div>
+            <button class="lampa-btn" tabindex="0" onclick="clearHistory()">Очистить историю</button>
+        </div>
+        <div class="grid" id="historyGrid"></div>
     </div>
 </div>
 
 <div id="tab-mylist" class="view-section">
     <div class="main-container" style="padding-top: 90px;">
-        <div class="section-title">⭐ Ваш сохраненный список</div>
+        <div class="section-title">⭐ Ваш сохраненный список избранного</div>
         <div class="grid" id="myListGrid"></div>
     </div>
 </div>
 
 <div id="tab-settings" class="view-section">
     <div class="settings-container">
-        <h2>⚙️ Настройки</h2>
+        <h2>⚙️ Расширенные настройки платформы</h2>
+        
+        <div class="settings-section-heading">👤 Профиль и персонализация</div>
         <div class="setting-row" tabindex="0">
             <span>Имя профиля:</span>
             <input type="text" id="settingUsername" value="Андрей" onchange="saveSettings()">
         </div>
         <div class="setting-row" tabindex="0">
-            <span>Цветовая тема:</span>
+            <div>
+                <span>Живая тема интерфейса</span>
+                <div class="setting-desc">Динамические переливающиеся фоны, приятные для глаз.</div>
+            </div>
             <select id="settingTheme" onchange="saveSettings()">
                 <option value="netflix">🔴 Классический Netflix</option>
-                <option value="cyberpunk">⚡ Киберпанк</option>
-                <option value="gold">🪙 Золотой Закат</option>
+                <option value="cyberpunk">⚡ Живой Киберпанк (Неон)</option>
+                <option value="gold">🪙 Золотой Живой Закат</option>
+                <option value="emerald">🟢 Изумрудная Живая Аврора</option>
+                <option value="amethyst">🟣 Аметистовая Живая Ночь</option>
+                <option value="aurora">🌌 Северное Сияние (Живая)</option>
+                <option value="fire">🔥 Огненная Стихия (Живая)</option>
             </select>
         </div>
+
+        <div class="settings-section-heading">🎬 Воспроизведение и Плеер</div>
         <div class="setting-row" tabindex="0">
-            <span>Таймер сна:</span>
+            <span>Таймер сна (автоматическое выключение плеера):</span>
             <select id="settingSleepTimer" onchange="saveSettings()">
                 <option value="0">Выключен</option>
+                <option value="15">Через 15 минут</option>
                 <option value="30">Через 30 минут</option>
                 <option value="60">Через 1 час</option>
                 <option value="120">Через 2 часа</option>
+            </select>
+        </div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Автоматический выбор лучшей озвучки</span>
+                <div class="setting-desc">Плеер сразу подгружает профессиональный перевод.</div>
+            </div>
+            <select id="settingAutoAudio" onchange="saveSettings()">
+                <option value="on">Включено</option>
+                <option value="off">Выключено</option>
+            </select>
+        </div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Громкость по умолчанию (%)</span>
+                <div class="setting-desc">Уровень звука при старте видеоряда.</div>
+            </div>
+            <input type="range" id="settingVolume" min="10" max="100" value="100" onchange="saveSettings()">
+        </div>
+
+        <div class="settings-section-heading">📺 Оптимизация для Android TV и Box</div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Аппаратное ускорение (GPU-рендеринг)</span>
+                <div class="setting-desc">Задействует графический чип ТВ-приставки для идеальной плавности 60 FPS.</div>
+            </div>
+            <select id="settingHwAccel" onchange="saveSettings()">
+                <option value="on">Включено</option>
+                <option value="off">Выключено</option>
+            </select>
+        </div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Буфер обмена плеера</span>
+                <div class="setting-desc">Управление размером оперативной памяти под потоковое видео.</div>
+            </div>
+            <select id="settingPlayerBuffer" onchange="saveSettings()">
+                <option value="low">Минимальный (для слабых 1GB RAM)</option>
+                <option value="mid">Стандартный (Сбалансированный)</option>
+                <option value="high">Максимальный (Для стабильного 4K)</option>
+            </select>
+        </div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Режим энергосбережения / Охлаждение ТВ</span>
+                <div class="setting-desc">Ограничивает фоновые процессы и анимации во избежание перегрева бокса.</div>
+            </div>
+            <select id="settingEcoMode" onchange="saveSettings()">
+                <option value="off">Выключен</option>
+                <option value="on">Включен</option>
+            </select>
+        </div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Адаптивная частота кадров (AFR)</span>
+                <div class="setting-desc">Синхронизирует герцовку экрана телевизора с частотой кадров фильма.</div>
+            </div>
+            <select id="settingAfr" onchange="saveSettings()">
+                <option value="on">Включено</option>
+                <option value="off">Выключено</option>
+            </select>
+        </div>
+
+        <div class="settings-section-heading">🌐 Сеть, Обход блокировок и Интерфейс</div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Внешний DNS-сервер (Ускорение TMDB API)</span>
+                <div class="setting-desc">Ускоряет загрузку картинок, постеров и каталога при медленном интернете.</div>
+            </div>
+            <select id="settingDns" onchange="saveSettings()">
+                <option value="cloudflare">Cloudflare (1.1.1.1 — Сверхбыстрый)</option>
+                <option value="google">Google (8.8.8.8 — Надежный)</option>
+                <option value="adguard">AdGuard (С блокировкой рекламы)</option>
+                <option value="default">Авто (Провайдер)</option>
+            </select>
+        </div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Таймаут сетевых запросов</span>
+                <div class="setting-desc">Время ожидания ответа при плохом сигнале Wi-Fi.</div>
+            </div>
+            <select id="settingNetTimeout" onchange="saveSettings()">
+                <option value="5000">5 секунд</option>
+                <option value="10000">10 секунд (Стандарт)</option>
+                <option value="20000">20 секунд (Для слабого Wi-Fi)</option>
+                <option value="600000">10 минут (Максимальный)</option>
+            </select>
+        </div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Размер сетки постеров на странице</span>
+                <div class="setting-desc">Количество карточек на одном экране каталога.</div>
+            </div>
+            <select id="settingGridSize" onchange="saveSettings()">
+                <option value="compact">Компактная (больше элементов)</option>
+                <option value="normal">Стандартная</option>
+                <option value="large">Крупная (для больших TV)</option>
+            </select>
+        </div>
+        <div class="setting-row" tabindex="0">
+            <div>
+                <span>Спецэффекты и свечения интерфейса</span>
+                <div class="setting-desc">Включает или отключает неоновые тени у карточек для разгона слабых GPU.</div>
+            </div>
+            <select id="settingEffects" onchange="saveSettings()">
+                <option value="on">Включены (Красиво)</option>
+                <option value="off">Отключены (Максимальный FPS)</option>
             </select>
         </div>
     </div>
@@ -405,7 +615,7 @@
         </div>
 
         <div class="player-controls">
-            <div id="sleepTimerBadge" style="font-size:11px; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:4px 8px; border-radius:3px; display:none;">⏱️ Сон: <span id="sleepTimerCountdown">--:--</span></div>
+            <div id="sleepTimerBadge" style="font-size:12px; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:3px; display:none;">⏱️ Сон: <span id="sleepTimerCountdown">--:--</span></div>
             <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
         </div>
     </div>
@@ -416,20 +626,69 @@
 <script>
     const TMDB_API_KEY = '3fd2be6f0c70a2a598f084ddfb75487c';
     let cachedCatalog = [];
-    let settings = JSON.parse(localStorage.getItem('netflixSettings50') || '{"username":"Андрей","theme":"netflix","sleepTimer":"0"}');
+    let russianCatalog = [];
+    let thrillersCatalog = [];
+    
+    let currentPage = 1;
+    let russianCurrentPage = 1;
+    let thrillersCurrentPage = 1;
+    
+    let totalPagesToFetch = 200;
+    let russianTotalPagesToFetch = 75; 
+    let currentGenreFilter = 'all';
 
-    document.getElementById('settingTheme').value = settings.theme || 'netflix';
+    const radioStations = [
+        { name: "Hit FM", genre: "Українські та світові хіти", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.hitfm.ua/HitFM" },
+        { name: "KISS FM", genre: "Електронна / Dance / EDM", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.kissfm.ua/KissFM" },
+        { name: "Radio ROKS", genre: "Класичний рок / Rock", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.radioroks.ua/RadioROKS" },
+        { name: "Melodia FM", genre: "Душевна поп-музика 80-90х", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.melodiafm.ua/MelodiaFM" },
+        { name: "Radio NV", genre: "Новини / Розмовна / Аналітика", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://stream.radio.nv.ua/radionv" },
+        { name: "Bayraktar", genre: "Сучасна українська пісня", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.radiobayraktar.ua/RadioBayraktar" },
+        { name: "Armiya FM", genre: "Військова музика та новини", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://radio.armiya.ua:8000/stream" }
+    ];
+    
+    let settings = JSON.parse(localStorage.getItem('netflixSettingsUltimate') || JSON.stringify({
+        username: "Андрей",
+        theme: "cyberpunk",
+        sleepTimer: "0",
+        autoAudio: "on",
+        volume: "100",
+        hwAccel: "on",
+        playerBuffer: "mid",
+        ecoMode: "off",
+        afr: "on",
+        dns: "cloudflare",
+        netTimeout: "10000",
+        gridSize: "normal",
+        effects: "on"
+    }));
+
+    document.getElementById('settingTheme').value = settings.theme || 'cyberpunk';
     document.getElementById('settingSleepTimer').value = settings.sleepTimer || '0';
     document.getElementById('settingUsername').value = settings.username || 'Андрей';
+    document.getElementById('headerUsernameLabel').innerText = settings.username || 'Андрей';
+    if(document.getElementById('settingAutoAudio')) document.getElementById('settingAutoAudio').value = settings.autoAudio || 'on';
+    if(document.getElementById('settingVolume')) document.getElementById('settingVolume').value = settings.volume || '100';
+    if(document.getElementById('settingHwAccel')) document.getElementById('settingHwAccel').value = settings.hwAccel || 'on';
+    if(document.getElementById('settingPlayerBuffer')) document.getElementById('settingPlayerBuffer').value = settings.playerBuffer || 'mid';
+    if(document.getElementById('settingEcoMode')) document.getElementById('settingEcoMode').value = settings.ecoMode || 'off';
+    if(document.getElementById('settingAfr')) document.getElementById('settingAfr').value = settings.afr || 'on';
+    if(document.getElementById('settingDns')) document.getElementById('settingDns').value = settings.dns || 'cloudflare';
+    if(document.getElementById('settingNetTimeout')) document.getElementById('settingNetTimeout').value = settings.netTimeout || '10000';
+    if(document.getElementById('settingGridSize')) document.getElementById('settingGridSize').value = settings.gridSize || 'normal';
+    if(document.getElementById('settingEffects')) document.getElementById('settingEffects').value = settings.effects || 'on';
 
-    applyTheme(settings.theme || 'netflix');
+    applyTheme(settings.theme || 'cyberpunk');
+    applyGridSizeStyle(settings.gridSize || 'normal');
 
     window.addEventListener('load', () => {
         setTimeout(() => {
             const intro = document.getElementById('intro-screen');
             if(intro) intro.remove();
-        }, 1000);
-        fetchAllMassiveCatalog();
+        }, 800);
+        fetchAllUltimateCatalog();
+        renderRadioGrid();
+        setTimeout(() => focusFirstElementInView(), 1000);
     });
 
     function applyTheme(themeName) {
@@ -437,95 +696,153 @@
         if (themeName !== 'netflix') document.body.classList.add('theme-' + themeName);
     }
 
+    function applyGridSizeStyle(size) {
+        const gridEls = document.querySelectorAll('.grid');
+        gridEls.forEach(g => {
+            if(size === 'compact') g.style.gridTemplateColumns = 'repeat(auto-fill, minmax(130px, 1fr))';
+            else if(size === 'large') g.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+            else g.style.gridTemplateColumns = 'repeat(auto-fill, minmax(160px, 1fr))';
+        });
+    }
+
     function showToast(text) {
         const t = document.getElementById('toast');
         t.innerText = text;
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2000);
+        setTimeout(() => t.classList.remove('show'), 2500);
     }
 
     function saveSettings() {
         settings.username = document.getElementById('settingUsername').value;
         settings.theme = document.getElementById('settingTheme').value;
         settings.sleepTimer = document.getElementById('settingSleepTimer').value;
-        localStorage.setItem('netflixSettings50', JSON.stringify(settings));
+        if(document.getElementById('settingAutoAudio')) settings.autoAudio = document.getElementById('settingAutoAudio').value;
+        if(document.getElementById('settingVolume')) settings.volume = document.getElementById('settingVolume').value;
+        if(document.getElementById('settingHwAccel')) settings.hwAccel = document.getElementById('settingHwAccel').value;
+        if(document.getElementById('settingPlayerBuffer')) settings.playerBuffer = document.getElementById('settingPlayerBuffer').value;
+        if(document.getElementById('settingEcoMode')) settings.ecoMode = document.getElementById('settingEcoMode').value;
+        if(document.getElementById('settingAfr')) settings.afr = document.getElementById('settingAfr').value;
+        if(document.getElementById('settingDns')) settings.dns = document.getElementById('settingDns').value;
+        if(document.getElementById('settingNetTimeout')) settings.netTimeout = document.getElementById('settingNetTimeout').value;
+        if(document.getElementById('settingGridSize')) settings.gridSize = document.getElementById('settingGridSize').value;
+        if(document.getElementById('settingEffects')) settings.effects = document.getElementById('settingEffects').value;
+
+        localStorage.setItem('netflixSettingsUltimate', JSON.stringify(settings));
         applyTheme(settings.theme);
-        showToast('Настройки сохранены!');
+        applyGridSizeStyle(settings.gridSize);
+        document.getElementById('headerUsernameLabel').innerText = settings.username;
+        showToast('Живі налаштування збережено!');
     }
 
     function switchTab(tabId, el) {
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         document.getElementById('tab-' + tabId).classList.add('active');
-        document.querySelectorAll('.nav-links li, .sidebar-links li').forEach(l => l.classList.remove('active'));
+        document.querySelectorAll('.nav-links li').forEach(l => l.classList.remove('active'));
         if(el) el.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'instant' });
 
         if(tabId === 'mylist') renderMyListGrid();
-        if(tabId === 'catalog') renderGrid('catalogGrid', cachedCatalog);
-        if(tabId === 'classic') renderGrid('classicGrid', getClassicCollection());
+        if(tabId === 'history') renderHistoryGrid();
+        if(tabId === 'russian') renderRussianPage(1);
+        if(tabId === 'thrillers') renderThrillersPage(1);
+        if(tabId === 'radio') renderRadioGrid();
+        if(tabId === 'catalog') renderCatalogPage(1);
         
         setTimeout(() => focusFirstElementInView(), 100);
     }
 
-    // Загрузка огромной базы данных (до 3500+ фильмов) из TMDB (топ рейтинг, драмы, классика, исторические)
-    async function fetchAllMassiveCatalog() {
+    async function fetchAllUltimateCatalog() {
         try {
-            showToast('Загрузка золотой коллекции (3500+ фильмов)...');
-            let promises = [];
-            // Загружаем 60 страниц различных категорий для максимального охвата взрослой аудитории
-            for (let page = 1; page <= 30; page++) {
-                promises.push(fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_API_KEY}&language=ru-RU&page=${page}`).then(r => r.json()));
-                promises.push(fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=vote_average.desc&vote_count.gte=500&page=${page}`).then(r => r.json()));
+            showToast('Загрузка базы фильмов (от 1990 года)...');
+            let allResults = [];
+            
+            for (let pStart = 1; pStart <= totalPagesToFetch; pStart += 10) {
+                let pEnd = Math.min(pStart + 9, totalPagesToFetch);
+                let batchPromises = [];
+                for (let p = pStart; p <= pEnd; p++) {
+                    batchPromises.push(
+                        fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=popularity.desc&primary_release_date.gte=1990-01-01&page=${p}`)
+                            .then(res => res.json())
+                            .then(data => data.results || [])
+                            .catch(() => [])
+                    );
+                }
+                let batchResults = await Promise.all(batchPromises);
+                batchResults.forEach(resList => { allResults = allResults.concat(resList); });
             }
 
-            let results = await Promise.all(promises);
-            let combined = [];
-            results.forEach(res => {
-                if (res && res.results) {
-                    combined.push(...res.results);
+            let rusResults = [];
+            for (let pStart = 1; pStart <= russianTotalPagesToFetch; pStart += 10) {
+                let pEnd = Math.min(pStart + 9, russianTotalPagesToFetch);
+                let batchPromises = [];
+                for (let p = pStart; p <= pEnd; p++) {
+                    batchPromises.push(
+                        fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&with_original_language=ru&sort_by=popularity.desc&primary_release_date.gte=1990-01-01&page=${p}`)
+                            .then(res => res.json())
+                            .then(data => data.results || [])
+                            .catch(() => [])
+                    );
                 }
-            });
+                let batchResults = await Promise.all(batchPromises);
+                batchResults.forEach(resList => { rusResults = rusResults.concat(resList); });
+            }
+
+            let thrillerResults = [];
+            for (let p = 1; p <= 30; p++) {
+                thrillerResults.push(
+                    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&with_genres=53&sort_by=popularity.desc&primary_release_date.gte=1990-01-01&page=${p}`)
+                        .then(res => res.json())
+                        .then(data => data.results || [])
+                        .catch(() => [])
+                );
+            }
+            let thrillerBatches = await Promise.all(thrillerResults);
+            thrillerBatches.forEach(list => { thrillersCatalog = thrillersCatalog.concat(list); });
 
             const uniqueMap = new Map();
-            combined.forEach(item => {
-                if(item.id && item.poster_path && (item.title || item.name)) {
-                    uniqueMap.set(item.id, item);
-                }
-            });
-
+            allResults.forEach(item => { if(item.poster_path) uniqueMap.set(item.id, item); });
             cachedCatalog = Array.from(uniqueMap.values());
-            showToast(`Загружено фильмов: ${cachedCatalog.length}`);
+
+            const uniqueRusMap = new Map();
+            rusResults.forEach(item => { if(item.poster_path) uniqueRusMap.set(item.id, item); });
+            russianCatalog = Array.from(uniqueRusMap.values());
+
+            const uniqueThrillerMap = new Map();
+            thrillersCatalog.forEach(item => { if(item.poster_path) uniqueThrillerMap.set(item.id, item); });
+            thrillersCatalog = Array.from(uniqueThrillerMap.values());
+
+            showToast(`Загружено: ${cachedCatalog.length} фильмов (1990+)!`);
+            document.getElementById('catalogHeaderTitle').innerText = `🎬 Ультимативный Мега-Каталог (${cachedCatalog.length} фильмов)`;
+            document.getElementById('russianHeaderTitle').innerText = `🇷🇺 Российское кино (${russianCatalog.length} фильмов)`;
             initHome();
         } catch(e) {
-            console.error('Ошибка загрузки TMDB:', e);
-            showToast('Ошибка загрузки базы данных');
+            console.error('Ошибка загрузки ультимативной базы:', e);
+            showToast('Ошибка загрузки базы данных TMDB');
         }
-    }
-
-    function getClassicCollection() {
-        // Фильмы с высоким рейтингом, драмы, классика (вечные шедевры)
-        return cachedCatalog.filter(i => i.vote_average >= 7.5 || (i.genre_ids && (i.genre_ids.includes(18) || i.genre_ids.includes(36) || i.genre_ids.includes(80))));
     }
 
     function initHome() {
         if(!cachedCatalog.length) return;
-        const classics = getClassicCollection();
-        setupRandomHero(classics.length ? classics : cachedCatalog);
+        setupRandomHero(cachedCatalog);
 
-        renderCarousel('classicRow', classics.slice(0, 25));
+        renderCarousel('trendingRow', cachedCatalog.slice(0, 45));
+        renderCarousel('homeRussianRow', russianCatalog.slice(0, 45));
+        renderCarousel('homeThrillersRow', thrillersCatalog.slice(0, 45));
         renderCarousel('myListRow', getMyListItems());
-        renderCarousel('dramaRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(18)).slice(0, 25));
-        renderCarousel('thrillerRow', cachedCatalog.filter(i => i.genre_ids && (i.genre_ids.includes(53) || i.genre_ids.includes(80))).slice(0, 25));
+        renderCarousel('horrorRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(27)));
+        renderCarousel('scifiRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(878)));
+        renderCarousel('actionRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(28)));
+        renderCarousel('dramaRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(18)));
         
-        initRemoteControl();
+        setTimeout(() => focusFirstElementInView(), 500);
     }
 
     function setupRandomHero(items) {
         if(!items.length) return;
-        const randomItem = items[Math.floor(Math.random() * Math.min(items.length, 20))];
+        const randomItem = items[Math.floor(Math.random() * Math.min(items.length, 25))];
         const title = randomItem.title || randomItem.name || 'Фильм';
         const desc = randomItem.overview || '';
-        const bgUrl = randomItem.backdrop_path ? `https://image.tmdb.org/t/p/original${randomItem.backdrop_path}` : '';
+        const bgUrl = randomItem.backdrop_path ? `https://image.tmdb.org/t/p/w1280${randomItem.backdrop_path}` : '';
 
         if(bgUrl) document.getElementById('heroBanner').style.backgroundImage = `url('${bgUrl}')`;
         document.getElementById('heroTitle').innerText = title;
@@ -535,7 +852,21 @@
         document.getElementById('heroInfoBtn').onclick = () => { openModal(randomItem.id, randomItem); };
     }
 
-    function getMyListItems() { return JSON.parse(localStorage.getItem('myList50') || '[]'); }
+    function getMyListItems() { return JSON.parse(localStorage.getItem('myListUltimate') || '[]'); }
+    function getHistoryItems() { return JSON.parse(localStorage.getItem('watchHistoryUltimate') || '[]'); }
+
+    function addToHistory(item) {
+        let history = getHistoryItems().filter(i => i.id !== item.id);
+        history.unshift(item);
+        if(history.length > 50) history.pop();
+        localStorage.setItem('watchHistoryUltimate', JSON.stringify(history));
+    }
+
+    function clearHistory() {
+        localStorage.removeItem('watchHistoryUltimate');
+        renderHistoryGrid();
+        showToast('История просмотров очищена');
+    }
 
     function renderCarousel(containerId, list) {
         const c = document.getElementById(containerId);
@@ -545,28 +876,76 @@
 
         list.forEach(m => {
             const title = m.title || m.name || 'Фильм';
-            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '';
+            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w300${m.poster_path}` : '';
             if(!poster) return;
 
             const card = document.createElement('div');
             card.className = 'movie-card';
             card.tabIndex = 0;
-            card.innerHTML = `<img src="${poster}" alt="${title}">`;
+            card.innerHTML = `<img src="${poster}" alt="${title}" loading="lazy" decoding="async">`;
             card.onclick = () => { openModal(m.id, m); };
             c.appendChild(card);
         });
     }
 
-    function renderGrid(containerId, list) {
+    const ITEMS_PER_PAGE = 32;
+
+    function renderCatalogPage(page = 1) {
+        currentPage = page;
+        let sourceList = cachedCatalog;
+        
+        if (currentGenreFilter !== 'all') {
+            const gId = parseInt(currentGenreFilter);
+            sourceList = cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(gId));
+        }
+
+        const totalPages = Math.ceil(sourceList.length / ITEMS_PER_PAGE) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+        const pageItems = sourceList.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+        renderGridCards('catalogGrid', pageItems);
+        renderPaginationControls(totalPages, currentPage, (p) => renderCatalogPage(p), 'paginationContainer');
+    }
+
+    function renderRussianPage(page = 1) {
+        russianCurrentPage = page;
+        const totalPages = Math.ceil(russianCatalog.length / ITEMS_PER_PAGE) || 1;
+        if (russianCurrentPage > totalPages) russianCurrentPage = totalPages;
+        if (russianCurrentPage < 1) russianCurrentPage = 1;
+
+        const startIdx = (russianCurrentPage - 1) * ITEMS_PER_PAGE;
+        const pageItems = russianCatalog.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+        renderGridCards('russianGrid', pageItems);
+        renderPaginationControls(totalPages, russianCurrentPage, (p) => renderRussianPage(p), 'russianPaginationContainer');
+    }
+
+    function renderThrillersPage(page = 1) {
+        thrillersCurrentPage = page;
+        const totalPages = Math.ceil(thrillersCatalog.length / ITEMS_PER_PAGE) || 1;
+        if (thrillersCurrentPage > totalPages) thrillersCurrentPage = totalPages;
+        if (thrillersCurrentPage < 1) thrillersCurrentPage = 1;
+
+        const startIdx = (thrillersCurrentPage - 1) * ITEMS_PER_PAGE;
+        const pageItems = thrillersCatalog.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+        renderGridCards('thrillersGrid', pageItems);
+        renderPaginationControls(totalPages, thrillersCurrentPage, (p) => renderThrillersPage(p), 'thrillersPaginationContainer');
+    }
+
+    function renderGridCards(containerId, list) {
         const c = document.getElementById(containerId);
         if(!c) return;
         c.innerHTML = '';
-        if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 4; padding:20px;">Ничего не найдено.</p>'; return; }
+        if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 4; padding:20px;">Ничего не найдено в данной категории.</p>'; return; }
         
         list.forEach(m => {
             const title = m.title || m.name || 'Без названия';
             const year = (m.release_date || m.first_air_date || '2026').substring(0, 4);
-            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '';
+            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w300${m.poster_path}` : '';
             const rating = m.vote_average ? m.vote_average.toFixed(1) : '8.0';
             if(!poster) return;
 
@@ -574,7 +953,7 @@
             card.className = 'grid-card';
             card.tabIndex = 0;
             card.innerHTML = `
-                <img src="${poster}" alt="${title}">
+                <img src="${poster}" alt="${title}" loading="lazy" decoding="async">
                 <div class="grid-card-info">
                     <div class="grid-card-title">${title}</div>
                     <div class="grid-card-meta">
@@ -588,21 +967,88 @@
         });
     }
 
-    function renderMyListGrid() { renderGrid('myListGrid', getMyListItems()); }
+    function renderPaginationControls(totalPages, currentPg, callback, containerId) {
+        const pContainer = document.getElementById(containerId);
+        if(!pContainer) return;
+        pContainer.innerHTML = '';
 
-    async function filterByGenre(genreId, el) {
-        document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
+        if(totalPages <= 1) return;
 
-        if(genreId === 'all') {
-            renderGrid('catalogGrid', cachedCatalog);
-        } else {
-            let filtered = cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(parseInt(genreId)));
-            renderGrid('catalogGrid', filtered);
-        }
+        let prevBtn = document.createElement('button');
+        prevBtn.className = 'lampa-btn';
+        prevBtn.innerText = '← Назад';
+        prevBtn.tabIndex = 0;
+        prevBtn.disabled = currentPg === 1;
+        prevBtn.style.opacity = currentPg === 1 ? '0.5' : '1';
+        prevBtn.onclick = () => { if(currentPg > 1) { callback(currentPg - 1); window.scrollTo({top:0, behavior:'smooth'}); } };
+        pContainer.appendChild(prevBtn);
+
+        let infoSpan = document.createElement('span');
+        infoSpan.style.cssText = 'font-size: 13px; color: var(--text-muted); font-weight: bold;';
+        infoSpan.innerText = `Сторінка ${currentPg} із ${totalPages}`;
+        pContainer.appendChild(infoSpan);
+
+        let nextBtn = document.createElement('button');
+        nextBtn.className = 'lampa-btn';
+        nextBtn.innerText = 'Вперед →';
+        nextBtn.tabIndex = 0;
+        nextBtn.disabled = currentPg === totalPages;
+        nextBtn.style.opacity = currentPg === totalPages ? '0.5' : '1';
+        nextBtn.onclick = () => { if(currentPg < totalPages) { callback(currentPg + 1); window.scrollTo({top:0, behavior:'smooth'}); } };
+        pContainer.appendChild(nextBtn);
     }
 
-    function getSearchHistory() { return JSON.parse(localStorage.getItem('searchHistory50') || '[]'); }
+    function renderRadioGrid() {
+        const c = document.getElementById('radioGrid');
+        if(!c) return;
+        c.innerHTML = '';
+        radioStations.forEach((r, idx) => {
+            const card = document.createElement('div');
+            card.className = 'grid-card';
+            card.tabIndex = 0;
+            card.innerHTML = `
+                <div style="height:140px; background:linear-gradient(135deg, #201a30, #0f0f18); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:15px;">
+                    <div style="font-size:32px; margin-bottom:8px;">📻</div>
+                    <div style="font-weight:bold; font-size:14px; color:#fff;">${r.name}</div>
+                    <div style="font-size:11px; color:var(--netflix-red); margin-top:4px;">${r.genre}</div>
+                </div>
+                <div class="grid-card-info" style="text-align:center;">
+                    <div style="font-size:12px; color:#46d369; font-weight:bold;">▶ Слухати ефір</div>
+                </div>
+            `;
+            card.onclick = () => { playRadioStream(r); };
+            c.appendChild(card);
+        });
+    }
+
+    function playRadioStream(station) {
+        openPlayer(`Українське Радіо: ${station.name}`);
+        const container = document.getElementById('playerContainerInner');
+        container.innerHTML = `
+            <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; height:100%; background: radial-gradient(circle, #181824 0%, #070709 100%);">
+                <div style="font-size:64px; margin-bottom:20px; animation: pulse 2s infinite;">🇺🇦📻</div>
+                <div style="font-size:24px; font-weight:bold; color:#fff; margin-bottom:8px;">${station.name}</div>
+                <div style="font-size:14px; color:var(--netflix-red); margin-bottom:25px;">${station.genre} • Прямий ефір</div>
+                <audio id="audioStream" controls autoplay style="width:300px; outline:none;">
+                    <source src="${station.url}" type="audio/aac">
+                    <source src="${station.url}" type="audio/mpeg">
+                    Ваш браузер не підтримує аудіоплеєр.
+                </audio>
+            </div>
+        `;
+    }
+
+    function renderMyListGrid() { renderGridCards('myListGrid', getMyListItems()); }
+    function renderHistoryGrid() { renderGridCards('historyGrid', getHistoryItems()); }
+
+    function filterByGenre(genreId, el) {
+        document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        currentGenreFilter = genreId;
+        renderCatalogPage(1);
+    }
+
+    function getSearchHistory() { return JSON.parse(localStorage.getItem('searchHistoryUltimate') || '[]'); }
 
     function showSearchHistory() {
         let history = getSearchHistory();
@@ -622,21 +1068,22 @@
         handleSearch(term);
     }
 
-    async function handleSearch(query) {
+    function handleSearch(query) {
         const drop = document.getElementById('searchHistoryDropdown');
         if(!query.trim()) {
             drop.style.display = 'none';
-            renderGrid('catalogGrid', cachedCatalog);
+            renderCatalogPage(1);
             return;
         }
 
         let history = getSearchHistory().filter(item => item !== query);
         history.unshift(query);
         if(history.length > 5) history.pop();
-        localStorage.setItem('searchHistory50', JSON.stringify(history));
+        localStorage.setItem('searchHistoryUltimate', JSON.stringify(history));
 
         let localMatch = cachedCatalog.filter(i => (i.title || i.name || '').toLowerCase().includes(query.toLowerCase()));
-        renderGrid('catalogGrid', localMatch);
+        renderGridCards('catalogGrid', localMatch);
+        document.getElementById('paginationContainer').innerHTML = '';
     }
 
     window.addEventListener('click', (e) => {
@@ -646,13 +1093,13 @@
         }
     });
 
-    async function openModal(id, itemData) {
-        let m = itemData || cachedCatalog.find(i => i.id === id);
+    function openModal(id, itemData) {
+        let m = itemData || cachedCatalog.find(i => i.id === id) || russianCatalog.find(i => i.id === id) || thrillersCatalog.find(i => i.id === id);
         if(!m) return;
 
         const title = m.title || m.name || 'Фильм';
         const year = (m.release_date || m.first_air_date || '2026').substring(0, 4);
-        const poster = m.backdrop_path ? `https://image.tmdb.org/t/p/original${m.backdrop_path}` : (m.poster_path ? `https://image.tmdb.org/t/p/original${m.poster_path}` : '');
+        const poster = m.backdrop_path ? `https://image.tmdb.org/t/p/w1280${m.backdrop_path}` : (m.poster_path ? `https://image.tmdb.org/t/p/w780${m.poster_path}` : '');
         const rating = m.vote_average ? m.vote_average.toFixed(1) : '8.0';
         const desc = m.overview || 'Описание отсутствует.';
 
@@ -665,14 +1112,14 @@
             <div class="lampa-left-pane" style="background-image: url('${poster}');">
                 <div class="lampa-content-info">
                     <div class="lampa-title">${title}</div>
-                    <div class="lampa-tagline">«Золотой фонд кино»</div>
+                    <div class="lampa-tagline">«Мировой хит Netflix»</div>
                     <div class="lampa-badges">
                         <span class="lampa-badge-item" style="color: #46d369;">⭐ ${rating} TMDB</span>
                         <span class="lampa-badge-item">${year}</span>
                     </div>
                     <div class="lampa-desc">${desc}</div>
                     <div class="lampa-action-buttons">
-                        <button class="lampa-btn active" tabindex="0" onclick="launchKinopoiskPlayer('${title.replace(/'/g, "")}', '${year}')">▶ Смотреть (Кинопоиск)</button>
+                        <button class="lampa-btn active" tabindex="0" onclick='launchDirectPlayer(${JSON.stringify(m).replace(/'/g, "&apos;")})'>▶ Смотреть</button>
                         <button class="lampa-btn" tabindex="0" onclick='toggleFavorite(${JSON.stringify(m).replace(/'/g, "&apos;")})'>
                             ${isFav ? '✓ В избранном' : '+ В список'}
                         </button>
@@ -681,13 +1128,13 @@
             </div>
             <div class="lampa-sources-pane">
                 <div class="lampa-sources-header">
-                    <span>Плеер Кинопоиска</span>
-                    <span style="font-size:10px; color:#46d369;">🟢 Автопоиск ID</span>
+                    <span>Выбор качественных серверов CDN</span>
+                    <span style="font-size:10px; color:#46d369;">🟢 4K Ultra HD</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
                     <div class="source-option-card selected" tabindex="0">
-                        <div><div class="source-info-title">🎬 KinoBD Player</div><div class="source-info-langs">Высокое качество, без рекламы</div></div>
-                        <span class="server-ping ping-good">10ms</span>
+                        <div><div class="source-info-title">🎬 KinoBD HD Player (Основной)</div><div class="source-info-langs">Русская озвучка • 1080p / 4K</div></div>
+                        <span class="server-ping ping-good">2ms</span>
                     </div>
                 </div>
             </div>
@@ -699,24 +1146,10 @@
         }, 100);
     }
 
-    async function launchKinopoiskPlayer(title, year) {
+    function launchDirectPlayer(item) {
+        addToHistory(item);
         closeModal();
-        showToast('Ищем ID Кинопоиска...');
-        
-        let kpId = '';
-        try {
-            const searchRes = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${encodeURIComponent(title)}`, {
-                headers: { 'X-API-KEY': 'b46dad04-6090-4269-9c3a-8d88d75d004e' }
-            });
-            const searchData = await searchRes.json();
-            if(searchData.films && searchData.films.length > 0) {
-                kpId = searchData.films[0].filmId || searchData.films[0].kinopoiskId;
-            }
-        } catch(e) {
-            console.log('Поиск ID по сети недоступен.');
-        }
-
-        openPlayer(kpId, title);
+        openPlayer(item.title || item.name || 'Фильм');
     }
 
     function closeModal() { 
@@ -730,15 +1163,15 @@
         const idx = list.findIndex(i => i.id === item.id);
         if(idx > -1) { list.splice(idx, 1); showToast('Удалено из избранного'); }
         else { list.push(item); showToast('Добавлено в избранное!'); }
-        localStorage.setItem('myList50', JSON.stringify(list));
+        localStorage.setItem('myListUltimate', JSON.stringify(list));
         openModal(item.id, item);
     }
 
     let sleepTimerInterval = null;
 
-    function openPlayer(kpId, titleText) {
+    function openPlayer(titleText) {
         document.getElementById('playerMediaTitle').innerText = titleText;
-        updatePlayerFrame(kpId, titleText);
+        updatePlayerFrame(titleText);
         document.getElementById('player-screen').style.display = 'flex';
         initSleepTimer();
         setTimeout(() => {
@@ -772,13 +1205,14 @@
         }, 1000);
     }
 
-    function updatePlayerFrame(kpId, titleText) {
+    function updatePlayerFrame(titleText) {
         const container = document.getElementById('playerContainerInner');
-        if (kpId) {
-            container.innerHTML = `<div data-kinopoisk="${kpId}" id="kinobd" style="width:100%; height:100%;"></div>`;
-        } else {
-            container.innerHTML = `<div data-title="${titleText}" id="kinobd" style="width:100%; height:100%;"></div>`;
+        
+        if (titleText.startsWith('Українське Радіо:')) {
+            return;
         }
+
+        container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" id="kinobd" style="width:100%; height:100%;"></div>`;
 
         const oldScript = document.getElementById('kinobd-script');
         if(oldScript) oldScript.remove();
@@ -808,7 +1242,7 @@
         const playerOpen = document.getElementById('player-screen').style.display === 'flex';
 
         if (playerOpen) {
-            return Array.from(document.querySelectorAll('#player-screen button, #player-screen [tabindex="0"]'));
+            return Array.from(document.querySelectorAll('#player-screen button, #player-screen [tabindex="0"], #player-screen audio'));
         }
         if (modalOpen) {
             return Array.from(document.querySelectorAll('#modal-overlay button, #modal-overlay [tabindex="0"]'));
@@ -817,11 +1251,14 @@
         const activeSection = document.querySelector('.view-section.active');
         if (!activeSection) return [];
 
-        return Array.from(activeSection.querySelectorAll('button, input, select, .movie-card, .grid-card, .genre-chip, .nav-links li, .sidebar-links li, .sidebar-profile, .logo'))
+        const headerElements = Array.from(document.querySelectorAll('.logo, .nav-links li, .user-profile'));
+        const activeElements = Array.from(activeSection.querySelectorAll('button, input, select, .movie-card, .grid-card, .genre-chip, .setting-row'))
             .filter(el => {
                 let rect = el.getBoundingClientRect();
                 return rect.width > 0 && rect.height > 0;
             });
+
+        return [...headerElements, ...activeElements];
     }
 
     function focusFirstElementInView() {
@@ -843,7 +1280,6 @@
         const el = focusables[currentFocusIndex];
         if (el) {
             el.classList.add('tv-focused');
-            el.focus();
             el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
         }
     }
@@ -879,8 +1315,18 @@
             case ' ':
             case 'MediaPlayPause':
                 const active = focusables[currentFocusIndex] || document.activeElement;
-                if (active && typeof active.click === 'function') {
-                    active.click();
+                if (active) {
+                    if (active.classList && active.classList.contains('setting-row')) {
+                        const inputOrSelect = active.querySelector('input, select');
+                        if (inputOrSelect) {
+                            inputOrSelect.focus();
+                            if (inputOrSelect.tagName === 'SELECT') {
+                                inputOrSelect.click();
+                            }
+                        }
+                    } else if (typeof active.click === 'function') {
+                        active.click();
+                    }
                     handled = true;
                 }
                 break;
@@ -901,10 +1347,6 @@
             event.preventDefault();
             updateTvFocus();
         }
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-        setTimeout(focusFirstElementInView, 1500);
     });
 </script>
 </body>
