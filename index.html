@@ -63,6 +63,21 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
+        /* ВИРТУАЛЬНЫЙ КУРСОР ДЛЯ ПУЛЬТА */
+        #virtual-cursor {
+            position: fixed;
+            width: 26px;
+            height: 26px;
+            background: url('https://i.imgur.com/71u6Pwv.png') no-repeat center center / contain;
+            pointer-events: none;
+            z-index: 999999;
+            display: none;
+            transform: translate(-4px, -4px);
+            filter: drop-shadow(0 0 6px rgba(229, 9, 20, 0.9));
+        }
+        body.cursor-active * { cursor: none !important; }
+        body.cursor-active #virtual-cursor { display: block; }
+
         /* ---------------- ИНТРО-АНИМАЦИЯ ---------------- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -333,6 +348,10 @@
         .player-controls { display: flex; gap: 12px; align-items: center; }
         .source-select { background: var(--bg-dark); color: white; border: 1px solid rgba(255,255,255,0.15); padding: 8px 14px; border-radius: 6px; font-size: 13px; outline: none; cursor: pointer; }
         .source-select:focus { border-color: var(--netflix-red); box-shadow: 0 0 10px var(--neon-glow); }
+        
+        .cursor-toggle-btn { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; outline: none; transition: 0.3s; }
+        .cursor-toggle-btn:hover, .cursor-toggle-btn:focus, .cursor-toggle-btn.active { background: var(--netflix-red); border-color: var(--netflix-red); box-shadow: 0 0 15px var(--neon-glow); color: #000; }
+
         .player-close-btn { background: var(--netflix-red); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 0 12px var(--neon-glow); outline: none; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease; }
         .player-close-btn:hover, .player-close-btn:focus { transform: scale(1.08); box-shadow: 0 0 20px var(--neon-glow); }
 
@@ -359,6 +378,8 @@
     </style>
 </head>
 <body>
+
+<div id="virtual-cursor"></div>
 
 <script>
     const TELEGRAM_CONFIG = {
@@ -532,6 +553,8 @@
             <span>Основной онлайн-источник:</span>
             <select id="settingDefaultSource" onchange="saveSettings()">
                 <option value="kinohub">🎬 Kinohub Search (Прямой поток)</option>
+                <option value="filmix">🎥 Filmix (Премиум каталог)</option>
+                <option value="kinopub">🍿 KinoPub (Топовый архив)</option>
             </select>
         </div>
         <div class="setting-row">
@@ -560,8 +583,11 @@
 
         <div class="player-controls">
             <div id="sleepTimerBadge" style="font-size:12px; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:4px; display:none;">⏱️ Сон: <span id="sleepTimerCountdown">--:--</span></div>
+            <button class="cursor-toggle-btn" tabindex="0" onclick="toggleVirtualCursor()">🖱️ Курсор мыши</button>
             <select id="playerSourceSelector" class="source-select" onchange="updatePlayerFrame()">
                 <option value="kinohub">Kinohub Search</option>
+                <option value="filmix">Filmix</option>
+                <option value="kinopub">KinoPub</option>
             </select>
             <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
         </div>
@@ -638,7 +664,7 @@
     let cachedCatalog = [];
     let settings = JSON.parse(localStorage.getItem('netflixSettings') || '{"username":"Андрей","defaultSource":"kinohub","theme":"netflix","sleepTimer":"0"}');
 
-    document.getElementById('settingDefaultSource').value = 'kinohub';
+    document.getElementById('settingDefaultSource').value = settings.defaultSource || 'kinohub';
     document.getElementById('settingTheme').value = settings.theme || 'netflix';
     document.getElementById('settingSleepTimer').value = settings.sleepTimer || '0';
     applyTheme(settings.theme || 'netflix');
@@ -666,7 +692,7 @@
     function saveSettings() {
         settings.username = document.getElementById('settingUsername').value;
         settings.theme = document.getElementById('settingTheme').value;
-        settings.defaultSource = 'kinohub';
+        settings.defaultSource = document.getElementById('settingDefaultSource').value;
         settings.sleepTimer = document.getElementById('settingSleepTimer').value;
         localStorage.setItem('netflixSettings', JSON.stringify(settings));
 
@@ -692,7 +718,6 @@
     async function fetchCatalog() {
         try {
             let multiResults = [];
-            // Оптимизация запросов до ключевых страниц во избежание сетевых фризов
             for(let page = 1; page <= 15; page++) {
                 try {
                     const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
@@ -770,7 +795,6 @@
         showToast('История очищена');
     }
 
-    // Использование DocumentFragment для оптимизации DOM операций
     function renderCarousel(containerId, list) {
         const c = document.getElementById(containerId);
         if(!c) return;
@@ -929,7 +953,7 @@
         const box = document.getElementById('modalBoxContent');
         let list = getMyListItems();
         const isFav = list.some(i => i.id === id);
-        selectedModalSourceKey = 'kinohub';
+        selectedModalSourceKey = settings.defaultSource || 'kinohub';
 
         box.innerHTML = `
             <button class="modal-close-abs" tabindex="0" onclick="closeModal()">✕</button>
@@ -953,13 +977,21 @@
             </div>
             <div class="lampa-sources-pane">
                 <div class="lampa-sources-header">
-                    <span>Активный источник / Пинг</span>
+                    <span>Выбор источника (База)</span>
                     <span style="font-size:11px; color:#46d369;">🟢 Онлайн</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
-                    <div class="source-option-card selected" tabindex="0" onclick="selectModalSource(this, 'kinohub')">
+                    <div class="source-option-card ${selectedModalSourceKey==='kinohub'?'selected':''}" tabindex="0" onclick="selectModalSource(this, 'kinohub')">
                         <div><div class="source-info-title">🎬 Kinohub Search</div><div class="source-info-langs">Прямой поток</div></div>
                         <span class="server-ping ping-good">14ms</span>
+                    </div>
+                    <div class="source-option-card ${selectedModalSourceKey==='filmix'?'selected':''}" tabindex="0" onclick="selectModalSource(this, 'filmix')">
+                        <div><div class="source-info-title">🎥 Filmix</div><div class="source-info-langs">https://filmix.gg/</div></div>
+                        <span class="server-ping ping-good">22ms</span>
+                    </div>
+                    <div class="source-option-card ${selectedModalSourceKey==='kinopub'?'selected':''}" tabindex="0" onclick="selectModalSource(this, 'kinopub')">
+                        <div><div class="source-info-title">🍿 KinoPub</div><div class="source-info-langs">https://ru3.kinopubz.top</div></div>
+                        <span class="server-ping ping-good">18ms</span>
                     </div>
                 </div>
             </div>
@@ -976,8 +1008,8 @@
 
     function startPlayFromModal(id, type) {
         closeModal();
-        settings.defaultSource = 'kinohub';
-        document.getElementById('playerSourceSelector').value = 'kinohub';
+        settings.defaultSource = selectedModalSourceKey;
+        document.getElementById('playerSourceSelector').value = selectedModalSourceKey;
         openPlayer(id, type);
     }
 
@@ -1007,7 +1039,7 @@
         activeMedia = { id, type, title: titleText, season: 1, episode: 1 };
 
         document.getElementById('playerMediaTitle').innerText = titleText;
-        document.getElementById('playerSourceSelector').value = 'kinohub';
+        document.getElementById('playerSourceSelector').value = settings.defaultSource || 'kinohub';
 
         updatePlayerFrame();
         document.getElementById('player-screen').style.display = 'flex';
@@ -1041,22 +1073,82 @@
 
     function updatePlayerFrame() {
         const frame = document.getElementById('player-frame');
+        const sourceVal = document.getElementById('playerSourceSelector').value;
         const { type, title, season, episode } = activeMedia;
 
-        let rawUrl = (type === 'tv') ? `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}&season=${season}&episode=${episode}` : `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}`;
+        let rawUrl = "";
+        if (sourceVal === 'filmix') {
+            rawUrl = `https://filmix.gg/index.php?do=search&subaction=search&story=${encodeURIComponent(title)}`;
+        } else if (sourceVal === 'kinopub') {
+            rawUrl = `https://ru3.kinopubz.top/search?q=${encodeURIComponent(title)}`;
+        } else {
+            rawUrl = (type === 'tv') ? `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}&season=${season}&episode=${episode}` : `https://on.kinohub.vip/search?query=${encodeURIComponent(title)}`;
+        }
+
         frame.src = rawUrl;
-        showToast('Плеер запущен через Kinohub');
+        showToast('Плеер запущен через источник: ' + sourceVal);
     }
 
     function closePlayer() {
         if(sleepTimerInterval) clearInterval(sleepTimerInterval);
         document.getElementById('player-frame').src = 'about:blank';
         document.getElementById('player-screen').style.display = 'none';
+        // Выключаем курсор при закрытии плеера
+        isCursorActive = false;
+        document.body.classList.remove('cursor-active');
     }
 
-    // УНИВЕРСАЛЬНЫЙ ПЕРЕХВАТЧИК ПУЛЬТА СМАРТ-ТВ И ДРЕЙФА ФОКУСА (D-PAD)
+    // ВИРТУАЛЬНЫЙ КУРСОР ДЛЯ ПУЛЬТА В ПЛЕЕРЕ
+    let isCursorActive = false;
+    let cursorX = window.innerWidth / 2;
+    let cursorY = window.innerHeight / 2;
+    const cursorSpeed = 25;
+
+    function toggleVirtualCursor() {
+        isCursorActive = !isCursorActive;
+        const btn = document.querySelector('.cursor-toggle-btn');
+        if (isCursorActive) {
+            document.body.classList.add('cursor-active');
+            if(btn) btn.classList.add('active');
+            showToast('Курсор мыши активирован! Управляйте стрелками пульта, OK для клика');
+            updateCursorPosition();
+        } else {
+            document.body.classList.remove('cursor-active');
+            if(btn) btn.classList.remove('active');
+            showToast('Курсор мыши скрыт');
+        }
+    }
+
+    function updateCursorPosition() {
+        const c = document.getElementById('virtual-cursor');
+        if(c) {
+            c.style.left = cursorX + 'px';
+            c.style.top = cursorY + 'px';
+        }
+    }
+
+    // УНИВЕРСАЛЬНЫЙ ПЕРЕХВАТЧИК ПУЛЬТА СМАРТ-ТВ И ДРЕЙФА ФОКУСА (D-PAD + ВИРТУАЛЬНЫЙ КУРСОР)
     window.addEventListener('keydown', function(event) {
-        // Поддержка кнопок ввода: Enter (13), Space (32), пульт OK/Select
+        if (isCursorActive) {
+            if (event.key === 'ArrowUp' || event.keyCode === 38) { cursorY = Math.max(0, cursorY - cursorSpeed); updateCursorPosition(); event.preventDefault(); return; }
+            if (event.key === 'ArrowDown' || event.keyCode === 40) { cursorY = Math.min(window.innerHeight, cursorY + cursorSpeed); updateCursorPosition(); event.preventDefault(); return; }
+            if (event.key === 'ArrowLeft' || event.keyCode === 37) { cursorX = Math.max(0, cursorX - cursorSpeed); updateCursorPosition(); event.preventDefault(); return; }
+            if (event.key === 'ArrowRight' || event.keyCode === 39) { cursorX = Math.min(window.innerWidth, cursorX + cursorSpeed); updateCursorPosition(); event.preventDefault(); return; }
+            
+            // Клик под виртуальным курсором по кнопке/элементу
+            if (event.keyCode === 13 || event.key === 'Enter' || event.keyCode === 32 || event.keyCode === 294 || event.keyCode === 4) {
+                const elem = document.elementFromPoint(cursorX, cursorY);
+                if (elem) {
+                    elem.click();
+                    let clickEvent = new MouseEvent('click', { clientX: cursorX, clientY: cursorY, bubbles: true });
+                    elem.dispatchEvent(clickEvent);
+                }
+                event.preventDefault();
+                return;
+            }
+        }
+
+        // Стандартная обработка кнопок ввода: Enter (13), Space (32), пульт OK/Select
         if (event.keyCode === 13 || event.key === 'Enter' || event.keyCode === 32 || event.keyCode === 294 || event.keyCode === 4) {
             const active = document.activeElement;
             if (active && typeof active.click === 'function') {
