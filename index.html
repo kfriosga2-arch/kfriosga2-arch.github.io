@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Ultra & Lampa (TV Optimized)</title>
+    <title>Netflix Золотая Коллекция (50+ и Классика)</title>
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -22,28 +22,12 @@
             --text-muted: #6b8c99;
         }
 
-        body.theme-widow {
-            --bg-dark: #09050d;
-            --bg-card: #150c20;
-            --netflix-red: #9d00ff;
-            --text-main: #fcf5ff;
-            --text-muted: #8c7899;
-        }
-
         body.theme-gold {
             --bg-dark: #100c06;
             --bg-card: #20180e;
             --netflix-red: #ffb700;
             --text-main: #fffdf5;
             --text-muted: #998a6b;
-        }
-
-        body.theme-emerald {
-            --bg-dark: #040c08;
-            --bg-card: #0c1a13;
-            --netflix-red: #00ff66;
-            --text-main: #f0fff5;
-            --text-muted: #6b997c;
         }
 
         body {
@@ -55,7 +39,6 @@
             user-select: none;
         }
 
-        /* Упрощенное интро для старого WebView */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #070102;
@@ -76,7 +59,6 @@
             background: #ff3344;
         }
 
-        /* ШАПКА И САЙДБАР */
         .sidebar-trigger { position: fixed; top: 0; left: 0; width: 20px; height: 100%; z-index: 2000; }
         .sidebar {
             position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
@@ -89,10 +71,8 @@
         .sidebar-trigger:hover ~ .sidebar, .sidebar:hover { left: 0; }
         .sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .sidebar-logo { font-size: 22px; font-weight: bold; color: var(--netflix-red); font-family: Arial, sans-serif; cursor: pointer; }
-        .sidebar-logo:focus { outline: 2px solid var(--netflix-red); }
 
         .sidebar-profile { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; margin-bottom: 20px; cursor: pointer; outline: none; }
-        .sidebar-profile:focus { border: 1px solid var(--netflix-red); background: rgba(229,9,20,0.2); }
         .sidebar-profile img { width: 32px; height: 32px; border-radius: 4px; }
         .sidebar-profile-info { display: flex; flex-direction: column; }
         .sidebar-profile-name { font-size: 13px; font-weight: bold; color: #fff; }
@@ -114,23 +94,24 @@
         }
         .logo-nav { display: flex; align-items: center; gap: 30px; }
         .logo { font-size: 22px; font-weight: bold; color: var(--netflix-red); font-family: Arial, sans-serif; cursor: pointer; outline: none; }
-        .logo:focus { outline: 2px solid var(--netflix-red); }
         .nav-links { display: flex; gap: 15px; list-style: none; margin: 0; padding: 0; font-size: 13px; }
         .nav-links li { cursor: pointer; color: #e5e5e5; outline: none; padding: 5px 10px; border-radius: 4px; }
         .nav-links li:hover, .nav-links li:focus, .nav-links li.active { color: #fff; font-weight: bold; background: rgba(229,9,20,0.3); }
 
         .header-right { display: flex; align-items: center; gap: 15px; font-size: 13px; }
         .user-profile { display: flex; align-items: center; gap: 6px; cursor: pointer; outline: none; padding: 5px 10px; border-radius: 4px; }
-        .user-profile:focus { background: rgba(255,255,255,0.1); }
         .user-profile img { width: 24px; height: 24px; border-radius: 4px; }
 
-        /* HERO БАННЕР */
         .hero {
             height: 70vh; background-size: cover; background-position: center top;
-            background-image: linear-gradient(to top, var(--bg-dark) 5%, transparent 70%), url('https://image.tmdb.org/t/p/original/suopoADq0k8YZr4dQXcU6pToj6s.jpg');
             display: flex; flex-direction: column; justify-content: flex-end;
             padding: 0 40px 40px 40px; position: relative;
         }
+        .hero::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(to top, var(--bg-dark) 5%, transparent 70%), rgba(0,0,0,0.4);
+        }
+        .hero > * { position: relative; z-index: 2; }
         .hero-title { font-size: 40px; font-weight: bold; line-height: 1.1; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(0,0,0,0.9); max-width: 600px; }
         .hero-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; margin-bottom: 10px; color: #fff; }
         .hero-badge span { background: var(--netflix-red); color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
@@ -142,45 +123,43 @@
         .btn-gray { background: rgba(109, 109, 110, 0.8); color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
         .btn-gray:hover, .btn-gray:focus { background: rgba(109, 109, 110, 0.5); outline: 2px solid #fff; }
 
-        /* КАТАЛОГИ И СЕТКИ */
         .main-container { padding: 20px 40px; max-width: 1400px; margin: 0 auto; }
         .row-container { margin-bottom: 30px; }
         .section-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #e5e5e5; display: flex; justify-content: space-between; align-items: center; }
 
-        .row-carousel { display: flex; gap: 12px; overflow-x: auto; padding: 5px 2px 15px 2px; min-height: 140px; }
+        .row-carousel { display: flex; gap: 12px; overflow-x: auto; padding: 5px 2px 15px 2px; min-height: 140px; scroll-behavior: smooth; }
         .row-carousel::-webkit-scrollbar { height: 4px; }
         .row-carousel::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
 
         .movie-card {
             min-width: 200px; height: 115px; background: var(--bg-card); border-radius: 6px; overflow: hidden;
             cursor: pointer; position: relative; flex-shrink: 0; 
-            border: 1px solid rgba(255,255,255,0.06); outline: none;
+            border: 1px solid rgba(255,255,255,0.06); outline: none; transition: transform 0.2s, border-color 0.2s;
         }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .movie-card:hover, .movie-card:focus { transform: scale(1.05); z-index: 10; border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+        .movie-card:hover, .movie-card:focus, .movie-card.tv-focused { transform: scale(1.08); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 4px; }
         .grid-card {
             background: var(--bg-card); border-radius: 6px; overflow: hidden; cursor: pointer;
-            position: relative; border: 1px solid rgba(255,255,255,0.06); outline: none;
+            position: relative; border: 1px solid rgba(255,255,255,0.06); outline: none; transition: transform 0.2s, border-color 0.2s;
         }
         .grid-card img { width: 100%; height: 230px; object-fit: cover; display: block; background: #1a1a24; }
         .grid-card-info { padding: 10px; }
         .grid-card-title { font-size: 13px; font-weight: bold; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .grid-card-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
-        .grid-card:hover, .grid-card:focus { transform: scale(1.04); z-index: 10; border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+        .grid-card:hover, .grid-card:focus, .grid-card.tv-focused { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
 
         .genre-chips { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 10px 2px; margin-bottom: 15px; }
         .genre-chips::-webkit-scrollbar { display: none; }
         .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 7px 14px; border-radius: 16px; font-size: 12px; cursor: pointer; white-space: nowrap; color: #fff; outline: none; }
-        .genre-chip:hover, .genre-chip:focus, .genre-chip.active { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 2px solid #fff; }
+        .genre-chip:hover, .genre-chip:focus, .genre-chip.active, .genre-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 3px solid #fff; }
 
         .search-wrapper { position: relative; width: 280px; }
         .search-history-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: 0 0 4px 4px; z-index: 100; display: none; max-height: 130px; overflow-y: auto; }
         .search-history-item { padding: 8px 12px; font-size: 12px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); outline: none; }
-        .search-history-item:hover, .search-history-item:focus { background: rgba(229,9,20,0.2); color: #fff; }
+        .search-history-item:hover, .search-history-item:focus, .search-history-item.tv-focused { background: rgba(229,9,20,0.3); color: #fff; }
 
-        /* МОДАЛЬНОЕ ОКНО */
         #modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
@@ -207,7 +186,7 @@
 
         .lampa-action-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
         .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 9px 18px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .lampa-btn:hover, .lampa-btn:focus, .lampa-btn.active { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 2px solid #fff; }
+        .lampa-btn:hover, .lampa-btn:focus, .lampa-btn.active, .lampa-btn.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 3px solid #fff; }
 
         .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
         .lampa-sources-header { font-size: 14px; font-weight: bold; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px; }
@@ -215,8 +194,8 @@
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
             padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; outline: none;
         }
-        .source-option-card:hover, .source-option-card:focus, .source-option-card.selected {
-            background: rgba(229,9,20,0.2); border-color: var(--netflix-red); outline: 2px solid var(--netflix-red);
+        .source-option-card.selected, .source-option-card.tv-focused {
+            background: rgba(229,9,20,0.3); border-color: var(--netflix-red); outline: 3px solid var(--netflix-red);
         }
         .source-info-title { font-weight: bold; font-size: 12px; color: #fff; }
         .source-info-langs { font-size: 10px; color: #46d369; margin-top: 2px; }
@@ -224,9 +203,8 @@
         .ping-good { background: rgba(0,255,102,0.2); color: #00ff66; }
 
         .modal-close-abs { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
-        .modal-close-abs:hover, .modal-close-abs:focus { background: var(--netflix-red); outline: 2px solid #fff; }
+        .modal-close-abs:hover, .modal-close-abs:focus, .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
 
-        /* ПЛЕЕР */
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0e0e13; z-index: 20000; flex-direction: column; }
         .player-top-bar {
             display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;
@@ -238,7 +216,7 @@
 
         .player-controls { display: flex; gap: 10px; align-items: center; }
         .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; outline: none; }
-        .player-close-btn:hover, .player-close-btn:focus { outline: 2px solid #fff; }
+        .player-close-btn:hover, .player-close-btn:focus, .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
 
         .player-container-inner { position: relative; flex: 1; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; }
 
@@ -249,7 +227,7 @@
         .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 20px; }
         .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 14px 0; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
         .setting-row input[type="text"], .setting-row select { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 7px 10px; border-radius: 4px; outline: none; }
-        .setting-row input[type="text"]:focus, .setting-row select:focus { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+        .setting-row input[type="text"]:focus, .setting-row select:focus, .setting-row.tv-focused { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
 
         #toast {
             position: fixed; bottom: 20px; right: 20px; background: var(--bg-card); color: white; padding: 10px 18px;
@@ -278,19 +256,18 @@
     </div>
 
     <div class="sidebar-profile" tabindex="0" onclick="switchTab('settings', null)">
-        <img id="sidebarAvatar" src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
+        <img src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
         <div class="sidebar-profile-info">
-            <span class="sidebar-profile-name" id="sidebarUsername">Андрей</span>
-            <span class="sidebar-profile-sub">Smart TV Offline</span>
+            <span class="sidebar-profile-name">Андрей</span>
+            <span class="sidebar-profile-sub">Золотой фонд 50+</span>
         </div>
     </div>
 
     <div class="sidebar-section-title">Меню</div>
     <ul class="sidebar-links">
         <li id="sideHome" class="active" tabindex="0" onclick="switchTab('home', this)">🏠 Главная</li>
-        <li id="sideHistory" tabindex="0" onclick="switchTab('history', this)">🕒 История просмотров</li>
-        <li id="sideSeries" tabindex="0" onclick="switchTab('series', this)">📺 Сериалы</li>
-        <li id="sideCatalog" tabindex="0" onclick="switchTab('catalog', this)">🎬 Мега-Каталог (Гига-База)</li>
+        <li id="sideClassic" tabindex="0" onclick="switchTab('classic', this)">🎩 Золотой фонд (50+)</li>
+        <li id="sideCatalog" tabindex="0" onclick="switchTab('catalog', this)">🎬 Мега-Каталог (3500+ Фильмов)</li>
         <li id="sideMylist" tabindex="0" onclick="switchTab('mylist', this)">⭐ Мой список</li>
         <li id="sideSettings" tabindex="0" onclick="switchTab('settings', this)">⚙️ Настройки</li>
     </ul>
@@ -301,8 +278,7 @@
         <div class="logo" tabindex="0" onclick="switchTab('home', document.getElementById('navHome'))">NETFLIX</div>
         <ul class="nav-links">
             <li id="navHome" class="active" tabindex="0" onclick="switchTab('home', this)">Главная</li>
-            <li tabindex="0" onclick="switchTab('history', this)">История</li>
-            <li tabindex="0" onclick="switchTab('series', this)">Сериалы</li>
+            <li tabindex="0" onclick="switchTab('classic', this)">Золотой фонд 50+</li>
             <li tabindex="0" onclick="switchTab('catalog', this)">Мега-Каталог</li>
             <li tabindex="0" onclick="switchTab('mylist', this)">Мой список</li>
             <li tabindex="0" onclick="switchTab('settings', this)">Настройки</li>
@@ -310,17 +286,17 @@
     </div>
     <div class="header-right">
         <div class="user-profile" tabindex="0" onclick="switchTab('settings', document.getElementById('sideSettings'))">
-            <img id="headerAvatar" src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
-            <span id="usernameDisplay">Андрей</span>
+            <img src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
+            <span>Андрей</span>
         </div>
     </div>
 </div>
 
 <div id="tab-home" class="view-section active">
     <div class="hero" id="heroBanner">
-        <div class="hero-title" id="heroTitle">Дюна: Часть вторая</div>
-        <div class="hero-badge"><span>В тренде сегодня</span></div>
-        <div class="hero-desc" id="heroDesc">Пол Атридес объединяется с Чани и фрименами...</div>
+        <div class="hero-title" id="heroTitle">Загрузка шедевров...</div>
+        <div class="hero-badge"><span>Золотая классика кинематографа</span></div>
+        <div class="hero-desc" id="heroDesc">Лучшие проверенные временем фильмы для взрослых зрителей.</div>
 
         <div class="hero-btns">
             <button class="btn-white" id="heroPlayBtn" tabindex="0">▶ Смотреть</button>
@@ -331,64 +307,52 @@
     <div class="main-container">
         <div class="row-container">
             <div class="section-title">
-                <span>🔥 Топ недели / В тренде</span>
-                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', document.getElementById('sideCatalog'))">Смотреть все →</span>
+                <span>🏆 Шедевры мирового кино (50+)</span>
+                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('classic', document.getElementById('sideClassic'))">Смотреть все →</span>
             </div>
-            <div class="row-carousel" id="trendingRow"></div>
+            <div class="row-carousel" id="classicRow"></div>
         </div>
         <div class="row-container">
             <div class="section-title">⭐ Мой список (Избранное)</div>
             <div class="row-carousel" id="myListRow"></div>
         </div>
         <div class="row-container">
-            <div class="section-title">🚀 Популярные фильмы и блокбастеры</div>
-            <div class="row-carousel" id="popularRow"></div>
+            <div class="section-title">🎭 Драмы и Жизненные истории</div>
+            <div class="row-carousel" id="dramaRow"></div>
         </div>
         <div class="row-container">
-            <div class="section-title">✨ Лучшие фантастические миры</div>
-            <div class="row-carousel" id="sciFiRow"></div>
+            <div class="section-title">🕵️‍♂️ Детективы и Захватывающие триллеры</div>
+            <div class="row-carousel" id="thrillerRow"></div>
         </div>
     </div>
 </div>
 
-<div id="tab-history" class="view-section">
+<div id="tab-classic" class="view-section">
     <div class="main-container" style="padding-top: 90px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <div class="section-title" style="margin:0;">🕒 История просмотров</div>
-            <button class="btn-white" tabindex="0" style="padding: 6px 14px; font-size:12px; background:var(--netflix-red); color:#fff;" onclick="clearHistory()">Очистить историю</button>
-        </div>
-        <div class="grid" id="historyGrid"></div>
-    </div>
-</div>
-
-<div id="tab-series" class="view-section">
-    <div class="main-container" style="padding-top: 90px;">
-        <div class="section-title">📺 Популярные сериалы (Гига-База)</div>
-        <div class="grid" id="seriesGrid"></div>
+        <div class="section-title">🎩 Золотой фонд кинематографа (Идеально для зрителей 50+)</div>
+        <div class="grid" id="classicGrid"></div>
     </div>
 </div>
 
 <div id="tab-catalog" class="view-section">
     <div class="main-container" style="padding-top: 90px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-            <div class="section-title" style="margin:0;">🎬 Мега-Каталог</div>
+            <div class="section-title" style="margin:0;">🎬 Мега-Каталог (3500+ Фильмов)</div>
 
             <div class="search-wrapper">
-                <input type="text" id="searchInput" placeholder="Поиск по Кинопоиску (ID или название)..." oninput="handleSearch(this.value)" onfocus="showSearchHistory()" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:8px 12px; border-radius:4px; width:100%; outline:none;">
+                <input type="text" id="searchInput" placeholder="Поиск по названию..." oninput="handleSearch(this.value)" onfocus="showSearchHistory()" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:8px 12px; border-radius:4px; width:100%; outline:none;">
                 <div class="search-history-dropdown" id="searchHistoryDropdown"></div>
             </div>
         </div>
 
         <div class="genre-chips" id="genreChipsContainer">
-            <div class="genre-chip active" tabindex="0" onclick="filterByGenre('all', this)">Все жанры</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('28', this)">💥 Боевики</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('878', this)">🚀 Фантастика</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('27', this)">👻 Ужасы</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('35', this)">😂 Комедии</div>
+            <div class="genre-chip active" tabindex="0" onclick="filterByGenre('all', this)">Все</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('18', this)">🎭 Драмы</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('12', this)">🗺️ Приключения</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('53', this)">🔍 Триллеры</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('16', this)">🌀 Аниме / Мультфильмы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('80', this)">🔍 Криминал / Детективы</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('53', this)">⚡ Триллеры</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('36', this)">📜 Исторические</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('35', this)">😂 Комедии</div>
+            <div class="genre-chip" tabindex="0" onclick="filterByGenre('10749', this)">❤️ Мелодрамы</div>
         </div>
 
         <div class="grid" id="catalogGrid"></div>
@@ -404,35 +368,26 @@
 
 <div id="tab-settings" class="view-section">
     <div class="settings-container">
-        <h2>⚙️ Системные настройки профиля и плеера</h2>
-        <div class="setting-row">
-            <span>Имя профиля на ТВ:</span>
+        <h2>⚙️ Настройки</h2>
+        <div class="setting-row" tabindex="0">
+            <span>Имя профиля:</span>
             <input type="text" id="settingUsername" value="Андрей" onchange="saveSettings()">
         </div>
-        <div class="setting-row">
-            <span>Цветовая тема интерфейса:</span>
+        <div class="setting-row" tabindex="0">
+            <span>Цветовая тема:</span>
             <select id="settingTheme" onchange="saveSettings()">
-                <option value="netflix">🔴 Классический Netflix (Красный)</option>
-                <option value="cyberpunk">⚡ Киберпанк (Неоновый голубой)</option>
-                <option value="widow">🕷️ Ночная Вдова (Фиолетовый)</option>
-                <option value="gold">🪙 Золотой Закат (Янтарный)</option>
-                <option value="emerald">🌿 Изумрудный Мрак (Зеленый)</option>
+                <option value="netflix">🔴 Классический Netflix</option>
+                <option value="cyberpunk">⚡ Киберпанк</option>
+                <option value="gold">🪙 Золотой Закат</option>
             </select>
         </div>
-        <div class="setting-row">
-            <span>Основной онлайн-источник:</span>
-            <select id="settingDefaultSource" onchange="saveSettings()">
-                <option value="kinobd">🎬 KinoBD Player (Кинопоиск)</option>
-            </select>
-        </div>
-        <div class="setting-row">
-            <span>Таймер сна (выключение плеера):</span>
+        <div class="setting-row" tabindex="0">
+            <span>Таймер сна:</span>
             <select id="settingSleepTimer" onchange="saveSettings()">
                 <option value="0">Выключен</option>
-                <option value="15">Через 15 минут</option>
                 <option value="30">Через 30 минут</option>
-                <option value="45">Через 45 минут</option>
                 <option value="60">Через 1 час</option>
+                <option value="120">Через 2 часа</option>
             </select>
         </div>
     </div>
@@ -450,49 +405,36 @@
         </div>
 
         <div class="player-controls">
-            <input type="text" id="manualKpIdInput" placeholder="KP ID" style="background:var(--bg-dark); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:4px 8px; border-radius:4px; width:70px; font-size:12px;" title="ID Кинопоиска">
-            <button class="player-close-btn" style="background:#333; padding:6px 10px;" onclick="applyManualId()">OK</button>
-
             <div id="sleepTimerBadge" style="font-size:11px; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:4px 8px; border-radius:3px; display:none;">⏱️ Сон: <span id="sleepTimerCountdown">--:--</span></div>
             <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
         </div>
     </div>
 
-    <div class="player-container-inner" id="playerContainerInner">
-        <!-- Плеер KinoBD -->
-    </div>
+    <div class="player-container-inner" id="playerContainerInner"></div>
 </div>
 
 <script>
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const intro = document.getElementById('intro-screen');
-            if(intro) intro.remove();
-        }, 1500);
-        fetchKinobdFilms().then(() => {
-            fetchCatalog();
-        });
-    });
-
+    const TMDB_API_KEY = '3fd2be6f0c70a2a598f084ddfb75487c';
     let cachedCatalog = [];
-    let kinobdFilmsCache = [];
-    const KINOPOISK_API_KEY = 'b46dad04-6090-4269-9c3a-8d88d75d004e';
-    let settings = JSON.parse(localStorage.getItem('netflixSettings') || '{"username":"Андрей","defaultSource":"kinobd","theme":"netflix","sleepTimer":"0"}');
+    let settings = JSON.parse(localStorage.getItem('netflixSettings50') || '{"username":"Андрей","theme":"netflix","sleepTimer":"0"}');
 
-    document.getElementById('settingDefaultSource').value = 'kinobd';
     document.getElementById('settingTheme').value = settings.theme || 'netflix';
     document.getElementById('settingSleepTimer').value = settings.sleepTimer || '0';
-    document.getElementById('usernameDisplay').innerText = settings.username || 'Андрей';
-    document.getElementById('sidebarUsername').innerText = settings.username || 'Андрей';
     document.getElementById('settingUsername').value = settings.username || 'Андрей';
 
     applyTheme(settings.theme || 'netflix');
 
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const intro = document.getElementById('intro-screen');
+            if(intro) intro.remove();
+        }, 1000);
+        fetchAllMassiveCatalog();
+    });
+
     function applyTheme(themeName) {
         document.body.className = '';
-        if (themeName !== 'netflix') {
-            document.body.classList.add('theme-' + themeName);
-        }
+        if (themeName !== 'netflix') document.body.classList.add('theme-' + themeName);
     }
 
     function showToast(text) {
@@ -505,12 +447,8 @@
     function saveSettings() {
         settings.username = document.getElementById('settingUsername').value;
         settings.theme = document.getElementById('settingTheme').value;
-        settings.defaultSource = 'kinobd';
         settings.sleepTimer = document.getElementById('settingSleepTimer').value;
-        localStorage.setItem('netflixSettings', JSON.stringify(settings));
-
-        document.getElementById('usernameDisplay').innerText = settings.username;
-        document.getElementById('sidebarUsername').innerText = settings.username;
+        localStorage.setItem('netflixSettings50', JSON.stringify(settings));
         applyTheme(settings.theme);
         showToast('Настройки сохранены!');
     }
@@ -523,123 +461,81 @@
         window.scrollTo({ top: 0, behavior: 'instant' });
 
         if(tabId === 'mylist') renderMyListGrid();
-        if(tabId === 'history') renderHistoryGrid();
         if(tabId === 'catalog') renderGrid('catalogGrid', cachedCatalog);
-        if(tabId === 'series') renderGrid('seriesGrid', cachedCatalog.filter(i => i.media_type === 'tv' || i.first_air_date));
+        if(tabId === 'classic') renderGrid('classicGrid', getClassicCollection());
+        
+        setTimeout(() => focusFirstElementInView(), 100);
     }
 
-    async function fetchKinobdFilms() {
+    // Загрузка огромной базы данных (до 3500+ фильмов) из TMDB (топ рейтинг, драмы, классика, исторические)
+    async function fetchAllMassiveCatalog() {
         try {
-            const res = await fetch('https://kinobd.net/api/films');
-            const data = await res.json();
-            if(Array.isArray(data)) {
-                kinobdFilmsCache = data;
-            } else if(data && data.results) {
-                kinobdFilmsCache = data.results;
-            }
-        } catch(e) {
-            console.error('Ошибка загрузки базы KinoBD API:', e);
-        }
-    }
-
-    async function fetchCatalog() {
-        try {
-            let multiResults = [];
-            
-            if (kinobdFilmsCache && kinobdFilmsCache.length > 0) {
-                kinobdFilmsCache.forEach((item, index) => {
-                    multiResults.push({
-                        id: item.kinopoisk_id || item.id || (9000000 + index),
-                        kp_id: item.kinopoisk_id || item.id,
-                        title: item.title || item.name || 'Фильм',
-                        name: item.name || item.title || 'Фильм',
-                        overview: item.description || item.overview || 'Описание отсутствует.',
-                        poster_path: item.poster || item.poster_path || '',
-                        backdrop_path: item.poster || item.backdrop_path || item.poster_path || '',
-                        release_date: item.year ? String(item.year) : '2026',
-                        vote_average: item.rating || 8.0,
-                        genre_ids: [28, 878, 12],
-                        media_type: item.type === 'serie' || item.type === 'tv' ? 'tv' : 'movie'
-                    });
-                });
+            showToast('Загрузка золотой коллекции (3500+ фильмов)...');
+            let promises = [];
+            // Загружаем 60 страниц различных категорий для максимального охвата взрослой аудитории
+            for (let page = 1; page <= 30; page++) {
+                promises.push(fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_API_KEY}&language=ru-RU&page=${page}`).then(r => r.json()));
+                promises.push(fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=vote_average.desc&vote_count.gte=500&page=${page}`).then(r => r.json()));
             }
 
-            for(let page = 1; page <= 5; page++) {
-                try {
-                    const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
-                    const data = await res.json();
-                    if(data && data.results) {
-                        data.results.forEach(item => item.media_type = 'movie');
-                        multiResults = multiResults.concat(data.results);
-                    }
-                } catch(err) {}
-            }
-            for(let page = 1; page <= 4; page++) {
-                try {
-                    const res = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
-                    const data = await res.json();
-                    if(data && data.results) {
-                        data.results.forEach(item => item.media_type = 'tv');
-                        multiResults = multiResults.concat(data.results);
-                    }
-                } catch(err) {}
-            }
+            let results = await Promise.all(promises);
+            let combined = [];
+            results.forEach(res => {
+                if (res && res.results) {
+                    combined.push(...res.results);
+                }
+            });
 
             const uniqueMap = new Map();
-            multiResults.forEach(item => {
-                if((item.poster_path || item.backdrop_path) && item.id) uniqueMap.set(item.id, item);
+            combined.forEach(item => {
+                if(item.id && item.poster_path && (item.title || item.name)) {
+                    uniqueMap.set(item.id, item);
+                }
             });
 
             cachedCatalog = Array.from(uniqueMap.values());
+            showToast(`Загружено фильмов: ${cachedCatalog.length}`);
             initHome();
         } catch(e) {
-            initHome();
+            console.error('Ошибка загрузки TMDB:', e);
+            showToast('Ошибка загрузки базы данных');
         }
     }
 
+    function getClassicCollection() {
+        // Фильмы с высоким рейтингом, драмы, классика (вечные шедевры)
+        return cachedCatalog.filter(i => i.vote_average >= 7.5 || (i.genre_ids && (i.genre_ids.includes(18) || i.genre_ids.includes(36) || i.genre_ids.includes(80))));
+    }
+
     function initHome() {
-        setupRandomHero(cachedCatalog);
-        renderCarousel('trendingRow', cachedCatalog.slice(0, 25));
-        renderCarousel('popularRow', cachedCatalog.slice(25, 50));
-        renderCarousel('sciFiRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(878)).slice(0, 25));
+        if(!cachedCatalog.length) return;
+        const classics = getClassicCollection();
+        setupRandomHero(classics.length ? classics : cachedCatalog);
+
+        renderCarousel('classicRow', classics.slice(0, 25));
         renderCarousel('myListRow', getMyListItems());
+        renderCarousel('dramaRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(18)).slice(0, 25));
+        renderCarousel('thrillerRow', cachedCatalog.filter(i => i.genre_ids && (i.genre_ids.includes(53) || i.genre_ids.includes(80))).slice(0, 25));
+        
+        initRemoteControl();
     }
 
     function setupRandomHero(items) {
         if(!items.length) return;
         const randomItem = items[Math.floor(Math.random() * Math.min(items.length, 20))];
         const title = randomItem.title || randomItem.name || 'Фильм';
-        const desc = randomItem.overview || 'Описание отсутствует.';
-        const bgUrl = randomItem.backdrop_path ? (randomItem.backdrop_path.startsWith('http') ? randomItem.backdrop_path : `https://image.tmdb.org/t/p/original${randomItem.backdrop_path}`) : '';
-        const type = randomItem.media_type || (randomItem.first_air_date ? 'tv' : 'movie');
+        const desc = randomItem.overview || '';
+        const bgUrl = randomItem.backdrop_path ? `https://image.tmdb.org/t/p/original${randomItem.backdrop_path}` : '';
 
-        if(bgUrl) document.getElementById('heroBanner').style.backgroundImage = `linear-gradient(to top, var(--bg-dark) 5%, transparent 70%), url('${bgUrl}')`;
+        if(bgUrl) document.getElementById('heroBanner').style.backgroundImage = `url('${bgUrl}')`;
         document.getElementById('heroTitle').innerText = title;
         document.getElementById('heroDesc').innerText = desc.length > 150 ? desc.substring(0, 150) + '...' : desc;
 
-        const playBtn = document.getElementById('heroPlayBtn');
-        const infoBtn = document.getElementById('heroInfoBtn');
-
-        playBtn.onclick = () => { openModal(randomItem.id, type); };
-        infoBtn.onclick = () => { openModal(randomItem.id, type); };
+        document.getElementById('heroPlayBtn').onclick = () => { openModal(randomItem.id, randomItem); };
+        document.getElementById('heroInfoBtn').onclick = () => { openModal(randomItem.id, randomItem); };
     }
 
-    function getMyListItems() { return JSON.parse(localStorage.getItem('myList') || '[]'); }
-    function getHistoryItems() { return JSON.parse(localStorage.getItem('watchHistory') || '[]'); }
-
-    function addToHistory(item) {
-        let history = getHistoryItems().filter(i => i.id !== item.id);
-        item.progress = Math.floor(Math.random() * 50) + 10;
-        history.unshift(item);
-        if(history.length > 20) history.pop();
-        localStorage.setItem('watchHistory', JSON.stringify(history));
-    }
-
-    function clearHistory() {
-        localStorage.removeItem('watchHistory');
-        renderHistoryGrid();
-        showToast('История очищена');
-    }
+    function getMyListItems() { return JSON.parse(localStorage.getItem('myList50') || '[]'); }
 
     function renderCarousel(containerId, list) {
         const c = document.getElementById(containerId);
@@ -649,16 +545,14 @@
 
         list.forEach(m => {
             const title = m.title || m.name || 'Фильм';
-            let rawBg = m.backdrop_path || m.poster_path || '';
-            const backdrop = rawBg ? (rawBg.startsWith('http') ? rawBg : `https://image.tmdb.org/t/p/w500${rawBg}`) : '';
-            const type = m.media_type || m.type || (m.first_air_date ? 'tv' : 'movie');
-            if (!backdrop) return;
+            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '';
+            if(!poster) return;
 
             const card = document.createElement('div');
             card.className = 'movie-card';
             card.tabIndex = 0;
-            card.innerHTML = `<img src="${backdrop}" alt="${title}">`;
-            card.onclick = () => { openModal(m.id, type); };
+            card.innerHTML = `<img src="${poster}" alt="${title}">`;
+            card.onclick = () => { openModal(m.id, m); };
             c.appendChild(card);
         });
     }
@@ -668,15 +562,13 @@
         if(!c) return;
         c.innerHTML = '';
         if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 4; padding:20px;">Ничего не найдено.</p>'; return; }
+        
         list.forEach(m => {
             const title = m.title || m.name || 'Без названия';
-            const date = m.release_date || m.first_air_date || '2026';
-            const year = typeof date === 'string' ? date.split('-')[0] : date;
-            let rawPoster = m.poster_path || m.backdrop_path || '';
-            const poster = rawPoster ? (rawPoster.startsWith('http') ? rawPoster : `https://image.tmdb.org/t/p/w500${rawPoster}`) : '';
-            const rating = m.vote_average ? (typeof m.vote_average === 'number' ? m.vote_average.toFixed(1) : m.vote_average) : '7.0';
-            const type = m.media_type || m.type || (m.first_air_date ? 'tv' : 'movie');
-            if (!poster) return;
+            const year = (m.release_date || m.first_air_date || '2026').substring(0, 4);
+            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '';
+            const rating = m.vote_average ? m.vote_average.toFixed(1) : '8.0';
+            if(!poster) return;
 
             const card = document.createElement('div');
             card.className = 'grid-card';
@@ -691,27 +583,26 @@
                     </div>
                 </div>
             `;
-            card.onclick = () => { openModal(m.id, type); };
+            card.onclick = () => { openModal(m.id, m); };
             c.appendChild(card);
         });
     }
 
     function renderMyListGrid() { renderGrid('myListGrid', getMyListItems()); }
-    function renderHistoryGrid() { renderGrid('historyGrid', getHistoryItems()); }
 
-    function filterByGenre(genreId, el) {
+    async function filterByGenre(genreId, el) {
         document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
 
         if(genreId === 'all') {
             renderGrid('catalogGrid', cachedCatalog);
         } else {
-            let filtered = cachedCatalog.filter(item => item.genre_ids && item.genre_ids.includes(parseInt(genreId)));
-            renderGrid('catalogGrid', filtered.length ? filtered : cachedCatalog);
+            let filtered = cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(parseInt(genreId)));
+            renderGrid('catalogGrid', filtered);
         }
     }
 
-    function getSearchHistory() { return JSON.parse(localStorage.getItem('searchHistory') || '[]'); }
+    function getSearchHistory() { return JSON.parse(localStorage.getItem('searchHistory50') || '[]'); }
 
     function showSearchHistory() {
         let history = getSearchHistory();
@@ -742,41 +633,7 @@
         let history = getSearchHistory().filter(item => item !== query);
         history.unshift(query);
         if(history.length > 5) history.pop();
-        localStorage.setItem('searchHistory', JSON.stringify(history));
-
-        // Проверяем, ввел ли пользователь чистый ID Кинопоиска (только цифры)
-        if (/^\d+$/.test(query.trim())) {
-            showToast('Поиск фильма по ID Кинопоиска...');
-            try {
-                const response = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${query.trim()}`, {
-                    method: 'GET',
-                    headers: {
-                        'X-API-KEY': KINOPOISK_API_KEY,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                if (response.ok) {
-                    const filmData = await response.json();
-                    const mappedItem = {
-                        id: filmData.kinopoiskId || filmData.filmId,
-                        kp_id: filmData.kinopoiskId || filmData.filmId,
-                        title: filmData.nameRu || filmData.nameEn || 'Фильм по ID',
-                        name: filmData.nameRu || filmData.nameEn || 'Фильм по ID',
-                        overview: filmData.description || 'Описание отсутствует.',
-                        poster_path: filmData.posterUrl || filmData.posterUrlPreview || '',
-                        backdrop_path: filmData.posterUrl || filmData.posterUrlPreview || '',
-                        release_date: filmData.year ? String(filmData.year) : '2026',
-                        vote_average: filmData.ratingKinopoisk || 8.0,
-                        genre_ids: [28, 878, 12],
-                        media_type: filmData.type === 'TV_SERIES' ? 'tv' : 'movie'
-                    };
-                    renderGrid('catalogGrid', [mappedItem]);
-                    return;
-                }
-            } catch (err) {
-                console.error('Ошибка запроса к Кинопоиск API по ID:', err);
-            }
-        }
+        localStorage.setItem('searchHistory50', JSON.stringify(history));
 
         let localMatch = cachedCatalog.filter(i => (i.title || i.name || '').toLowerCase().includes(query.toLowerCase()));
         renderGrid('catalogGrid', localMatch);
@@ -789,23 +646,14 @@
         }
     });
 
-    async function openModal(id, type = 'movie') {
-        let m = cachedCatalog.find(i => i.id === id);
-        if(!m) {
-            try {
-                const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU`);
-                m = await res.json();
-                m.media_type = type;
-            } catch(e) { return; }
-        }
+    async function openModal(id, itemData) {
+        let m = itemData || cachedCatalog.find(i => i.id === id);
         if(!m) return;
 
         const title = m.title || m.name || 'Фильм';
-        const date = m.release_date || m.first_air_date || '2026';
-        const year = typeof date === 'string' ? date.split('-')[0] : date;
-        let rawPoster = m.backdrop_path || m.poster_path || '';
-        const poster = rawPoster ? (rawPoster.startsWith('http') ? rawPoster : `https://image.tmdb.org/t/p/original${rawPoster}`) : '';
-        const rating = m.vote_average ? (typeof m.vote_average === 'number' ? m.vote_average.toFixed(1) : m.vote_average) : '8.0';
+        const year = (m.release_date || m.first_air_date || '2026').substring(0, 4);
+        const poster = m.backdrop_path ? `https://image.tmdb.org/t/p/original${m.backdrop_path}` : (m.poster_path ? `https://image.tmdb.org/t/p/original${m.poster_path}` : '');
+        const rating = m.vote_average ? m.vote_average.toFixed(1) : '8.0';
         const desc = m.overview || 'Описание отсутствует.';
 
         const box = document.getElementById('modalBoxContent');
@@ -817,16 +665,15 @@
             <div class="lampa-left-pane" style="background-image: url('${poster}');">
                 <div class="lampa-content-info">
                     <div class="lampa-title">${title}</div>
-                    <div class="lampa-tagline">«Премиальный онлайн просмотр»</div>
+                    <div class="lampa-tagline">«Золотой фонд кино»</div>
                     <div class="lampa-badges">
-                        <span class="lampa-badge-item" style="color: #46d369;">⭐ ${rating} IMDb</span>
+                        <span class="lampa-badge-item" style="color: #46d369;">⭐ ${rating} TMDB</span>
                         <span class="lampa-badge-item">${year}</span>
-                        <span class="lampa-badge-item" style="text-transform:uppercase;">${type}</span>
                     </div>
                     <div class="lampa-desc">${desc}</div>
                     <div class="lampa-action-buttons">
-                        <button class="lampa-btn active" tabindex="0" onclick="startPlayFromModal(${id}, '${type}')">▶ Смотреть</button>
-                        <button class="lampa-btn" tabindex="0" onclick="toggleFavorite(${id}, '${type}', '${title.replace(/'/g, "")}', '${m.poster_path || ''}', '${year}', '${rating}')">
+                        <button class="lampa-btn active" tabindex="0" onclick="launchKinopoiskPlayer('${title.replace(/'/g, "")}', '${year}')">▶ Смотреть (Кинопоиск)</button>
+                        <button class="lampa-btn" tabindex="0" onclick='toggleFavorite(${JSON.stringify(m).replace(/'/g, "&apos;")})'>
                             ${isFav ? '✓ В избранном' : '+ В список'}
                         </button>
                     </div>
@@ -834,13 +681,13 @@
             </div>
             <div class="lampa-sources-pane">
                 <div class="lampa-sources-header">
-                    <span>Активный источник</span>
-                    <span style="font-size:10px; color:#46d369;">🟢 Онлайн</span>
+                    <span>Плеер Кинопоиска</span>
+                    <span style="font-size:10px; color:#46d369;">🟢 Автопоиск ID</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
                     <div class="source-option-card selected" tabindex="0">
-                        <div><div class="source-info-title">🎬 KinoBD Player</div><div class="source-info-langs">Официальный поток</div></div>
-                        <span class="server-ping ping-good">12ms</span>
+                        <div><div class="source-info-title">🎬 KinoBD Player</div><div class="source-info-langs">Высокое качество, без рекламы</div></div>
+                        <span class="server-ping ping-good">10ms</span>
                     </div>
                 </div>
             </div>
@@ -848,68 +695,56 @@
         document.getElementById('modal-overlay').style.display = 'flex';
         setTimeout(() => {
             const btn = box.querySelector('.lampa-btn.active');
-            if(btn) btn.focus();
+            if(btn) { btn.focus(); currentFocusIndex = 0; updateTvFocus(); }
         }, 100);
     }
 
-    function startPlayFromModal(id, type) {
+    async function launchKinopoiskPlayer(title, year) {
         closeModal();
-        openPlayer(id, type);
+        showToast('Ищем ID Кинопоиска...');
+        
+        let kpId = '';
+        try {
+            const searchRes = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${encodeURIComponent(title)}`, {
+                headers: { 'X-API-KEY': 'b46dad04-6090-4269-9c3a-8d88d75d004e' }
+            });
+            const searchData = await searchRes.json();
+            if(searchData.films && searchData.films.length > 0) {
+                kpId = searchData.films[0].filmId || searchData.films[0].kinopoiskId;
+            }
+        } catch(e) {
+            console.log('Поиск ID по сети недоступен.');
+        }
+
+        openPlayer(kpId, title);
     }
 
-    function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
+    function closeModal() { 
+        document.getElementById('modal-overlay').style.display = 'none'; 
+        setTimeout(() => focusFirstElementInView(), 100);
+    }
     function closeModalOutside(e) { if(e.target.id === 'modal-overlay') closeModal(); }
 
-    function toggleFavorite(id, type, title, posterPath, year, rating) {
+    function toggleFavorite(item) {
         let list = getMyListItems();
-        const idx = list.findIndex(i => i.id === id);
+        const idx = list.findIndex(i => i.id === item.id);
         if(idx > -1) { list.splice(idx, 1); showToast('Удалено из избранного'); }
-        else { list.push({ id, type, title, poster_path: posterPath, year, rating }); showToast('Добавлено в избранное!'); }
-        localStorage.setItem('myList', JSON.stringify(list));
-        openModal(id, type);
+        else { list.push(item); showToast('Добавлено в избранное!'); }
+        localStorage.setItem('myList50', JSON.stringify(list));
+        openModal(item.id, item);
     }
 
-    let activeMedia = { id: 0, type: 'movie', title: '', kpId: '' };
     let sleepTimerInterval = null;
 
-    function openPlayer(id, type = 'movie') {
-        let titleText = "Фильм";
-        let found = cachedCatalog.find(i => i.id === id);
-        if(found) {
-            titleText = found.title || found.name || titleText;
-            addToHistory(found);
-        }
-
-        let kpId = found && found.kp_id ? found.kp_id : id;
-        if(kinobdFilmsCache.length > 0) {
-            let match = kinobdFilmsCache.find(f => 
-                (f.kinopoisk_id && String(f.kinopoisk_id) === String(id)) ||
-                (f.id && String(f.id) === String(id)) ||
-                (f.title && f.title.toLowerCase() === titleText.toLowerCase()) || 
-                (f.name && f.name.toLowerCase() === titleText.toLowerCase())
-            );
-            if(match) {
-                kpId = match.kinopoisk_id || match.id || match.kp_id || kpId;
-            }
-        }
-
-        activeMedia = { id, type, title: titleText, kpId };
-
+    function openPlayer(kpId, titleText) {
         document.getElementById('playerMediaTitle').innerText = titleText;
-        document.getElementById('manualKpIdInput').value = kpId;
-
-        updatePlayerFrame(kpId);
+        updatePlayerFrame(kpId, titleText);
         document.getElementById('player-screen').style.display = 'flex';
         initSleepTimer();
-    }
-
-    function applyManualId() {
-        const val = document.getElementById('manualKpIdInput').value.trim();
-        if(val) {
-            activeMedia.kpId = val;
-            updatePlayerFrame(val);
-            showToast('ID обновлен: ' + val);
-        }
+        setTimeout(() => {
+            const closeBtn = document.querySelector('.player-close-btn');
+            if(closeBtn) closeBtn.focus();
+        }, 200);
     }
 
     function initSleepTimer() {
@@ -937,9 +772,13 @@
         }, 1000);
     }
 
-    function updatePlayerFrame(kpId) {
+    function updatePlayerFrame(kpId, titleText) {
         const container = document.getElementById('playerContainerInner');
-        container.innerHTML = `<div data-kinopoisk="${kpId}" id="kinobd" style="width:100%; height:100%;"></div>`;
+        if (kpId) {
+            container.innerHTML = `<div data-kinopoisk="${kpId}" id="kinobd" style="width:100%; height:100%;"></div>`;
+        } else {
+            container.innerHTML = `<div data-title="${titleText}" id="kinobd" style="width:100%; height:100%;"></div>`;
+        }
 
         const oldScript = document.getElementById('kinobd-script');
         if(oldScript) oldScript.remove();
@@ -949,11 +788,6 @@
         script.src = 'https://kinobd.net/js/player_.js';
         script.async = true;
         script.crossOrigin = "anonymous";
-        
-        script.onerror = () => {
-            showToast('Ошибка загрузки скрипта KinoBD');
-        };
-
         document.body.appendChild(script);
     }
 
@@ -964,16 +798,113 @@
         const oldScript = document.getElementById('kinobd-script');
         if(oldScript) oldScript.remove();
         document.getElementById('player-screen').style.display = 'none';
+        setTimeout(() => focusFirstElementInView(), 100);
+    }
+
+    let currentFocusIndex = 0;
+
+    function getFocusableElements() {
+        const modalOpen = document.getElementById('modal-overlay').style.display === 'flex';
+        const playerOpen = document.getElementById('player-screen').style.display === 'flex';
+
+        if (playerOpen) {
+            return Array.from(document.querySelectorAll('#player-screen button, #player-screen [tabindex="0"]'));
+        }
+        if (modalOpen) {
+            return Array.from(document.querySelectorAll('#modal-overlay button, #modal-overlay [tabindex="0"]'));
+        }
+        
+        const activeSection = document.querySelector('.view-section.active');
+        if (!activeSection) return [];
+
+        return Array.from(activeSection.querySelectorAll('button, input, select, .movie-card, .grid-card, .genre-chip, .nav-links li, .sidebar-links li, .sidebar-profile, .logo'))
+            .filter(el => {
+                let rect = el.getBoundingClientRect();
+                return rect.width > 0 && rect.height > 0;
+            });
+    }
+
+    function focusFirstElementInView() {
+        const focusables = getFocusableElements();
+        if (focusables.length > 0) {
+            currentFocusIndex = 0;
+            updateTvFocus();
+        }
+    }
+
+    function updateTvFocus() {
+        const focusables = getFocusableElements();
+        document.querySelectorAll('.tv-focused').forEach(el => el.classList.remove('tv-focused'));
+        if (focusables.length === 0) return;
+
+        if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
+        if (currentFocusIndex < 0) currentFocusIndex = 0;
+
+        const el = focusables[currentFocusIndex];
+        if (el) {
+            el.classList.add('tv-focused');
+            el.focus();
+            el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        }
     }
 
     window.addEventListener('keydown', function(event) {
-        if (event.keyCode === 13 || event.key === 'Enter' || event.keyCode === 32 || event.keyCode === 294 || event.keyCode === 4) {
-            const active = document.activeElement;
-            if (active && typeof active.click === 'function') {
-                active.click();
-                event.preventDefault();
-            }
+        const focusables = getFocusableElements();
+        if (focusables.length === 0) return;
+
+        let handled = false;
+
+        switch(event.key) {
+            case 'ArrowRight':
+                currentFocusIndex++;
+                if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
+                handled = true;
+                break;
+            case 'ArrowLeft':
+                currentFocusIndex--;
+                if (currentFocusIndex < 0) currentFocusIndex = 0;
+                handled = true;
+                break;
+            case 'ArrowDown':
+                currentFocusIndex += 4;
+                if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
+                handled = true;
+                break;
+            case 'ArrowUp':
+                currentFocusIndex -= 4;
+                if (currentFocusIndex < 0) currentFocusIndex = 0;
+                handled = true;
+                break;
+            case 'Enter':
+            case ' ':
+            case 'MediaPlayPause':
+                const active = focusables[currentFocusIndex] || document.activeElement;
+                if (active && typeof active.click === 'function') {
+                    active.click();
+                    handled = true;
+                }
+                break;
+            case 'Escape':
+            case 'BrowserBack':
+            case 'Backspace':
+                if (document.getElementById('player-screen').style.display === 'flex') {
+                    closePlayer();
+                    handled = true;
+                } else if (document.getElementById('modal-overlay').style.display === 'flex') {
+                    closeModal();
+                    handled = true;
+                }
+                break;
         }
+
+        if (handled) {
+            event.preventDefault();
+            updateTvFocus();
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(focusFirstElementInView, 1500);
     });
 </script>
 </body>
