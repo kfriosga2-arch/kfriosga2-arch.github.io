@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix Ultra & Lampa (TV Optimized)</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -13,7 +12,6 @@
             --bg-card: #16161f;
             --text-main: #ffffff;
             --text-muted: #8a8a9d;
-            --neon-glow: rgba(229, 9, 20, 0.6);
         }
 
         body.theme-cyberpunk {
@@ -22,7 +20,6 @@
             --netflix-red: #00f3ff;
             --text-main: #f0fbff;
             --text-muted: #6b8c99;
-            --neon-glow: rgba(0, 243, 255, 0.6);
         }
 
         body.theme-widow {
@@ -31,7 +28,6 @@
             --netflix-red: #9d00ff;
             --text-main: #fcf5ff;
             --text-muted: #8c7899;
-            --neon-glow: rgba(157, 0, 255, 0.6);
         }
 
         body.theme-gold {
@@ -40,7 +36,6 @@
             --netflix-red: #ffb700;
             --text-main: #fffdf5;
             --text-muted: #998a6b;
-            --neon-glow: rgba(255, 183, 0, 0.6);
         }
 
         body.theme-emerald {
@@ -49,7 +44,6 @@
             --netflix-red: #00ff66;
             --text-main: #f0fff5;
             --text-muted: #6b997c;
-            --neon-glow: rgba(0, 255, 102, 0.6);
         }
 
         body {
@@ -270,15 +264,6 @@
 </head>
 <body>
 
-<script>
-    const TELEGRAM_CONFIG = {
-        botToken: "8903629752:AAGqGjpb3l71iGRq1RHjmH1-4cTSJnkUcd4",
-        adminId: 1308505294,
-        secureMode: true
-    };
-    Object.freeze(TELEGRAM_CONFIG);
-</script>
-
 <div id="intro-screen">
     <div class="netflix-intro-container">
         <div class="n-bar left"></div>
@@ -299,7 +284,7 @@
         <img id="sidebarAvatar" src="https://i.imgur.com/3Z6K6y5.png" alt="Avatar">
         <div class="sidebar-profile-info">
             <span class="sidebar-profile-name" id="sidebarUsername">Андрей</span>
-            <span class="sidebar-profile-sub">Telegram Web App</span>
+            <span class="sidebar-profile-sub">Smart TV Offline</span>
         </div>
     </div>
 
@@ -422,9 +407,9 @@
 
 <div id="tab-settings" class="view-section">
     <div class="settings-container">
-        <h2>⚙️ Системные настройки профиля и Телеграм-бота</h2>
+        <h2>⚙️ Системные настройки профиля и плеера</h2>
         <div class="setting-row">
-            <span>Имя профиля (Telegram):</span>
+            <span>Имя профиля на ТВ:</span>
             <input type="text" id="settingUsername" value="Андрей" onchange="saveSettings()">
         </div>
         <div class="setting-row">
@@ -444,7 +429,7 @@
             </select>
         </div>
         <div class="setting-row">
-            <span>Таймер сна (выключение ТВ):</span>
+            <span>Таймер сна (выключение плеера):</span>
             <select id="settingSleepTimer" onchange="saveSettings()">
                 <option value="0">Выключен</option>
                 <option value="15">Через 15 минут</option>
@@ -482,57 +467,6 @@
 </div>
 
 <script>
-    let tg = window.Telegram?.WebApp;
-    if (tg) {
-        tg.expand();
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            let user = tg.initDataUnsafe.user;
-            document.getElementById('usernameDisplay').innerText = user.first_name || "Андрей";
-            document.getElementById('sidebarUsername').innerText = user.first_name || "Андрей";
-            document.getElementById('settingUsername').value = user.first_name || "Андрей";
-            if (user.photo_url) {
-                document.getElementById('headerAvatar').src = user.photo_url;
-                document.getElementById('sidebarAvatar').src = user.photo_url;
-            }
-        }
-    }
-
-    let lastUpdateId = 0;
-    async function pollTelegramBot() {
-        if (!TELEGRAM_CONFIG.botToken) return;
-        try {
-            let res = await fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/getUpdates?offset=${lastUpdateId + 1}&timeout=30`);
-            let data = await res.json();
-            if (data.ok && data.result) {
-                for (let update of data.result) {
-                    lastUpdateId = update.update_id;
-                    if (update.message && update.message.text) {
-                        let chatId = update.message.chat.id;
-                        let text = update.message.text.trim();
-                        if (text.startsWith('/start')) {
-                            await fetch(`https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    chat_id: chatId,
-                                    text: "🎬 Добро пожаловать в мега-каталог Netflix & Lampa TV!\nВаш телевизор и система управления успешно синхронизированы.",
-                                    reply_markup: {
-                                        inline_keyboard: [[
-                                            { text: "🖥️ Открыть интерфейс на ТВ", web_app: { url: window.location.href } }
-                                        ]]
-                                    }
-                                })
-                            });
-                            showToast("Бот в Telegram получил команду /start!");
-                        }
-                    }
-                }
-            }
-        } catch (e) {}
-        setTimeout(pollTelegramBot, 3000);
-    }
-    setTimeout(pollTelegramBot, 2000);
-
     window.addEventListener('load', () => {
         setTimeout(() => {
             const intro = document.getElementById('intro-screen');
@@ -546,6 +480,10 @@
     document.getElementById('settingDefaultSource').value = 'kinohub';
     document.getElementById('settingTheme').value = settings.theme || 'netflix';
     document.getElementById('settingSleepTimer').value = settings.sleepTimer || '0';
+    document.getElementById('usernameDisplay').innerText = settings.username || 'Андрей';
+    document.getElementById('sidebarUsername').innerText = settings.username || 'Андрей';
+    document.getElementById('settingUsername').value = settings.username || 'Андрей';
+
     applyTheme(settings.theme || 'netflix');
 
     function applyTheme(themeName) {
@@ -572,7 +510,7 @@
         document.getElementById('usernameDisplay').innerText = settings.username;
         document.getElementById('sidebarUsername').innerText = settings.username;
         applyTheme(settings.theme);
-        showToast('Настройки синхронизированы!');
+        showToast('Настройки сохранены!');
     }
 
     function switchTab(tabId, el) {
@@ -591,8 +529,7 @@
     async function fetchCatalog() {
         try {
             let multiResults = [];
-            // Оптимизированная загрузка страниц для стабильной работы на Android 9
-            for(let page = 1; page <= 15; page++) {
+            for(let page = 1; page <= 10; page++) {
                 try {
                     const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
                     const data = await res.json();
@@ -602,7 +539,7 @@
                     }
                 } catch(err) {}
             }
-            for(let page = 1; page <= 10; page++) {
+            for(let page = 1; page <= 8; page++) {
                 try {
                     const res = await fetch(`https://api.themoviedb.org/3/tv/popular?api_key=347651bac020bf3af616287e853b4e92&language=ru-RU&page=${page}`);
                     const data = await res.json();
@@ -837,7 +774,6 @@
             </div>
         `;
         document.getElementById('modal-overlay').style.display = 'flex';
-        // Фокус на кнопке воспроизведения для пульта
         setTimeout(() => {
             const btn = box.querySelector('.lampa-btn.active');
             if(btn) btn.focus();
@@ -922,7 +858,6 @@
         document.getElementById('player-screen').style.display = 'none';
     }
 
-    // УНИВЕРСАЛЬНЫЙ ПЕРЕХВАТЧИК ПУЛЬТА СМАРТ-ТВ
     window.addEventListener('keydown', function(event) {
         if (event.keyCode === 13 || event.key === 'Enter' || event.keyCode === 32 || event.keyCode === 294 || event.keyCode === 4) {
             const active = document.activeElement;
