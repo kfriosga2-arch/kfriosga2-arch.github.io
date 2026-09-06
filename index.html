@@ -248,21 +248,11 @@
             flex-grow: 1;
         }
         
-        .player-container-inner > div { 
-            width: 100% !important; 
-            height: 100% !important; 
-            max-width: 100% !important;
-            max-height: 100% !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            transform: none !important;
-        }
-        .player-container-inner iframe,
-        .player-container-inner object,
-        .player-container-inner embed {
+        .player-container-inner iframe {
             width: 100% !important;
             height: 100% !important;
+            border: none;
+            background: #000;
         }
 
         .view-section { display: none; }
@@ -538,7 +528,6 @@
     updateProfileUIElements();
     applyTheme(settings.theme || 'cyberpunk');
 
-    // Поддержка истории браузера для возврата назад по кнопке пультов
     window.addEventListener('popstate', (event) => {
         if (document.getElementById('player-screen').style.display === 'flex') {
             closePlayer();
@@ -675,9 +664,6 @@
         if (el) {
             el.classList.add('active');
         } else {
-            // Найти соответствующий элемент навигации по вкладке
-            const map = { 'home': 'navHome', 'catalog': 1, 'russian': 2, 'radio': 3, 'history': 4, 'mylist': 5, 'settings': 6 };
-            // Простейший поиск вкладки для подсветки
             const navItems = document.querySelectorAll('.nav-links li');
             navItems.forEach(item => {
                 if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabId)) {
@@ -1023,7 +1009,7 @@
     function launchDirectPlayer(item) {
         addToHistory(item);
         closeModal();
-        openPlayer(item.title || item.name || 'Фильм');
+        openPlayer(item.title || item.name || 'Фильм', item.id);
     }
 
     function closeModal() { 
@@ -1041,9 +1027,9 @@
         openModal(item.id, item);
     }
 
-    function openPlayer(titleText) {
+    function openPlayer(titleText, tmdbId) {
         document.getElementById('playerMediaTitle').innerText = titleText;
-        updatePlayerFrame(titleText);
+        updatePlayerFrame(titleText, tmdbId);
         document.getElementById('player-screen').style.display = 'flex';
 
         if (document.documentElement.requestFullscreen) {
@@ -1051,7 +1037,7 @@
         }
 
         setTimeout(() => {
-            const iframe = document.querySelector('#playerContainerInner iframe, #playerContainerInner div');
+            const iframe = document.querySelector('#playerContainerInner iframe');
             if(iframe) iframe.focus();
         }, 1200);
     }
@@ -1068,27 +1054,18 @@
         }
     }
 
-    function updatePlayerFrame(titleText) {
+    function updatePlayerFrame(titleText, tmdbId) {
         const container = document.getElementById('playerContainerInner');
         if (titleText.startsWith('Радіо:')) return;
         
-        container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" id="kinobd" style="width:100%; height:100%;" tabindex="0"></div>`;
-
-        const oldScript = document.getElementById('kinobd-script');
-        if(oldScript) oldScript.remove();
-
-        const script = document.createElement('script');
-        script.id = 'kinobd-script';
-        script.src = 'https://kinobd.net/js/player_.js';
-        script.async = true;
-        document.body.appendChild(script);
+        // Исправление: использование прямого iframe-запроса к KinoBD API для сохранения полной интерактивности плеера и перемотки
+        let iframeUrl = `https://kinobd.net/embed/${tmdbId}?token=ffa2d75dc51825a6735af4f120544d61`;
+        container.innerHTML = `<iframe src="${iframeUrl}" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" tabindex="0"></iframe>`;
     }
 
     function closePlayer() {
         const container = document.getElementById('playerContainerInner');
         container.innerHTML = '';
-        const oldScript = document.getElementById('kinobd-script');
-        if(oldScript) oldScript.remove();
         document.getElementById('player-screen').style.display = 'none';
 
         if (document.fullscreenElement && document.exitFullscreen) {
@@ -1155,7 +1132,7 @@
                 case 'ArrowRight':
                     currentFocusIndex++;
                     if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
-                    updateTvHeaderOrFocus(true);
+                    updateTvFocus(true);
                     handled = true;
                     break;
                 case 'ArrowLeft':
@@ -1212,7 +1189,6 @@
                 break;
             case 'Escape':
             case 'Backspace':
-                // Перехватываем кнопку «Назад» пульта для программного возврата назад, предотвращая выход из приложения
                 if (document.getElementById('modal-overlay').style.display === 'flex') { 
                     closeModal(); 
                     handled = true; 
@@ -1223,7 +1199,6 @@
                     switchTab('home', document.getElementById('navHome'));
                     handled = true;
                 } else {
-                    // Если на главной — генерируем имитацию программного возврата истории, блокируя закрытие WebView
                     history.back();
                     handled = true;
                 }
