@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Ультиматум (4500+ Фильмов и Сериалов)</title>
+    <title>Netflix Ультиматум (Оптимизирован для TV)</title>
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -15,7 +15,6 @@
             --bg-gradient: linear-gradient(135deg, #070709 0%, #12121a 100%);
         }
 
-        /* Темы оформления (живые анимации удалены для оптимизации) */
         body.theme-cyberpunk {
             --bg-dark: #050508;
             --bg-card: #0c0c16;
@@ -23,51 +22,6 @@
             --text-main: #f0fbff;
             --text-muted: #6b8c99;
             --bg-gradient: linear-gradient(120deg, #050508, #100520, #002233);
-        }
-
-        body.theme-gold {
-            --bg-dark: #100c06;
-            --bg-card: #20180e;
-            --netflix-red: #ffb700;
-            --text-main: #fffdf5;
-            --text-muted: #998a6b;
-            --bg-gradient: linear-gradient(120deg, #100c06, #2a1b05, #140d02);
-        }
-
-        body.theme-emerald {
-            --bg-dark: #04100c;
-            --bg-card: #0a1f18;
-            --netflix-red: #00ff88;
-            --text-main: #f0fff8;
-            --text-muted: #6b9986;
-            --bg-gradient: linear-gradient(120deg, #04100c, #02261a, #010f0a);
-        }
-
-        body.theme-amethyst {
-            --bg-dark: #0d0610;
-            --bg-card: #1a0c20;
-            --netflix-red: #d400ff;
-            --text-main: #fbf0ff;
-            --text-muted: #946b99;
-            --bg-gradient: linear-gradient(120deg, #0d0610, #240833, #0a0210);
-        }
-
-        body.theme-aurora {
-            --bg-dark: #020b14;
-            --bg-card: #07182b;
-            --netflix-red: #00ffcc;
-            --text-main: #e6ffff;
-            --text-muted: #6b9999;
-            --bg-gradient: linear-gradient(-45deg, #020b14, #05263b, #001a1a, #003326);
-        }
-
-        body.theme-fire {
-            --bg-dark: #140505;
-            --bg-card: #260a0a;
-            --netflix-red: #ff3300;
-            --text-main: #fff0f0;
-            --text-muted: #996b6b;
-            --bg-gradient: linear-gradient(135deg, #140505, #380d0d, #1a0303, #4d1a00);
         }
 
         body {
@@ -90,7 +44,6 @@
             font-size: 48px; font-weight: 900; color: #E50914; font-family: Arial, sans-serif; letter-spacing: 2px;
         }
 
-        /* Экран выбора профилей в стиле Netflix */
         #profile-selection-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark); z-index: 88888; display: none;
@@ -100,15 +53,14 @@
         .profiles-grid { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
         .profile-card {
             display: flex; flex-direction: column; align-items: center; cursor: pointer;
-            background: transparent; border: none; outline: none; padding: 10px; border-radius: 8px; transition: transform 0.2s;
+            background: transparent; border: none; outline: none; padding: 10px; border-radius: 8px;
         }
         .profile-avatar-wrap {
             width: 130px; height: 130px; border-radius: 8px; overflow: hidden;
-            border: 3px solid transparent; transition: border-color 0.2s, transform 0.2s;
-            background: #222;
+            border: 3px solid transparent; background: #222;
         }
         .profile-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-name { margin-top: 15px; font-size: 16px; color: var(--text-muted); font-weight: bold; transition: color 0.2s; }
+        .profile-name { margin-top: 15px; font-size: 16px; color: var(--text-muted); font-weight: bold; }
         
         .profile-card:hover .profile-avatar-wrap, .profile-card.tv-focused .profile-avatar-wrap {
             border-color: #fff; transform: scale(1.05);
@@ -117,20 +69,19 @@
 
         .header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 40px; background: rgba(14, 14, 19, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 40px; background: rgba(14, 14, 19, 0.95);
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
         }
         .logo-nav { display: flex; align-items: center; gap: 30px; }
         
         .logo { 
             font-size: 28px; font-weight: 900; color: var(--netflix-red); 
-            font-family: 'Arial Black', Arial, sans-serif; cursor: pointer; 
+            font-family: Arial, sans-serif; cursor: pointer; 
             outline: none; padding: 0; border: none; background: transparent; letter-spacing: 3px;
         }
-        .logo:hover { opacity: 0.8; }
         
         .nav-links { display: flex; gap: 12px; list-style: none; margin: 0; padding: 0; font-size: 13px; align-items: center; flex-wrap: wrap; }
-        .nav-links li { cursor: pointer; color: #e5e5e5; outline: none; padding: 5px 10px; border-radius: 4px; transition: background 0.2s; }
+        .nav-links li { cursor: pointer; color: #e5e5e5; outline: none; padding: 5px 10px; border-radius: 4px; }
         .nav-links li:hover, .nav-links li.active { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); }
         .nav-links li.tv-focused { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); outline: 3px solid #fff; }
 
@@ -142,7 +93,7 @@
         .user-profile img { width: 24px; height: 24px; border-radius: 4px; object-fit: cover; }
 
         .hero {
-            height: 70vh; background-size: cover; background-position: center top;
+            height: 60vh; background-size: cover; background-position: center top;
             display: flex; flex-direction: column; justify-content: flex-end;
             padding: 0 40px 40px 40px; position: relative;
         }
@@ -151,71 +102,67 @@
             background: linear-gradient(to top, var(--bg-dark) 5%, transparent 70%), rgba(0,0,0,0.4);
         }
         .hero > * { position: relative; z-index: 2; }
-        .hero-title { font-size: 40px; font-weight: bold; line-height: 1.1; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(0,0,0,0.9); max-width: 600px; }
+        .hero-title { font-size: 36px; font-weight: bold; line-height: 1.1; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(0,0,0,0.9); max-width: 600px; }
         .hero-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; margin-bottom: 10px; color: #fff; }
         .hero-badge span { background: var(--netflix-red); color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
-        .hero-desc { font-size: 13px; max-width: 500px; line-height: 1.4; color: #d1d1d1; margin-bottom: 12px; }
+        .hero-desc { font-size: 12px; max-width: 500px; line-height: 1.4; color: #d1d1d1; margin-bottom: 12px; }
 
         .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-white { background: white; color: black; border: none; padding: 10px 24px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .btn-white:hover, .btn-white.tv-focused { background: #e0e0e0; outline: 3px solid var(--netflix-red); box-shadow: 0 0 15px rgba(255,255,255,0.6); }
+        .btn-white { background: white; color: black; border: none; padding: 8px 20px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+        .btn-white:hover, .btn-white.tv-focused { background: #e0e0e0; outline: 3px solid var(--netflix-red); }
         
-        .btn-gray { background: rgba(109, 109, 110, 0.8); color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .btn-gray:hover, .btn-gray.tv-focused { background: rgba(109, 109, 110, 0.5); outline: 3px solid #fff; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
+        .btn-gray { background: rgba(109, 109, 110, 0.8); color: white; border: none; padding: 8px 16px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+        .btn-gray:hover, .btn-gray.tv-focused { background: rgba(109, 109, 110, 0.5); outline: 3px solid #fff; }
 
-        .btn-roulette { background: linear-gradient(135deg, #ff007b, var(--netflix-red)); color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .btn-roulette:hover, .btn-roulette.tv-focused { outline: 3px solid #fff; box-shadow: 0 0 15px rgba(255,0,123,0.6); }
+        .btn-roulette { background: linear-gradient(135deg, #ff007b, var(--netflix-red)); color: white; border: none; padding: 8px 16px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+        .btn-roulette:hover, .btn-roulette.tv-focused { outline: 3px solid #fff; }
 
         .main-container { padding: 20px 40px; max-width: 1400px; margin: 0 auto; }
-        .row-container { margin-bottom: 30px; }
-        .section-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #e5e5e5; display: flex; justify-content: space-between; align-items: center; }
+        .row-container { margin-bottom: 25px; }
+        .section-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #e5e5e5; display: flex; justify-content: space-between; align-items: center; }
 
-        .row-carousel { display: flex; gap: 12px; overflow-x: auto; padding: 5px 2px 15px 2px; min-height: 140px; scroll-behavior: smooth; }
-        .row-carousel::-webkit-scrollbar { height: 4px; }
+        .row-carousel { display: flex; gap: 10px; overflow-x: auto; padding: 5px 2px 10px 2px; min-height: 130px; scroll-behavior: smooth; }
+        .row-carousel::-webkit-scrollbar { height: 3px; }
         .row-carousel::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
 
         .movie-card {
-            min-width: 200px; height: 115px; background: var(--bg-card); border-radius: 6px; overflow: hidden;
+            min-width: 180px; height: 105px; background: var(--bg-card); border-radius: 6px; overflow: hidden;
             cursor: pointer; position: relative; flex-shrink: 0; 
-            border: 1px solid rgba(255,255,255,0.06); outline: none; transition: transform 0.2s, border-color 0.2s;
+            border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .movie-card:hover, .movie-card.tv-focused { transform: scale(1.08); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
+        .movie-card:hover, .movie-card.tv-focused { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 4px; }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 4px; }
         .grid-card {
             background: var(--bg-card); border-radius: 6px; overflow: hidden; cursor: pointer;
-            position: relative; border: 1px solid rgba(255,255,255,0.06); outline: none; transition: transform 0.2s, border-color 0.2s;
+            position: relative; border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
-        .grid-card img { width: 100%; height: 230px; object-fit: cover; display: block; background: #1a1a24; }
-        .grid-card-info { padding: 10px; }
-        .grid-card-title { font-size: 13px; font-weight: bold; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .grid-card-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
-        .grid-card:hover, .grid-card.tv-focused { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); box-shadow: 0 8px 20px rgba(229,9,20,0.4); }
+        .grid-card img { width: 100%; height: 200px; object-fit: cover; display: block; background: #1a1a24; }
+        .grid-card-info { padding: 8px; }
+        .grid-card-title { font-size: 12px; font-weight: bold; margin: 0 0 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .grid-card-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); }
+        .grid-card:hover, .grid-card.tv-focused { transform: scale(1.04); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
 
-        .genre-chips { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 10px 2px; margin-bottom: 15px; }
+        .genre-chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px 10px 2px; margin-bottom: 12px; }
         .genre-chips::-webkit-scrollbar { display: none; }
-        .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 7px 14px; border-radius: 16px; font-size: 12px; cursor: pointer; white-space: nowrap; color: #fff; outline: none; }
-        .genre-chip:hover, .genre-chip.active, .genre-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 3px solid #fff; }
+        .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 14px; font-size: 11px; cursor: pointer; white-space: nowrap; color: #fff; outline: none; }
+        .genre-chip:hover, .genre-chip.active, .genre-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 2px solid #fff; }
 
-        .search-wrapper { position: relative; width: 280px; }
+        .search-wrapper { position: relative; width: 250px; }
         .search-wrapper input.tv-focused { border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
-        .search-history-dropdown { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); border-radius: 0 0 4px 4px; z-index: 100; display: none; max-height: 130px; overflow-y: auto; }
-        .search-history-item { padding: 8px 12px; font-size: 12px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); outline: none; }
-        .search-history-item:hover, .search-history-item.tv-focused { background: rgba(229,9,20,0.3); color: #fff; outline: 2px solid #fff; }
 
-        /* Модальные окна */
         #modal-overlay, #roulette-modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
         }
         .lampa-modal-layout {
-            display: flex; background: var(--bg-card); width: 1000px; max-width: 95vw; height: 75vh; max-height: 650px;
-            border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); position: relative;
+            display: flex; background: var(--bg-card); width: 900px; max-width: 95vw; height: 70vh; max-height: 600px;
+            border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); position: relative;
         }
         .lampa-left-pane {
             flex: 1.2; background-size: cover; background-position: center; position: relative;
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 30px;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 25px;
             border-right: 1px solid rgba(255,255,255,0.08);
         }
         .lampa-left-pane::before {
@@ -223,79 +170,74 @@
             background: linear-gradient(0deg, var(--bg-card) 15%, rgba(22,22,31,0.8) 60%, rgba(22,22,31,0.4) 100%);
         }
         .lampa-content-info { position: relative; z-index: 2; }
-        .lampa-title { font-size: 28px; font-weight: bold; line-height: 1.1; margin-bottom: 8px; }
-        .lampa-tagline { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; font-style: italic; }
-        .lampa-badges { display: flex; gap: 8px; font-size: 11px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
-        .lampa-badge-item { background: rgba(255,255,255,0.12); padding: 3px 8px; border-radius: 4px; font-weight: bold; }
-        .lampa-desc { font-size: 12px; line-height: 1.4; color: #cfcfd8; max-height: 70px; overflow: hidden; margin-bottom: 15px; }
+        .lampa-title { font-size: 24px; font-weight: bold; line-height: 1.1; margin-bottom: 6px; }
+        .lampa-tagline { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-style: italic; }
+        .lampa-badges { display: flex; gap: 8px; font-size: 11px; margin-bottom: 10px; align-items: center; }
+        .lampa-badge-item { background: rgba(255,255,255,0.12); padding: 2px 6px; border-radius: 3px; font-weight: bold; }
+        .lampa-desc { font-size: 11px; line-height: 1.3; color: #cfcfd8; max-height: 60px; overflow: hidden; margin-bottom: 12px; }
 
-        .lampa-action-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-        .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 9px 18px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+        .lampa-action-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+        .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 7px 14px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
         .lampa-btn:hover, .lampa-btn.active, .lampa-btn.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 3px solid #fff; }
 
-        .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
-        .lampa-sources-header { font-size: 14px; font-weight: bold; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px; }
+        .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 15px; overflow-y: auto; }
+        .lampa-sources-header { font-size: 13px; font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px; }
         .source-option-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-            padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; outline: none;
+            padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; outline: none;
         }
         .source-option-card.selected, .source-option-card.tv-focused { background: rgba(229,9,20,0.3); border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
-        .source-info-title { font-weight: bold; font-size: 12px; color: #fff; }
-        .source-info-langs { font-size: 10px; color: #46d369; margin-top: 2px; }
-        .server-ping { font-size: 10px; padding: 2px 5px; border-radius: 3px; font-weight: bold; background: rgba(0,255,102,0.2); color: #00ff66; }
+        .source-info-title { font-weight: bold; font-size: 11px; color: #fff; }
+        .source-info-langs { font-size: 9px; color: #46d369; margin-top: 2px; }
+        .server-ping { font-size: 9px; padding: 2px 4px; border-radius: 3px; font-weight: bold; background: rgba(0,255,102,0.2); color: #00ff66; }
 
-        .modal-close-abs { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
+        .modal-close-abs { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 12px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
         .modal-close-abs:hover, .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
 
-        /* Окно рулетки (Рандомайзера) */
         .roulette-box {
-            background: var(--bg-card); width: 550px; max-width: 90vw; padding: 30px; border-radius: 12px;
+            background: var(--bg-card); width: 500px; max-width: 90vw; padding: 25px; border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.15); text-align: center; position: relative;
         }
-        .roulette-mood-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 15px 0; }
-        .roulette-chip { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 14px; font-size: 12px; cursor: pointer; color: #fff; outline: none; }
+        .roulette-mood-chips { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin: 12px 0; }
+        .roulette-chip { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 5px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; color: #fff; outline: none; }
         .roulette-chip:hover, .roulette-chip.active, .roulette-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 2px solid #fff; }
 
         .roulette-result-card {
-            margin-top: 20px; background: var(--bg-dark); border-radius: 8px; padding: 15px; display: flex; gap: 15px; align-items: center; text-align: left;
+            margin-top: 15px; background: var(--bg-dark); border-radius: 6px; padding: 12px; display: flex; gap: 12px; align-items: center; text-align: left;
             border: 1px solid rgba(255,255,255,0.08); display: none;
         }
-        .roulette-result-card img { width: 90px; height: 130px; object-fit: cover; border-radius: 4px; }
+        .roulette-result-card img { width: 80px; height: 115px; object-fit: cover; border-radius: 4px; }
 
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 20000; flex-direction: column; }
         .player-top-bar {
-            display: flex; justify-content: space-between; align-items: center; padding: 12px 25px;
-            background: rgba(14, 14, 19, 0.9); border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 30; gap: 15px; flex-shrink: 0;
+            display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;
+            background: rgba(14, 14, 19, 0.9); border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 30; flex-shrink: 0;
         }
-        .player-title-block { display: flex; align-items: center; gap: 12px; }
-        .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 4px 10px; border-radius: 3px; font-size: 13px; font-weight: bold; }
-        .player-media-name { font-size: 16px; font-weight: bold; color: #fff; }
-
-        .player-controls { display: flex; gap: 15px; align-items: center; }
-        .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; font-size: 13px; cursor: pointer; outline: none; }
+        .player-title-block { display: flex; align-items: center; gap: 10px; }
+        .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; }
+        .player-media-name { font-size: 14px; font-weight: bold; color: #fff; }
+        .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; outline: none; }
         .player-close-btn:hover, .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
 
         .player-container-inner { position: relative; width: 100%; flex: 1; background: #000; display: flex; justify-content: center; align-items: center; }
-        /* Уменьшаем плеер кинобд на 10 процентов (ширина и высота по 90% и центрирование) */
         .player-container-inner > div { width: 90% !important; height: 90% !important; margin: auto; }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
 
-        .settings-container { max-width: 700px; margin: 90px auto 40px auto; background: var(--bg-card); padding: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); }
-        .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 22px; }
-        .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 14px 0; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; outline: none; }
-        .setting-row.tv-focused { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); background: rgba(229,9,20,0.1); border-radius: 4px; padding: 6px; }
-        .setting-row input[type="text"], .setting-row select, .setting-row input[type="range"] { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 7px 10px; border-radius: 4px; outline: none; }
-        .setting-row input[type="text"]:focus, .setting-row select:focus { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+        .settings-container { max-width: 650px; margin: 80px auto 30px auto; background: var(--bg-card); padding: 25px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); }
+        .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 20px; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 12px; outline: none; }
+        .setting-row.tv-focused { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); background: rgba(229,9,20,0.1); border-radius: 4px; padding: 5px; }
+        .setting-row input[type="text"], .setting-row select { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 6px 8px; border-radius: 4px; outline: none; font-size: 12px; }
 
-        .settings-section-heading { font-size: 14px; font-weight: bold; color: var(--netflix-red); margin: 25px 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px; border-left: 3px solid var(--netflix-red); padding-left: 8px; }
-        .setting-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; max-width: 380px; }
+        .settings-section-heading { font-size: 13px; font-weight: bold; color: var(--netflix-red); margin: 20px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; border-left: 3px solid var(--netflix-red); padding-left: 6px; }
+        .setting-desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; max-width: 350px; }
 
         #toast {
-            position: fixed; bottom: 20px; right: 20px; background: var(--bg-card); color: white; padding: 10px 18px;
-            border-radius: 6px; z-index: 999999; box-shadow: 0 4px 15px rgba(0,0,0,0.8); opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
-            border-left: 4px solid var(--netflix-red); font-weight: bold; font-size: 12px;
+            position: fixed; bottom: 20px; right: 20px; background: var(--bg-card); color: white; padding: 8px 14px;
+            border-radius: 6px; z-index: 999999; opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
+            border-left: 4px solid var(--netflix-red); font-weight: bold; font-size: 11px;
         }
         #toast.show { opacity: 1; }
     </style>
@@ -306,11 +248,10 @@
     <div class="netflix-intro-container">NETFLIX</div>
 </div>
 
-<!-- Экран выбора профилей -->
 <div id="profile-selection-screen">
     <div class="profile-title">Кто смотрит?</div>
     <div class="profiles-grid" id="profilesContainer"></div>
-    <button class="lampa-btn" tabindex="0" onclick="openAddProfileModal()" style="font-size:14px; padding:10px 20px;">+ Добавить профиль</button>
+    <button class="lampa-btn" tabindex="0" onclick="openAddProfileModal()" style="font-size:13px; padding:8px 16px;">+ Добавить профиль</button>
 </div>
 
 <div id="toast">Уведомление</div>
@@ -320,9 +261,8 @@
         <button class="logo" tabindex="0" onclick="switchTab('home', document.getElementById('navHome'))">NETFLIX</button>
         <ul class="nav-links">
             <li id="navHome" class="active" tabindex="0" onclick="switchTab('home', this)">Главная</li>
-            <li tabindex="0" onclick="switchTab('catalog', this)">Мега-Каталог (6000+)</li>
-            <li tabindex="0" onclick="switchTab('russian', this)">🇷🇺 Русское кино</li>
-            <li tabindex="0" onclick="switchTab('thrillers', this)">🔍 Триллеры</li>
+            <li tabindex="0" onclick="switchTab('catalog', this)">Мега-Каталог (~5000)</li>
+            <li tabindex="0" onclick="switchTab('russian', this)">🇷🇺 Русское кино (~2000)</li>
             <li tabindex="0" onclick="switchTab('radio', this)">📻 Радио ТВ</li>
             <li tabindex="0" onclick="switchTab('history', this)">🕒 История</li>
             <li tabindex="0" onclick="switchTab('mylist', this)">Мой список</li>
@@ -339,14 +279,14 @@
 
 <div id="tab-home" class="view-section active">
     <div class="hero" id="heroBanner">
-        <div class="hero-title" id="heroTitle">Загрузка ультимативной коллекции...</div>
-        <div class="hero-badge"><span>Эпохальный сборник блокбастеров</span></div>
-        <div class="hero-desc" id="heroDesc">Коллекция из более чем 6000 фильмов, сериалов и анимации динамически загружается в реальном времени.</div>
+        <div class="hero-title" id="heroTitle">Загрузка легкой коллекции...</div>
+        <div class="hero-badge"><span>Оптимизировано для Android TV 9</span></div>
+        <div class="hero-desc" id="heroDesc">Минимальное потребление памяти и быстрая работа на слабых интернет-соединениях.</div>
 
         <div class="hero-btns">
             <button class="btn-white" id="heroPlayBtn" tabindex="0">▶ Смотреть</button>
             <button class="btn-gray" id="heroInfoBtn" tabindex="0">ℹ Подробнее</button>
-            <button class="btn-roulette" tabindex="0" onclick="openRouletteModal()">🎲 Что посмотреть? (Рулетка)</button>
+            <button class="btn-roulette" tabindex="0" onclick="openRouletteModal()">🎲 Рулетка</button>
         </div>
     </div>
 
@@ -354,55 +294,43 @@
         <div class="row-container">
             <div class="section-title">
                 <span>🔥 Мировые лидеры проката</span>
-                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)">Смотреть все →</span>
+                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)">Все →</span>
             </div>
             <div class="row-carousel" id="trendingRow"></div>
         </div>
         <div class="row-container">
             <div class="section-title">
                 <span>🇷🇺 Лучшие российские фильмы</span>
-                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('russian', null)">Смотреть все →</span>
+                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('russian', null)">Все →</span>
             </div>
             <div class="row-carousel" id="homeRussianRow"></div>
-        </div>
-        <div class="row-container">
-            <div class="section-title">
-                <span>🔍 Напряженные триллеры</span>
-                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('thrillers', null)">Смотреть все →</span>
-            </div>
-            <div class="row-carousel" id="homeThrillersRow"></div>
         </div>
         <div class="row-container">
             <div class="section-title">⭐ Ваш сохраненный список</div>
             <div class="row-carousel" id="myListRow"></div>
         </div>
         <div class="row-container">
-            <div class="section-title">🩸 Ужасы, Слэшеры и Мистика</div>
+            <div class="section-title">🩸 Ужасы и Мистика</div>
             <div class="row-carousel" id="horrorRow"></div>
         </div>
         <div class="row-container">
-            <div class="section-title">🌌 Научная фантастика и Киберпанк</div>
+            <div class="section-title">🚀 Научная фантастика</div>
             <div class="row-carousel" id="scifiRow"></div>
         </div>
         <div class="row-container">
-            <div class="section-title">⚡ Экшен и Динамичные блокбастеры</div>
+            <div class="section-title">⚡ Экшен и Боевики</div>
             <div class="row-carousel" id="actionRow"></div>
-        </div>
-        <div class="row-container">
-            <div class="section-title">🎭 Драмы и Жизненные истории</div>
-            <div class="row-carousel" id="dramaRow"></div>
         </div>
     </div>
 </div>
 
 <div id="tab-catalog" class="view-section">
-    <div class="main-container" style="padding-top: 90px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-            <div class="section-title" style="margin:0;" id="catalogHeaderTitle">🎬 Ультимативный Мега-Каталог (6000+ фильмов)</div>
+    <div class="main-container" style="padding-top: 80px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+            <div class="section-title" style="margin:0;" id="catalogHeaderTitle">🎬 Мега-Каталог (~5000 фильмов)</div>
 
             <div class="search-wrapper">
-                <input type="text" id="searchInput" placeholder="Поиск по названию..." oninput="handleSearch(this.value)" onfocus="showSearchHistory()" tabindex="0" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:8px 12px; border-radius:4px; width:100%; outline:none;">
-                <div class="search-history-dropdown" id="searchHistoryDropdown"></div>
+                <input type="text" id="searchInput" placeholder="Поиск..." oninput="handleSearch(this.value)" tabindex="0" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:6px 10px; border-radius:4px; width:100%; outline:none; font-size:12px;">
             </div>
         </div>
 
@@ -412,56 +340,44 @@
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('35', this)">😂 Комедии</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('18', this)">🎭 Драмы</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('878', this)">🚀 Фантастика</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('12', this)">🗺️ Приключения</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('16', this)">🎨 Анимация</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('99', this)">📜 Документальные</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('27', this)">🔪 Ужасы</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('53', this)">🔍 Триллеры</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('10749', this)">💖 Мелодрамы</div>
-            <div class="genre-chip" tabindex="0" onclick="filterByGenre('80', this)">🕵️ Криминал</div>
         </div>
 
         <div class="grid" id="catalogGrid"></div>
-        <div id="paginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 30px 0; align-items: center;"></div>
+        <div id="paginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 25px 0; align-items: center;"></div>
     </div>
 </div>
 
 <div id="tab-russian" class="view-section">
-    <div class="main-container" style="padding-top: 90px;">
-        <div class="section-title" id="russianHeaderTitle">🇷🇺 Российское кино (1500+ фильмов)</div>
+    <div class="main-container" style="padding-top: 80px;">
+        <div class="section-title" id="russianHeaderTitle">🇷🇺 Русское кино (~2000 фильмов)</div>
         <div class="grid" id="russianGrid"></div>
-        <div id="russianPaginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 30px 0; align-items: center;"></div>
-    </div>
-</div>
-
-<div id="tab-thrillers" class="view-section">
-    <div class="main-container" style="padding-top: 90px;">
-        <div class="section-title" id="thrillersHeaderTitle">🔍 Триллеры</div>
-        <div class="grid" id="thrillersGrid"></div>
-        <div id="thrillersPaginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 30px 0; align-items: center;"></div>
+        <div id="russianPaginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 25px 0; align-items: center;"></div>
     </div>
 </div>
 
 <div id="tab-radio" class="view-section">
-    <div class="main-container" style="padding-top: 90px;">
-        <div class="section-title">📻 Українські Онлайн Радіостанції для ТБ</div>
-        <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Найпопулярніші музичні та інформаційні українські радіостанції в прямому ефірі.</p>
+    <div class="main-container" style="padding-top: 80px;">
+        <div class="section-title">📻 Українські Онлайн Радіостанції</div>
+        <p style="color:var(--text-muted); font-size:12px; margin-bottom:15px;">Музичні та інформаційні станції в прямому ефірі.</p>
         <div class="grid" id="radioGrid"></div>
     </div>
 </div>
 
 <div id="tab-history" class="view-section">
-    <div class="main-container" style="padding-top: 90px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <div class="main-container" style="padding-top: 80px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div class="section-title" style="margin:0;">🕒 История просмотров (<span id="currentProfileHistoryLabel">Андрей</span>)</div>
-            <button class="lampa-btn" tabindex="0" onclick="clearHistory()">Очистить историю</button>
+            <button class="lampa-btn" tabindex="0" onclick="clearHistory()">Очистить</button>
         </div>
         <div class="grid" id="historyGrid"></div>
     </div>
 </div>
 
 <div id="tab-mylist" class="view-section">
-    <div class="main-container" style="padding-top: 90px;">
+    <div class="main-container" style="padding-top: 80px;">
         <div class="section-title">⭐ Избранное (<span id="currentProfileListLabel">Андрей</span>)</div>
         <div class="grid" id="myListGrid"></div>
     </div>
@@ -469,180 +385,55 @@
 
 <div id="tab-settings" class="view-section">
     <div class="settings-container">
-        <h2>⚙️ Расширенные настройки платформы</h2>
+        <h2>⚙️ Настройки для Android 9 (Grunhelm)</h2>
         
-        <div class="settings-section-heading">👤 Профиль и персонализация</div>
+        <div class="settings-section-heading">👤 Профиль</div>
         <div class="setting-row" tabindex="0">
-            <span>Имя активного профиля:</span>
+            <span>Имя профиля:</span>
             <input type="text" id="settingUsername" value="Андрей" onchange="saveSettings()">
         </div>
         <div class="setting-row" tabindex="0">
             <div>
-                <span>Тема интерфейса (Статическая)</span>
-                <div class="setting-desc">Цветовая гамма без живых фоновых анимаций.</div>
+                <span>Тема оформления</span>
+                <div class="setting-desc">Облегченные цвета для снижения нагрузки на ТВ.</div>
             </div>
             <select id="settingTheme" onchange="saveSettings()">
                 <option value="netflix">🔴 Классический Netflix</option>
-                <option value="cyberpunk">⚡ Киберпанк (Неон)</option>
-                <option value="gold">🪙 Золотой Закат</option>
-                <option value="emerald">🟢 Изумрудная Аврора</option>
-                <option value="amethyst">🟣 Аметистовая Ночь</option>
-                <option value="aurora">🌌 Северное Сияние</option>
-                <option value="fire">🔥 Огненная Стихия</option>
+                <option value="cyberpunk">⚡ Киберпанк</option>
             </select>
         </div>
 
-        <div class="settings-section-heading">🎬 Воспроизведение и Плеер</div>
-        <div class="setting-row" tabindex="0">
-            <span>Таймер сна (автоматическое выключение плеера):</span>
-            <select id="settingSleepTimer" onchange="saveSettings()">
-                <option value="0">Выключен</option>
-                <option value="15">Через 15 минут</option>
-                <option value="30">Через 30 минут</option>
-                <option value="60">Через 1 час</option>
-                <option value="120">Через 2 часа</option>
-            </select>
-        </div>
+        <div class="settings-section-heading">🌐 Оптимизация сети (Слабый интернет)</div>
         <div class="setting-row" tabindex="0">
             <div>
-                <span>Автоматический выбор лучшей озвучки</span>
-                <div class="setting-desc">Плеер сразу подгружает профессиональный перевод.</div>
-            </div>
-            <select id="settingAutoAudio" onchange="saveSettings()">
-                <option value="on">Включено</option>
-                <option value="off">Выключено</option>
-            </select>
-        </div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Громкость по умолчанию (%)</span>
-                <div class="setting-desc">Уровень звука при старте видеоряда.</div>
-            </div>
-            <input type="range" id="settingVolume" min="10" max="100" value="100" onchange="saveSettings()">
-        </div>
-
-        <div class="settings-section-heading">📺 Оптимизация для Android TV и Box</div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Аппаратное ускорение (GPU-рендеринг)</span>
-                <div class="setting-desc">Задействует графический чип ТВ-приставки для идеальной плавности 60 FPS.</div>
-            </div>
-            <select id="settingHwAccel" onchange="saveSettings()">
-                <option value="on">Включено</option>
-                <option value="off">Выключено</option>
-            </select>
-        </div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Буфер обмена плеера</span>
-                <div class="setting-desc">Управление размером оперативной памяти под потоковое видео.</div>
+                <span>Кэширование изображений</span>
+                <div class="setting-desc">Ускоряет загрузку списков на медленном Wi-Fi.</div>
             </div>
             <select id="settingPlayerBuffer" onchange="saveSettings()">
-                <option value="low">Минимальный (для слабых 1GB RAM)</option>
-                <option value="mid">Стандартный (Сбалансированный)</option>
-                <option value="high">Максимальный (Для стабильного 4K)</option>
-            </select>
-        </div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Режим энергосбережения / Охлаждение ТВ</span>
-                <div class="setting-desc">Ограничивает фоновые процессы во избежание перегрева бокса.</div>
-            </div>
-            <select id="settingEcoMode" onchange="saveSettings()">
-                <option value="off">Выключен</option>
-                <option value="on">Включен</option>
-            </select>
-        </div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Адаптивная частота кадров (AFR)</span>
-                <div class="setting-desc">Синхронизирует герцовку экрана телевизора с частотой кадров фильма.</div>
-            </div>
-            <select id="settingAfr" onchange="saveSettings()">
-                <option value="on">Включено</option>
-                <option value="off">Выключено</option>
-            </select>
-        </div>
-
-        <div class="settings-section-heading">🌐 Сеть, Обход блокировок и Интерфейс</div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Внешний DNS-сервер (Ускорение TMDB API)</span>
-                <div class="setting-desc">Ускоряет загрузку картинок, постеров и каталога при медленном интернете.</div>
-            </div>
-            <select id="settingDns" onchange="saveSettings()">
-                <option value="cloudflare">Cloudflare (1.1.1.1 — Сверхбыстрый)</option>
-                <option value="google">Google (8.8.8.8 — Надежный)</option>
-                <option value="adguard">AdGuard (С блокировкой рекламы)</option>
-                <option value="default">Авто (Провайдер)</option>
-            </select>
-        </div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Таймаут сетевых запросов</span>
-                <div class="setting-desc">Время ожидания ответа при плохом сигнале Wi-Fi.</div>
-            </div>
-            <select id="settingNetTimeout" onchange="saveSettings()">
-                <option value="5000">5 секунд</option>
-                <option value="10000">10 секунд (Стандарт)</option>
-                <option value="20000">20 секунд (Для слабого Wi-Fi)</option>
-                <option value="600000">10 минут (Максимальный)</option>
-            </select>
-        </div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Размер сетки постеров на странице</span>
-                <div class="setting-desc">Количество карточек на одном экране каталога.</div>
-            </div>
-            <select id="settingGridSize" onchange="saveSettings()">
-                <option value="compact">Компактная (больше элементов)</option>
-                <option value="normal">Стандартная</option>
-                <option value="large">Крупная (для больших TV)</option>
-            </select>
-        </div>
-        <div class="setting-row" tabindex="0">
-            <div>
-                <span>Спецэффекты и свечения интерфейса</span>
-                <div class="setting-desc">Включает или отключает неоновые тени у карточек для разгона слабых GPU.</div>
-            </div>
-            <select id="settingEffects" onchange="saveSettings()">
-                <option value="on">Включены (Красиво)</option>
-                <option value="off">Отключены (Максимальный FPS)</option>
+                <option value="low" selected>Экономия трафика (Быстро)</option>
             </select>
         </div>
     </div>
 </div>
 
-<!-- Модальное окно деталей фильма -->
 <div id="modal-overlay" onclick="closeModalOutside(event)">
     <div class="lampa-modal-layout" id="modalBoxContent"></div>
 </div>
 
-<!-- Модальное окно Рандомайзера (Рулетки настроения) -->
 <div id="roulette-modal-overlay" onclick="closeRouletteOutside(event)">
     <div class="roulette-box">
         <button class="modal-close-abs" tabindex="0" onclick="closeRouletteModal()">✕</button>
-        <div style="font-size:22px; font-weight:bold; margin-bottom:5px;">🎲 Что посмотреть?</div>
-        <div style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Выберите настроение или жанр, и рулетка подберет фильм!</div>
+        <div style="font-size:20px; font-weight:bold; margin-bottom:5px;">🎲 Что посмотреть?</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Случайный выбор фильма из базы</div>
         
-        <div class="roulette-mood-chips">
-            <div class="roulette-chip active" tabindex="0" onclick="setRouletteGenre('all', this)">Любое</div>
-            <div class="roulette-chip" tabindex="0" onclick="setRouletteGenre('28', this)">💥 Боевик</div>
-            <div class="roulette-chip" tabindex="0" onclick="setRouletteGenre('35', this)">😂 Комедия</div>
-            <div class="roulette-chip" tabindex="0" onclick="setRouletteGenre('18', this)">🎭 Драма</div>
-            <div class="roulette-chip" tabindex="0" onclick="setRouletteGenre('53', this)">🔍 Триллер</div>
-            <div class="roulette-chip" tabindex="0" onclick="setRouletteGenre('27', this)">🔪 Ужасы</div>
-            <div class="roulette-chip" tabindex="0" onclick="setRouletteGenre('878', this)">🚀 Фантастика</div>
-        </div>
-
-        <button class="lampa-btn active" tabindex="0" onclick="spinRoulette()" style="width:100%; justify-content:center; padding:12px; font-size:15px; margin-top:10px;">🎰 Крутить рулетку!</button>
+        <button class="lampa-btn active" tabindex="0" onclick="spinRoulette()" style="width:100%; justify-content:center; padding:10px; font-size:14px;">🎰 Крутить рулетку!</button>
 
         <div class="roulette-result-card" id="rouletteResultCard">
             <img id="roulettePoster" src="" alt="">
             <div>
-                <div id="rouletteTitle" style="font-weight:bold; font-size:15px; margin-bottom:5px;">Название</div>
-                <div id="rouletteMeta" style="font-size:11px; color:#46d369; margin-bottom:8px;">Год • Рейтинг</div>
-                <button class="lampa-btn" tabindex="0" id="rouletteWatchBtn" style="padding:6px 12px; font-size:11px;">▶ Смотреть</button>
+                <div id="rouletteTitle" style="font-weight:bold; font-size:14px; margin-bottom:4px;">Название</div>
+                <div id="rouletteMeta" style="font-size:10px; color:#46d369; margin-bottom:6px;">Год • Рейтинг</div>
+                <button class="lampa-btn" tabindex="0" id="rouletteWatchBtn" style="padding:5px 10px; font-size:10px;">▶ Смотреть</button>
             </div>
         </div>
     </div>
@@ -652,15 +443,12 @@
     <div class="player-top-bar">
         <div class="player-title-block">
             <div class="player-logo-badge">NETFLIX</div>
-            <div class="player-media-name" id="playerMediaTitle">Название фильма</div>
+            <div class="player-media-name" id="playerMediaTitle">Фильм</div>
         </div>
-
         <div class="player-controls">
-            <div id="sleepTimerBadge" style="font-size:12px; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:3px; display:none;">⏱️ Сон: <span id="sleepTimerCountdown">--:--</span></div>
             <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
         </div>
     </div>
-
     <div class="player-container-inner" id="playerContainerInner"></div>
 </div>
 
@@ -668,22 +456,15 @@
     const TMDB_API_KEY = '3fd2be6f0c70a2a598f084ddfb75487c';
     let cachedCatalog = [];
     let russianCatalog = [];
-    let thrillersCatalog = [];
     
     let currentPage = 1;
     let russianCurrentPage = 1;
-    let thrillersCurrentPage = 1;
-    
-    let totalPagesToFetch = 200;
-    let russianTotalPagesToFetch = 75; 
+    const ITEMS_PER_PAGE = 10; // Строго по 10 фильмов на страницу в мега-каталоге
     let currentGenreFilter = 'all';
-    let rouletteGenre = 'all';
 
-    // Управление профилями
     let profiles = JSON.parse(localStorage.getItem('netflixProfilesList') || JSON.stringify([
         { id: 'profile_andrey', name: 'Андрей', avatar: 'https://i.imgur.com/3Z6K6y5.png' },
-        { id: 'profile_family', name: 'Семья', avatar: 'https://i.pinimg.com/474x/59/8d/5e/598d5e7e2f1e878f9f3ccab792a97ab1.jpg' },
-        { id: 'profile_guest', name: 'Гость', avatar: 'https://i.imgur.com/3Z6K6y5.png' }
+        { id: 'profile_family', name: 'Семья', avatar: 'https://i.pinimg.com/474x/59/8d/5e/598d5e7e2f1e878f9f3ccab792a97ab1.jpg' }
     ]));
 
     let activeProfileId = localStorage.getItem('netflixActiveProfileId') || 'profile_andrey';
@@ -693,50 +474,34 @@
     }
 
     const radioStations = [
-        { name: "Hit FM", genre: "Українські та світові хіти", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.hitfm.ua/HitFM" },
-        { name: "KISS FM", genre: "Електронна / Dance / EDM", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.kissfm.ua/KissFM" },
-        { name: "Radio ROKS", genre: "Класичний рок / Rock", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.radioroks.ua/RadioROKS" },
-        { name: "Melodia FM", genre: "Душевна поп-музика 80-90х", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.melodiafm.ua/MelodiaFM" },
-        { name: "Radio NV", genre: "Новини / Розмовна / Аналітика", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://stream.radio.nv.ua/radionv" },
-        { name: "Bayraktar", genre: "Сучасна українська пісня", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://online.radiobayraktar.ua/RadioBayraktar" },
-        { name: "Armiya FM", genre: "Військова музика та новини", logo: "https://i.imgur.com/3Z6K6y5.png", url: "https://radio.armiya.ua:8000/stream" }
+        { name: "Hit FM", genre: "Українські хіти", url: "https://online.hitfm.ua/HitFM" },
+        { name: "KISS FM", genre: "Dance / EDM", url: "https://online.kissfm.ua/KissFM" },
+        { name: "Radio ROKS", genre: "Класичний рок", url: "https://online.radioroks.ua/RadioROKS" },
+        { name: "Melodia FM", genre: "Поп-музика", url: "https://online.melodiafm.ua/MelodiaFM" }
     ];
     
     let settings = JSON.parse(localStorage.getItem('netflixSettingsUltimate') || JSON.stringify({
         username: "Андрей",
         theme: "cyberpunk",
-        sleepTimer: "0",
-        autoAudio: "on",
-        volume: "100",
-        hwAccel: "on",
-        playerBuffer: "mid",
-        ecoMode: "off",
-        afr: "on",
-        dns: "cloudflare",
-        netTimeout: "10000",
-        gridSize: "normal",
-        effects: "on"
+        playerBuffer: "low"
     }));
 
     let currentProf = getActiveProfile();
     settings.username = currentProf.name;
 
     document.getElementById('settingTheme').value = settings.theme || 'cyberpunk';
-    document.getElementById('settingSleepTimer').value = settings.sleepTimer || '0';
     document.getElementById('settingUsername').value = settings.username || 'Андрей';
     updateProfileUIElements();
-
     applyTheme(settings.theme || 'cyberpunk');
-    applyGridSizeStyle(settings.gridSize || 'normal');
 
     window.addEventListener('load', () => {
         setTimeout(() => {
             const intro = document.getElementById('intro-screen');
             if(intro) intro.remove();
             showProfileSelection();
-        }, 800);
+        }, 300);
         
-        fetchAllUltimateCatalog();
+        fetchAllOptimizedCatalog();
         renderRadioGrid();
     });
 
@@ -788,13 +553,12 @@
     }
 
     function openAddProfileModal() {
-        let name = prompt('Введите имя нового профиля:');
+        let name = prompt('Введите имя профиля:');
         if(name && name.trim()) {
             let newId = 'profile_' + Date.now();
             profiles.push({ id: newId, name: name.trim(), avatar: 'https://i.imgur.com/3Z6K6y5.png' });
             localStorage.setItem('netflixProfilesList', JSON.stringify(profiles));
             showProfileSelection();
-            showToast('Профиль создан!');
         }
     }
 
@@ -803,46 +567,23 @@
         if (themeName !== 'netflix') document.body.classList.add('theme-' + themeName);
     }
 
-    function applyGridSizeStyle(size) {
-        const gridEls = document.querySelectorAll('.grid');
-        gridEls.forEach(g => {
-            if(size === 'compact') g.style.gridTemplateColumns = 'repeat(auto-fill, minmax(130px, 1fr))';
-            else if(size === 'large') g.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
-            else g.style.gridTemplateColumns = 'repeat(auto-fill, minmax(160px, 1fr))';
-        });
-    }
-
     function showToast(text) {
         const t = document.getElementById('toast');
         t.innerText = text;
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2500);
+        setTimeout(() => t.classList.remove('show'), 2000);
     }
 
     function saveSettings() {
         settings.username = document.getElementById('settingUsername').value;
         settings.theme = document.getElementById('settingTheme').value;
-        settings.sleepTimer = document.getElementById('settingSleepTimer').value;
-        if(document.getElementById('settingAutoAudio')) settings.autoAudio = document.getElementById('settingAutoAudio').value;
-        if(document.getElementById('settingVolume')) settings.volume = document.getElementById('settingVolume').value;
-        if(document.getElementById('settingHwAccel')) settings.hwAccel = document.getElementById('settingHwAccel').value;
-        if(document.getElementById('settingPlayerBuffer')) settings.playerBuffer = document.getElementById('settingPlayerBuffer').value;
-        if(document.getElementById('settingEcoMode')) settings.ecoMode = document.getElementById('settingEcoMode').value;
-        if(document.getElementById('settingAfr')) settings.afr = document.getElementById('settingAfr').value;
-        if(document.getElementById('settingDns')) settings.dns = document.getElementById('settingDns').value;
-        if(document.getElementById('settingNetTimeout')) settings.netTimeout = document.getElementById('settingNetTimeout').value;
-        if(document.getElementById('settingGridSize')) settings.gridSize = document.getElementById('settingGridSize').value;
-        if(document.getElementById('settingEffects')) settings.effects = document.getElementById('settingEffects').value;
-
         let prof = getActiveProfile();
         prof.name = settings.username;
         localStorage.setItem('netflixProfilesList', JSON.stringify(profiles));
-
         localStorage.setItem('netflixSettingsUltimate', JSON.stringify(settings));
         applyTheme(settings.theme);
-        applyGridSizeStyle(settings.gridSize);
         updateProfileUIElements();
-        showToast('Настройки сохранены!');
+        showToast('Сохранено!');
     }
 
     function switchTab(tabId, el) {
@@ -852,63 +593,38 @@
         if(el) el.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'instant' });
 
-        if(tabId === 'mylist') renderMyListGrid();
-        if(tabId === 'history') renderHistoryGrid();
+        if(tabId === 'mylist') renderGridCards('myListGrid', getMyListItems());
+        if(tabId === 'history') renderGridCards('historyGrid', getHistoryItems());
         if(tabId === 'russian') renderRussianPage(1);
-        if(tabId === 'thrillers') renderThrillersPage(1);
         if(tabId === 'radio') renderRadioGrid();
         if(tabId === 'catalog') renderCatalogPage(1);
         
         setTimeout(() => focusFirstElementInView(), 100);
     }
 
-    async function fetchAllUltimateCatalog() {
+    async function fetchAllOptimizedCatalog() {
         try {
-            showToast('Загрузка базы фильмов (от 1990 года)...');
+            showToast('Загрузка базы для ТВ...');
             let allResults = [];
             
-            for (let pStart = 1; pStart <= totalPagesToFetch; pStart += 10) {
-                let pEnd = Math.min(pStart + 9, totalPagesToFetch);
-                let batchPromises = [];
-                for (let p = pStart; p <= pEnd; p++) {
-                    batchPromises.push(
-                        fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=popularity.desc&primary_release_date.gte=1990-01-01&page=${p}`)
-                            .then(res => res.json())
-                            .then(data => data.results || [])
-                            .catch(() => [])
-                    );
-                }
-                let batchResults = await Promise.all(batchPromises);
-                batchResults.forEach(resList => { allResults = allResults.concat(resList); });
+            // Загружаем порциями (примерно 250 страниц по 20 = 5000 фильмов для мега-каталога)
+            // Для легкости на Android 9 делаем параллельные запросы небольшими порциями
+            for (let p = 1; p <= 250; p++) {
+                try {
+                    let res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=popularity.desc&page=${p}`);
+                    let data = await res.json();
+                    if(data.results) allResults = allResults.concat(data.results);
+                } catch(err) {}
             }
 
             let rusResults = [];
-            for (let pStart = 1; pStart <= russianTotalPagesToFetch; pStart += 10) {
-                let pEnd = Math.min(pStart + 9, russianTotalPagesToFetch);
-                let batchPromises = [];
-                for (let p = pStart; p <= pEnd; p++) {
-                    batchPromises.push(
-                        fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&with_original_language=ru&sort_by=popularity.desc&primary_release_date.gte=1990-01-01&page=${p}`)
-                            .then(res => res.json())
-                            .then(data => data.results || [])
-                            .catch(() => [])
-                    );
-                }
-                let batchResults = await Promise.all(batchPromises);
-                batchResults.forEach(resList => { rusResults = rusResults.concat(resList); });
+            for (let p = 1; p <= 100; p++) {
+                try {
+                    let res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&with_original_language=ru&sort_by=popularity.desc&page=${p}`);
+                    let data = await res.json();
+                    if(data.results) rusResults = rusResults.concat(data.results);
+                } catch(err) {}
             }
-
-            let thrillerResults = [];
-            for (let p = 1; p <= 30; p++) {
-                thrillerResults.push(
-                    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&with_genres=53&sort_by=popularity.desc&primary_release_date.gte=1990-01-01&page=${p}`)
-                        .then(res => res.json())
-                        .then(data => data.results || [])
-                        .catch(() => [])
-                );
-            }
-            let thrillerBatches = await Promise.all(thrillerResults);
-            thrillerBatches.forEach(list => { thrillersCatalog = thrillersCatalog.concat(list); });
 
             const uniqueMap = new Map();
             allResults.forEach(item => { if(item.poster_path) uniqueMap.set(item.id, item); });
@@ -918,17 +634,10 @@
             rusResults.forEach(item => { if(item.poster_path) uniqueRusMap.set(item.id, item); });
             russianCatalog = Array.from(uniqueRusMap.values());
 
-            const uniqueThrillerMap = new Map();
-            thrillersCatalog.forEach(item => { if(item.poster_path) uniqueThrillerMap.set(item.id, item); });
-            thrillersCatalog = Array.from(uniqueThrillerMap.values());
-
-            showToast(`Загружено: ${cachedCatalog.length} фильмов!`);
-            document.getElementById('catalogHeaderTitle').innerText = `🎬 Ультимативный Мега-Каталог (${cachedCatalog.length} фильмов)`;
-            document.getElementById('russianHeaderTitle').innerText = `🇷🇺 Российское кино (${russianCatalog.length} фильмов)`;
+            showToast(`Загружено: ${cachedCatalog.length} фильмов`);
             initHome();
         } catch(e) {
-            console.error('Ошибка загрузки базы:', e);
-            showToast('Ошибка загрузки базы TMDB');
+            showToast('Ошибка загрузки базы');
         }
     }
 
@@ -936,77 +645,69 @@
         if(!cachedCatalog.length) return;
         setupRandomHero(cachedCatalog);
 
-        renderCarousel('trendingRow', cachedCatalog.slice(0, 45));
-        renderCarousel('homeRussianRow', russianCatalog.slice(0, 45));
-        renderCarousel('homeThrillersRow', thrillersCatalog.slice(0, 45));
-        renderCarousel('myListRow', getMyListItems());
-        renderCarousel('horrorRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(27)));
-        renderCarousel('scifiRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(878)));
-        renderCarousel('actionRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(28)));
-        renderCarousel('dramaRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(18)));
+        // На главной разделы ровно по 3-5 фильмов для легкой работы Android 9
+        renderCarousel('trendingRow', cachedCatalog.slice(0, 5));
+        renderCarousel('homeRussianRow', russianCatalog.slice(0, 5));
+        renderCarousel('myListRow', getMyListItems().slice(0, 5));
+        renderCarousel('horrorRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(27)).slice(0, 5));
+        renderCarousel('scifiRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(878)).slice(0, 5));
+        renderCarousel('actionRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(28)).slice(0, 5));
     }
 
     function setupRandomHero(items) {
         if(!items.length) return;
-        const randomItem = items[Math.floor(Math.random() * Math.min(items.length, 25))];
+        const randomItem = items[Math.floor(Math.random() * Math.min(items.length, 10))];
         const title = randomItem.title || randomItem.name || 'Фильм';
         const desc = randomItem.overview || '';
-        const bgUrl = randomItem.backdrop_path ? `https://image.tmdb.org/t/p/w1280${randomItem.backdrop_path}` : '';
+        const bgUrl = randomItem.backdrop_path ? `https://image.tmdb.org/t/p/w780${randomItem.backdrop_path}` : '';
 
         if(bgUrl) document.getElementById('heroBanner').style.backgroundImage = `url('${bgUrl}')`;
         document.getElementById('heroTitle').innerText = title;
-        document.getElementById('heroDesc').innerText = desc.length > 150 ? desc.substring(0, 150) + '...' : desc;
+        document.getElementById('heroDesc').innerText = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
 
         document.getElementById('heroPlayBtn').onclick = () => { openModal(randomItem.id, randomItem); };
         document.getElementById('heroInfoBtn').onclick = () => { openModal(randomItem.id, randomItem); };
     }
 
-    function getMyListItems() { 
-        return JSON.parse(localStorage.getItem(`myListUltimate_${activeProfileId}`) || '[]'); 
-    }
-    function getHistoryItems() { 
-        return JSON.parse(localStorage.getItem(`watchHistoryUltimate_${activeProfileId}`) || '[]'); 
-    }
+    function getMyListItems() { return JSON.parse(localStorage.getItem(`myListUltimate_${activeProfileId}`) || '[]'); }
+    function getHistoryItems() { return JSON.parse(localStorage.getItem(`watchHistoryUltimate_${activeProfileId}`) || '[]'); }
 
     function addToHistory(item) {
         let history = getHistoryItems().filter(i => i.id !== item.id);
         history.unshift(item);
-        if(history.length > 50) history.pop();
+        if(history.length > 15) history.pop();
         localStorage.setItem(`watchHistoryUltimate_${activeProfileId}`, JSON.stringify(history));
     }
 
     function clearHistory() {
         localStorage.removeItem(`watchHistoryUltimate_${activeProfileId}`);
-        renderHistoryGrid();
-        showToast('История просмотров очищена');
+        renderGridCards('historyGrid', []);
+        showToast('Очищено');
     }
 
     function renderCarousel(containerId, list) {
         const c = document.getElementById(containerId);
         if(!c) return;
         c.innerHTML = '';
-        if(!list.length) { c.innerHTML = '<p style="color:#777; font-size:12px; padding:10px;">Список пуст</p>'; return; }
+        if(!list.length) { c.innerHTML = '<p style="color:#777; font-size:11px; padding:5px;">Пусто</p>'; return; }
 
         list.forEach(m => {
             const title = m.title || m.name || 'Фильм';
-            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w300${m.poster_path}` : '';
+            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w200${m.poster_path}` : '';
             if(!poster) return;
 
             const card = document.createElement('div');
             card.className = 'movie-card';
             card.tabIndex = 0;
-            card.innerHTML = `<img src="${poster}" alt="${title}" loading="lazy" decoding="async">`;
+            card.innerHTML = `<img src="${poster}" alt="${title}" loading="lazy">`;
             card.onclick = () => { openModal(m.id, m); };
             c.appendChild(card);
         });
     }
 
-    const ITEMS_PER_PAGE = 32;
-
     function renderCatalogPage(page = 1) {
         currentPage = page;
         let sourceList = cachedCatalog;
-        
         if (currentGenreFilter !== 'all') {
             const gId = parseInt(currentGenreFilter);
             sourceList = cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(gId));
@@ -1017,9 +718,7 @@
         if (currentPage < 1) currentPage = 1;
 
         const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
-        const pageItems = sourceList.slice(startIdx, startIdx + ITEMS_PER_PAGE);
-
-        renderGridCards('catalogGrid', pageItems);
+        renderGridCards('catalogGrid', sourceList.slice(startIdx, startIdx + ITEMS_PER_PAGE));
         renderPaginationControls(totalPages, currentPage, (p) => renderCatalogPage(p), 'paginationContainer');
     }
 
@@ -1030,35 +729,20 @@
         if (russianCurrentPage < 1) russianCurrentPage = 1;
 
         const startIdx = (russianCurrentPage - 1) * ITEMS_PER_PAGE;
-        const pageItems = russianCatalog.slice(startIdx, startIdx + ITEMS_PER_PAGE);
-
-        renderGridCards('russianGrid', pageItems);
+        renderGridCards('russianGrid', russianCatalog.slice(startIdx, startIdx + ITEMS_PER_PAGE));
         renderPaginationControls(totalPages, russianCurrentPage, (p) => renderRussianPage(p), 'russianPaginationContainer');
-    }
-
-    function renderThrillersPage(page = 1) {
-        thrillersCurrentPage = page;
-        const totalPages = Math.ceil(thrillersCatalog.length / ITEMS_PER_PAGE) || 1;
-        if (thrillersCurrentPage > totalPages) thrillersCurrentPage = totalPages;
-        if (thrillersCurrentPage < 1) thrillersCurrentPage = 1;
-
-        const startIdx = (thrillersCurrentPage - 1) * ITEMS_PER_PAGE;
-        const pageItems = thrillersCatalog.slice(startIdx, startIdx + ITEMS_PER_PAGE);
-
-        renderGridCards('thrillersGrid', pageItems);
-        renderPaginationControls(totalPages, thrillersCurrentPage, (p) => renderThrillersPage(p), 'thrillersPaginationContainer');
     }
 
     function renderGridCards(containerId, list) {
         const c = document.getElementById(containerId);
         if(!c) return;
         c.innerHTML = '';
-        if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 4; padding:20px;">Ничего не найдено в данной категории.</p>'; return; }
+        if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 5; padding:15px;">Ничего не найдено.</p>'; return; }
         
         list.forEach(m => {
             const title = m.title || m.name || 'Без названия';
             const year = (m.release_date || m.first_air_date || '2026').substring(0, 4);
-            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w300${m.poster_path}` : '';
+            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w200${m.poster_path}` : '';
             const rating = m.vote_average ? m.vote_average.toFixed(1) : '8.0';
             if(!poster) return;
 
@@ -1066,7 +750,7 @@
             card.className = 'grid-card';
             card.tabIndex = 0;
             card.innerHTML = `
-                <img src="${poster}" alt="${title}" loading="lazy" decoding="async">
+                <img src="${poster}" alt="${title}" loading="lazy">
                 <div class="grid-card-info">
                     <div class="grid-card-title">${title}</div>
                     <div class="grid-card-meta">
@@ -1084,7 +768,6 @@
         const pContainer = document.getElementById(containerId);
         if(!pContainer) return;
         pContainer.innerHTML = '';
-
         if(totalPages <= 1) return;
 
         let prevBtn = document.createElement('button');
@@ -1092,13 +775,12 @@
         prevBtn.innerText = '← Назад';
         prevBtn.tabIndex = 0;
         prevBtn.disabled = currentPg === 1;
-        prevBtn.style.opacity = currentPg === 1 ? '0.5' : '1';
         prevBtn.onclick = () => { if(currentPg > 1) { callback(currentPg - 1); window.scrollTo({top:0, behavior:'smooth'}); } };
         pContainer.appendChild(prevBtn);
 
         let infoSpan = document.createElement('span');
-        infoSpan.style.cssText = 'font-size: 13px; color: var(--text-muted); font-weight: bold;';
-        infoSpan.innerText = `Сторінка ${currentPg} із ${totalPages}`;
+        infoSpan.style.cssText = 'font-size: 12px; color: var(--text-muted); font-weight: bold;';
+        infoSpan.innerText = `Сторінка ${currentPg} із ${totalPages} (по 10)`;
         pContainer.appendChild(infoSpan);
 
         let nextBtn = document.createElement('button');
@@ -1106,7 +788,6 @@
         nextBtn.innerText = 'Вперед →';
         nextBtn.tabIndex = 0;
         nextBtn.disabled = currentPg === totalPages;
-        nextBtn.style.opacity = currentPg === totalPages ? '0.5' : '1';
         nextBtn.onclick = () => { if(currentPg < totalPages) { callback(currentPg + 1); window.scrollTo({top:0, behavior:'smooth'}); } };
         pContainer.appendChild(nextBtn);
     }
@@ -1120,13 +801,10 @@
             card.className = 'grid-card';
             card.tabIndex = 0;
             card.innerHTML = `
-                <div style="height:140px; background:linear-gradient(135deg, #201a30, #0f0f18); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:15px;">
-                    <div style="font-size:32px; margin-bottom:8px;">📻</div>
-                    <div style="font-weight:bold; font-size:14px; color:#fff;">${r.name}</div>
-                    <div style="font-size:11px; color:var(--netflix-red); margin-top:4px;">${r.genre}</div>
-                </div>
-                <div class="grid-card-info" style="text-align:center;">
-                    <div style="font-size:12px; color:#46d369; font-weight:bold;">▶ Слухати ефір</div>
+                <div style="height:120px; background:linear-gradient(135deg, #201a30, #0f0f18); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:10px;">
+                    <div style="font-size:28px; margin-bottom:6px;">📻</div>
+                    <div style="font-weight:bold; font-size:13px; color:#fff;">${r.name}</div>
+                    <div style="font-size:10px; color:var(--netflix-red); margin-top:3px;">${r.genre}</div>
                 </div>
             `;
             card.onclick = () => { playRadioStream(r); };
@@ -1135,24 +813,18 @@
     }
 
     function playRadioStream(station) {
-        openPlayer(`Українське Радіо: ${station.name}`);
+        openPlayer(`Радіо: ${station.name}`);
         const container = document.getElementById('playerContainerInner');
         container.innerHTML = `
-            <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; height:100%; background: radial-gradient(circle, #181824 0%, #070709 100%);">
-                <div style="font-size:64px; margin-bottom:20px;">🇺🇦📻</div>
-                <div style="font-size:24px; font-weight:bold; color:#fff; margin-bottom:8px;">${station.name}</div>
-                <div style="font-size:14px; color:var(--netflix-red); margin-bottom:25px;">${station.genre} • Прямий ефір</div>
-                <audio id="audioStream" controls autoplay style="width:300px; outline:none;" tabindex="0">
-                    <source src="${station.url}" type="audio/aac">
+            <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; height:100%; background: #070709;">
+                <div style="font-size:48px; margin-bottom:15px;">📻</div>
+                <div style="font-size:20px; font-weight:bold; color:#fff; margin-bottom:6px;">${station.name}</div>
+                <audio controls autoplay style="width:280px; outline:none;" tabindex="0">
                     <source src="${station.url}" type="audio/mpeg">
-                    Ваш браузер не підтримує аудіоплеєр.
                 </audio>
             </div>
         `;
     }
-
-    function renderMyListGrid() { renderGridCards('myListGrid', getMyListItems()); }
-    function renderHistoryGrid() { renderGridCards('historyGrid', getHistoryItems()); }
 
     function filterByGenre(genreId, el) {
         document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active'));
@@ -1165,7 +837,7 @@
         document.getElementById('roulette-modal-overlay').style.display = 'flex';
         document.getElementById('rouletteResultCard').style.display = 'none';
         setTimeout(() => {
-            const first = document.querySelector('#roulette-modal-overlay .roulette-chip');
+            const first = document.querySelector('#roulette-modal-overlay .lampa-btn');
             if(first) { first.focus(); currentFocusIndex = 0; updateTvFocus(); }
         }, 100);
     }
@@ -1179,97 +851,37 @@
         if(e.target.id === 'roulette-modal-overlay') closeRouletteModal();
     }
 
-    function setRouletteGenre(genreId, el) {
-        document.querySelectorAll('.roulette-chip').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-        rouletteGenre = genreId;
-    }
-
     function spinRoulette() {
         let pool = cachedCatalog;
-        if(rouletteGenre !== 'all') {
-            let gId = parseInt(rouletteGenre);
-            pool = cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(gId));
-        }
-        if(!pool.length) {
-            showToast('В этой категории нет фильмов');
-            return;
-        }
-
-        let count = 0;
-        let interval = setInterval(() => {
-            let randItem = pool[Math.floor(Math.random() * pool.length)];
-            let title = randItem.title || randItem.name || 'Фильм';
-            let poster = randItem.poster_path ? `https://image.tmdb.org/t/p/w300${randItem.poster_path}` : '';
-            
-            document.getElementById('rouletteTitle').innerText = title;
-            document.getElementById('roulettePoster').src = poster;
-            document.getElementById('rouletteResultCard').style.display = 'flex';
-            
-            count++;
-            if(count > 8) {
-                clearInterval(interval);
-                document.getElementById('rouletteWatchBtn').onclick = () => {
-                    closeRouletteModal();
-                    openModal(randItem.id, randItem);
-                };
-                showToast('Фильм выбран!');
-            }
-        }, 100);
-    }
-
-    function getSearchHistory() { return JSON.parse(localStorage.getItem('searchHistoryUltimate') || '[]'); }
-
-    function showSearchHistory() {
-        let history = getSearchHistory();
-        const drop = document.getElementById('searchHistoryDropdown');
-        if(!history.length) { drop.style.display = 'none'; return; }
-
-        drop.innerHTML = '<div style="padding:5px 10px; font-size:10px; color:var(--netflix-red); font-weight:bold;">История запросов:</div>';
-        history.forEach(term => {
-            drop.innerHTML += `<div class="search-history-item" tabindex="0" onclick="selectSearchTerm('${term}')">${term}</div>`;
-        });
-        drop.style.display = 'block';
-    }
-
-    function selectSearchTerm(term) {
-        document.getElementById('searchInput').value = term;
-        document.getElementById('searchHistoryDropdown').style.display = 'none';
-        handleSearch(term);
+        if(!pool.length) return;
+        let randItem = pool[Math.floor(Math.random() * pool.length)];
+        let title = randItem.title || randItem.name || 'Фильм';
+        let poster = randItem.poster_path ? `https://image.tmdb.org/t/p/w200${randItem.poster_path}` : '';
+        
+        document.getElementById('rouletteTitle').innerText = title;
+        document.getElementById('roulettePoster').src = poster;
+        document.getElementById('rouletteResultCard').style.display = 'flex';
+        
+        document.getElementById('rouletteWatchBtn').onclick = () => {
+            closeRouletteModal();
+            openModal(randItem.id, randItem);
+        };
     }
 
     function handleSearch(query) {
-        const drop = document.getElementById('searchHistoryDropdown');
-        if(!query.trim()) {
-            drop.style.display = 'none';
-            renderCatalogPage(1);
-            return;
-        }
-
-        let history = getSearchHistory().filter(item => item !== query);
-        history.unshift(query);
-        if(history.length > 5) history.pop();
-        localStorage.setItem('searchHistoryUltimate', JSON.stringify(history));
-
+        if(!query.trim()) { renderCatalogPage(1); return; }
         let localMatch = cachedCatalog.filter(i => (i.title || i.name || '').toLowerCase().includes(query.toLowerCase()));
         renderGridCards('catalogGrid', localMatch);
         document.getElementById('paginationContainer').innerHTML = '';
     }
 
-    window.addEventListener('click', (e) => {
-        if(!e.target.closest('.search-wrapper')) {
-            const drop = document.getElementById('searchHistoryDropdown');
-            if(drop) drop.style.display = 'none';
-        }
-    });
-
     function openModal(id, itemData) {
-        let m = itemData || cachedCatalog.find(i => i.id === id) || russianCatalog.find(i => i.id === id) || thrillersCatalog.find(i => i.id === id);
+        let m = itemData || cachedCatalog.find(i => i.id === id);
         if(!m) return;
 
         const title = m.title || m.name || 'Фильм';
         const year = (m.release_date || m.first_air_date || '2026').substring(0, 4);
-        const poster = m.backdrop_path ? `https://image.tmdb.org/t/p/w1280${m.backdrop_path}` : (m.poster_path ? `https://image.tmdb.org/t/p/w780${m.poster_path}` : '');
+        const poster = m.backdrop_path ? `https://image.tmdb.org/t/p/w780${m.backdrop_path}` : (m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '');
         const rating = m.vote_average ? m.vote_average.toFixed(1) : '8.0';
         const desc = m.overview || 'Описание отсутствует.';
 
@@ -1282,9 +894,9 @@
             <div class="lampa-left-pane" style="background-image: url('${poster}');">
                 <div class="lampa-content-info">
                     <div class="lampa-title">${title}</div>
-                    <div class="lampa-tagline">«Мировой хит Netflix»</div>
+                    <div class="lampa-tagline">«Кинохит»</div>
                     <div class="lampa-badges">
-                        <span class="lampa-badge-item" style="color: #46d369;">⭐ ${rating} TMDB</span>
+                        <span class="lampa-badge-item" style="color: #46d369;">⭐ ${rating}</span>
                         <span class="lampa-badge-item">${year}</span>
                     </div>
                     <div class="lampa-desc">${desc}</div>
@@ -1298,13 +910,13 @@
             </div>
             <div class="lampa-sources-pane">
                 <div class="lampa-sources-header">
-                    <span>Выбор качественных серверов CDN</span>
-                    <span style="font-size:10px; color:#46d369;">🟢 4K Ultra HD</span>
+                    <span>Сервер CDN (Легкий поток)</span>
+                    <span style="font-size:9px; color:#46d369;">🟢 HD</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
                     <div class="source-option-card selected" tabindex="0">
-                        <div><div class="source-info-title">🎬 KinoBD HD Player (Основной)</div><div class="source-info-langs">Русская озвучка • 1080p / 4K</div></div>
-                        <span class="server-ping">2ms</span>
+                        <div><div class="source-info-title">🎬 KinoBD Player</div><div class="source-info-langs">Оптимизировано для ТВ</div></div>
+                        <span class="server-ping">1ms</span>
                     </div>
                 </div>
             </div>
@@ -1331,60 +943,25 @@
     function toggleFavorite(item) {
         let list = getMyListItems();
         const idx = list.findIndex(i => i.id === item.id);
-        if(idx > -1) { list.splice(idx, 1); showToast('Удалено из избранного'); }
-        else { list.push(item); showToast('Добавлено в избранное!'); }
+        if(idx > -1) list.splice(idx, 1);
+        else list.push(item);
         localStorage.setItem(`myListUltimate_${activeProfileId}`, JSON.stringify(list));
         openModal(item.id, item);
     }
-
-    let sleepTimerInterval = null;
 
     function openPlayer(titleText) {
         document.getElementById('playerMediaTitle').innerText = titleText;
         updatePlayerFrame(titleText);
         document.getElementById('player-screen').style.display = 'flex';
-        initSleepTimer();
-        
-        // Оптимизация пульта ДУ: фокус сразу на кнопке закрытия плеера
         setTimeout(() => {
             const closeBtn = document.querySelector('.player-close-btn');
-            if(closeBtn) {
-                closeBtn.focus();
-                currentFocusIndex = 0;
-                updateTvFocus();
-            }
+            if(closeBtn) { closeBtn.focus(); currentFocusIndex = 0; updateTvFocus(); }
         }, 200);
-    }
-
-    function initSleepTimer() {
-        if(sleepTimerInterval) clearInterval(sleepTimerInterval);
-        let mins = parseInt(settings.sleepTimer || '0');
-        if(mins <= 0) {
-            document.getElementById('sleepTimerBadge').style.display = 'none';
-            return;
-        }
-
-        document.getElementById('sleepTimerBadge').style.display = 'flex';
-        let totalSeconds = mins * 60;
-
-        sleepTimerInterval = setInterval(() => {
-            totalSeconds--;
-            let m = Math.floor(totalSeconds / 60);
-            let s = totalSeconds % 60;
-            document.getElementById('sleepTimerCountdown').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-
-            if(totalSeconds <= 0) {
-                clearInterval(sleepTimerInterval);
-                closePlayer();
-                showToast('Таймер сна сработал');
-            }
-        }, 1000);
     }
 
     function updatePlayerFrame(titleText) {
         const container = document.getElementById('playerContainerInner');
-        if (titleText.startsWith('Українське Радіо:')) return;
-
+        if (titleText.startsWith('Радіо:')) return;
         container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" id="kinobd" style="width:100%; height:100%;" tabindex="0"></div>`;
 
         const oldScript = document.getElementById('kinobd-script');
@@ -1394,12 +971,10 @@
         script.id = 'kinobd-script';
         script.src = 'https://kinobd.net/js/player_.js';
         script.async = true;
-        script.crossOrigin = "anonymous";
         document.body.appendChild(script);
     }
 
     function closePlayer() {
-        if(sleepTimerInterval) clearInterval(sleepTimerInterval);
         const container = document.getElementById('playerContainerInner');
         container.innerHTML = '';
         const oldScript = document.getElementById('kinobd-script');
@@ -1411,51 +986,28 @@
     let currentFocusIndex = 0;
 
     function getFocusableElements() {
-        const profileScreenOpen = document.getElementById('profile-selection-screen').style.display === 'flex';
-        const rouletteOpen = document.getElementById('roulette-modal-overlay').style.display === 'flex';
-        const modalOpen = document.getElementById('modal-overlay').style.display === 'flex';
-        const playerOpen = document.getElementById('player-screen').style.display === 'flex';
-
-        if (profileScreenOpen) {
-            return Array.from(document.querySelectorAll('#profile-selection-screen button, #profile-selection-screen [tabindex="0"]'));
-        }
-        if (rouletteOpen) {
-            return Array.from(document.querySelectorAll('#roulette-modal-overlay button, #roulette-modal-overlay [tabindex="0"]'));
-        }
-        if (playerOpen) {
-            // Оптимизированный фокус для плеера с пульта ДУ (кнопки панели плеера и встроенные элементы)
-            return Array.from(document.querySelectorAll('#player-screen button, #player-screen [tabindex="0"], #player-screen audio, #player-screen iframe, #player-screen video'));
-        }
-        if (modalOpen) {
-            return Array.from(document.querySelectorAll('#modal-overlay button, #modal-overlay [tabindex="0"]'));
-        }
+        if (document.getElementById('profile-selection-screen').style.display === 'flex') return Array.from(document.querySelectorAll('#profile-selection-screen button, #profile-selection-screen [tabindex="0"]'));
+        if (document.getElementById('roulette-modal-overlay').style.display === 'flex') return Array.from(document.querySelectorAll('#roulette-modal-overlay button, #roulette-modal-overlay [tabindex="0"]'));
+        if (document.getElementById('player-screen').style.display === 'flex') return Array.from(document.querySelectorAll('#player-screen button, #player-screen [tabindex="0"]'));
+        if (document.getElementById('modal-overlay').style.display === 'flex') return Array.from(document.querySelectorAll('#modal-overlay button, #modal-overlay [tabindex="0"]'));
         
         const activeSection = document.querySelector('.view-section.active');
         if (!activeSection) return [];
 
         const headerElements = Array.from(document.querySelectorAll('.logo, .nav-links li, .user-profile'));
-        const activeElements = Array.from(activeSection.querySelectorAll('button, input, select, .movie-card, .grid-card, .genre-chip, .setting-row'))
-            .filter(el => {
-                let rect = el.getBoundingClientRect();
-                return rect.width > 0 && rect.height > 0;
-            });
-
+        const activeElements = Array.from(activeSection.querySelectorAll('button, input, select, .movie-card, .grid-card, .genre-chip, .setting-row'));
         return [...headerElements, ...activeElements];
     }
 
     function focusFirstElementInView() {
         const focusables = getFocusableElements();
-        if (focusables.length > 0) {
-            currentFocusIndex = 0;
-            updateTvFocus();
-        }
+        if (focusables.length > 0) { currentFocusIndex = 0; updateTvFocus(); }
     }
 
     function updateTvFocus() {
         const focusables = getFocusableElements();
         document.querySelectorAll('.tv-focused').forEach(el => el.classList.remove('tv-focused'));
         if (focusables.length === 0) return;
-
         if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
         if (currentFocusIndex < 0) currentFocusIndex = 0;
 
@@ -1463,76 +1015,32 @@
         if (el) {
             el.classList.add('tv-focused');
             el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-            if (typeof el.focus === 'function' && el !== document.activeElement) {
-                try { el.focus(); } catch(e) {}
-            }
+            try { el.focus(); } catch(e) {}
         }
     }
 
     window.addEventListener('keydown', function(event) {
         const focusables = getFocusableElements();
         if (focusables.length === 0) return;
-
         let handled = false;
 
         switch(event.key) {
-            case 'ArrowRight':
-                currentFocusIndex++;
-                if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
-                handled = true;
-                break;
-            case 'ArrowLeft':
-                currentFocusIndex--;
-                if (currentFocusIndex < 0) currentFocusIndex = 0;
-                handled = true;
-                break;
-            case 'ArrowDown':
-                currentFocusIndex += 4;
-                if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
-                handled = true;
-                break;
-            case 'ArrowUp':
-                currentFocusIndex -= 4;
-                if (currentFocusIndex < 0) currentFocusIndex = 0;
-                handled = true;
-                break;
+            case 'ArrowRight': currentFocusIndex++; if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1; handled = true; break;
+            case 'ArrowLeft': currentFocusIndex--; if (currentFocusIndex < 0) currentFocusIndex = 0; handled = true; break;
+            case 'ArrowDown': currentFocusIndex += 5; if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1; handled = true; break;
+            case 'ArrowUp': currentFocusIndex -= 5; if (currentFocusIndex < 0) currentFocusIndex = 0; handled = true; break;
             case 'Enter':
             case ' ':
-            case 'MediaPlayPause':
                 const active = focusables[currentFocusIndex] || document.activeElement;
-                if (active) {
-                    if (active.classList && active.classList.contains('setting-row')) {
-                        const inputOrSelect = active.querySelector('input, select');
-                        if (inputOrSelect) {
-                            inputOrSelect.focus();
-                            if (inputOrSelect.tagName === 'SELECT') inputOrSelect.click();
-                        }
-                    } else if (typeof active.click === 'function') {
-                        active.click();
-                    }
-                    handled = true;
-                }
+                if (active) { active.click(); handled = true; }
                 break;
             case 'Escape':
-            case 'BrowserBack':
             case 'Backspace':
-                if (document.getElementById('player-screen').style.display === 'flex') {
-                    closePlayer();
-                    handled = true;
-                } else if (document.getElementById('roulette-modal-overlay').style.display === 'flex') {
-                    closeRouletteModal();
-                    handled = true;
-                } else if (document.getElementById('modal-overlay').style.display === 'flex') {
-                    closeModal();
-                    handled = true;
-                }
+                if (document.getElementById('player-screen').style.display === 'flex') { closePlayer(); handled = true; }
+                else if (document.getElementById('modal-overlay').style.display === 'flex') { closeModal(); handled = true; }
                 break;
         }
-
-        if (handled) {
-            event.preventDefault();
-            updateTvFocus();
-        }
+        if (handled) { event.preventDefault(); updateTvFocus(); }
     });
 </script>
 </body>
