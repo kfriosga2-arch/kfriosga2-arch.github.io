@@ -984,9 +984,14 @@
         }
 
         setTimeout(() => {
-            const iframe = document.querySelector('#playerContainerInner iframe');
-            if(iframe) iframe.focus();
-        }, 1500);
+            // Фокус сразу на первую кнопку в плеере («На весь экран») для удобства управления пульт-ТВ
+            const firstPlayerBtn = document.querySelector('#player-screen .player-fullscreen-btn');
+            if (firstPlayerBtn) {
+                firstPlayerBtn.focus();
+                currentFocusIndex = 0;
+                updateTvFocus();
+            }
+        }, 500);
     }
 
     // Функция переключения полноэкранного режима по кнопке внутри плеера
