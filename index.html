@@ -15,7 +15,7 @@
             --bg-gradient: linear-gradient(135deg, #070709 0%, #12121a 100%);
         }
 
-        /* Динамические живые темы оформления */
+        /* Темы оформления (живые анимации удалены для оптимизации)[cite: 7] */
         body.theme-cyberpunk {
             --bg-dark: #050508;
             --bg-card: #0c0c16;
@@ -23,8 +23,6 @@
             --text-main: #f0fbff;
             --text-muted: #6b8c99;
             --bg-gradient: linear-gradient(120deg, #050508, #100520, #002233);
-            background-size: 400% 400%;
-            animation: liveGradient 15s ease infinite;
         }
 
         body.theme-gold {
@@ -34,8 +32,6 @@
             --text-main: #fffdf5;
             --text-muted: #998a6b;
             --bg-gradient: linear-gradient(120deg, #100c06, #2a1b05, #140d02);
-            background-size: 400% 400%;
-            animation: liveGradient 15s ease infinite;
         }
 
         body.theme-emerald {
@@ -45,8 +41,6 @@
             --text-main: #f0fff8;
             --text-muted: #6b9986;
             --bg-gradient: linear-gradient(120deg, #04100c, #02261a, #010f0a);
-            background-size: 400% 400%;
-            animation: liveGradient 15s ease infinite;
         }
 
         body.theme-amethyst {
@@ -56,8 +50,6 @@
             --text-main: #fbf0ff;
             --text-muted: #946b99;
             --bg-gradient: linear-gradient(120deg, #0d0610, #240833, #0a0210);
-            background-size: 400% 400%;
-            animation: liveGradient 15s ease infinite;
         }
 
         body.theme-aurora {
@@ -67,8 +59,6 @@
             --text-main: #e6ffff;
             --text-muted: #6b9999;
             --bg-gradient: linear-gradient(-45deg, #020b14, #05263b, #001a1a, #003326);
-            background-size: 400% 400%;
-            animation: liveGradient 12s ease infinite;
         }
 
         body.theme-fire {
@@ -78,14 +68,6 @@
             --text-main: #fff0f0;
             --text-muted: #996b6b;
             --bg-gradient: linear-gradient(135deg, #140505, #380d0d, #1a0303, #4d1a00);
-            background-size: 400% 400%;
-            animation: liveGradient 10s ease infinite;
-        }
-
-        @keyframes liveGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         body {
@@ -108,7 +90,7 @@
             font-size: 48px; font-weight: 900; color: #E50914; font-family: Arial, sans-serif; letter-spacing: 2px;
         }
 
-        /* Экран выбора профилей в стиле Netflix */
+        /* Экран выбора профилей в стиле Netflix[cite: 7] */
         #profile-selection-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark); z-index: 88888; display: none;
@@ -222,7 +204,7 @@
         .search-history-item { padding: 8px 12px; font-size: 12px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); outline: none; }
         .search-history-item:hover, .search-history-item.tv-focused { background: rgba(229,9,20,0.3); color: #fff; outline: 2px solid #fff; }
 
-        /* Модальные окна */
+        /* Модальные окна[cite: 7] */
         #modal-overlay, #roulette-modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
@@ -265,7 +247,7 @@
         .modal-close-abs { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
         .modal-close-abs:hover, .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
 
-        /* Окно рулетки (Рандомайзера) */
+        /* Окно рулетки (Рандомайзера)[cite: 7] */
         .roulette-box {
             background: var(--bg-card); width: 550px; max-width: 90vw; padding: 30px; border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.15); text-align: center; position: relative;
@@ -495,17 +477,17 @@
         </div>
         <div class="setting-row" tabindex="0">
             <div>
-                <span>Живая тема интерфейса</span>
-                <div class="setting-desc">Динамические переливающиеся фоны, приятные для глаз.</div>
+                <span>Тема интерфейса (Статическая)</span>
+                <div class="setting-desc">Цветовая гамма без живых фоновых анимаций.</div>
             </div>
             <select id="settingTheme" onchange="saveSettings()">
                 <option value="netflix">🔴 Классический Netflix</option>
-                <option value="cyberpunk">⚡ Живой Киберпанк (Неон)</option>
-                <option value="gold">🪙 Золотой Живой Закат</option>
-                <option value="emerald">🟢 Изумрудная Живая Аврора</option>
-                <option value="amethyst">🟣 Аметистовая Живая Ночь</option>
-                <option value="aurora">🌌 Северное Сияние (Живая)</option>
-                <option value="fire">🔥 Огненная Стихия (Живая)</option>
+                <option value="cyberpunk">⚡ Киберпанк (Неон)</option>
+                <option value="gold">🪙 Золотой Закат</option>
+                <option value="emerald">🟢 Изумрудная Аврора</option>
+                <option value="amethyst">🟣 Аметистовая Ночь</option>
+                <option value="aurora">🌌 Северное Сияние</option>
+                <option value="fire">🔥 Огненная Стихия</option>
             </select>
         </div>
 
@@ -563,7 +545,7 @@
         <div class="setting-row" tabindex="0">
             <div>
                 <span>Режим энергосбережения / Охлаждение ТВ</span>
-                <div class="setting-desc">Ограничивает фоновые процессы и анимации во избежание перегрева бокса.</div>
+                <div class="setting-desc">Ограничивает фоновые процессы во избежание перегрева бокса.</div>
             </div>
             <select id="settingEcoMode" onchange="saveSettings()">
                 <option value="off">Выключен</option>
@@ -698,8 +680,9 @@
 
     // Управление профилями
     let profiles = JSON.parse(localStorage.getItem('netflixProfilesList') || JSON.stringify([
-        { id: 'profile_andrey', name: 'Андрей', avatar: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=500' },
-        { id: 'profile_family', name: 'Семья', avatar: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500' },
+        { id: 'profile_andrey', name: 'Андрей', avatar: 'https://i.imgur.com/3Z6K6y5.png' },
+        { id: 'profile_family', name: 'Семья', avatar: 'https://i.pinimg.com/474x/59/8d/5e/598d5e7e2f1e878f9f3ccab792a97ab1.jpg' },
+        { id: 'profile_guest', name: 'Гость', avatar: 'https://i.imgur.com/3Z6K6y5.png' }
     ]));
 
     let activeProfileId = localStorage.getItem('netflixActiveProfileId') || 'profile_andrey';
@@ -734,7 +717,6 @@
         effects: "on"
     }));
 
-    // Синхронизируем имя активного профиля с настройками
     let currentProf = getActiveProfile();
     settings.username = currentProf.name;
 
@@ -750,8 +732,6 @@
         setTimeout(() => {
             const intro = document.getElementById('intro-screen');
             if(intro) intro.remove();
-            
-            // Показываем экран выбора профилей при старте
             showProfileSelection();
         }, 800);
         
@@ -802,7 +782,6 @@
         document.getElementById('profile-selection-screen').style.display = 'none';
         showToast(`Добро пожаловать, ${prof.name}!`);
         
-        // Перерендерим списки для текущего профиля
         initHome();
         setTimeout(() => focusFirstElementInView(), 300);
     }
@@ -854,7 +833,6 @@
         if(document.getElementById('settingGridSize')) settings.gridSize = document.getElementById('settingGridSize').value;
         if(document.getElementById('settingEffects')) settings.effects = document.getElementById('settingEffects').value;
 
-        // Обновим имя в текущем профиле
         let prof = getActiveProfile();
         prof.name = settings.username;
         localStorage.setItem('netflixProfilesList', JSON.stringify(profiles));
@@ -982,7 +960,6 @@
         document.getElementById('heroInfoBtn').onclick = () => { openModal(randomItem.id, randomItem); };
     }
 
-    // Изоляция списков под активный профиль
     function getMyListItems() { 
         return JSON.parse(localStorage.getItem(`myListUltimate_${activeProfileId}`) || '[]'); 
     }
@@ -1164,7 +1141,7 @@
                 <div style="font-size:64px; margin-bottom:20px;">🇺🇦📻</div>
                 <div style="font-size:24px; font-weight:bold; color:#fff; margin-bottom:8px;">${station.name}</div>
                 <div style="font-size:14px; color:var(--netflix-red); margin-bottom:25px;">${station.genre} • Прямий ефір</div>
-                <audio id="audioStream" controls autoplay style="width:300px; outline:none;">
+                <audio id="audioStream" controls autoplay style="width:300px; outline:none;" tabindex="0">
                     <source src="${station.url}" type="audio/aac">
                     <source src="${station.url}" type="audio/mpeg">
                     Ваш браузер не підтримує аудіоплеєр.
@@ -1183,7 +1160,6 @@
         renderCatalogPage(1);
     }
 
-    // Логика Рандомайзера (Рулетки)
     function openRouletteModal() {
         document.getElementById('roulette-modal-overlay').style.display = 'flex';
         document.getElementById('rouletteResultCard').style.display = 'none';
@@ -1219,7 +1195,6 @@
             return;
         }
 
-        // Анимация подбора (несколько случайных мельканий перед выдачей)
         let count = 0;
         let interval = setInterval(() => {
             let randItem = pool[Math.floor(Math.random() * pool.length)];
@@ -1233,7 +1208,6 @@
             count++;
             if(count > 8) {
                 clearInterval(interval);
-                // Финальный выбор
                 document.getElementById('rouletteWatchBtn').onclick = () => {
                     closeRouletteModal();
                     openModal(randItem.id, randItem);
@@ -1369,9 +1343,15 @@
         updatePlayerFrame(titleText);
         document.getElementById('player-screen').style.display = 'flex';
         initSleepTimer();
+        
+        // Оптимизация пульта ДУ: фокус сразу на кнопке закрытия плеера
         setTimeout(() => {
             const closeBtn = document.querySelector('.player-close-btn');
-            if(closeBtn) closeBtn.focus();
+            if(closeBtn) {
+                closeBtn.focus();
+                currentFocusIndex = 0;
+                updateTvFocus();
+            }
         }, 200);
     }
 
@@ -1404,7 +1384,7 @@
         const container = document.getElementById('playerContainerInner');
         if (titleText.startsWith('Українське Радіо:')) return;
 
-        container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" id="kinobd" style="width:100%; height:100%;"></div>`;
+        container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" id="kinobd" style="width:100%; height:100%;" tabindex="0"></div>`;
 
         const oldScript = document.getElementById('kinobd-script');
         if(oldScript) oldScript.remove();
@@ -1442,7 +1422,8 @@
             return Array.from(document.querySelectorAll('#roulette-modal-overlay button, #roulette-modal-overlay [tabindex="0"]'));
         }
         if (playerOpen) {
-            return Array.from(document.querySelectorAll('#player-screen button, #player-screen [tabindex="0"], #player-screen audio'));
+            // Оптимизированный фокус для плеера с пульта ДУ (кнопки панели плеера и встроенные элементы)
+            return Array.from(document.querySelectorAll('#player-screen button, #player-screen [tabindex="0"], #player-screen audio, #player-screen iframe, #player-screen video'));
         }
         if (modalOpen) {
             return Array.from(document.querySelectorAll('#modal-overlay button, #modal-overlay [tabindex="0"]'));
@@ -1481,6 +1462,9 @@
         if (el) {
             el.classList.add('tv-focused');
             el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            if (typeof el.focus === 'function' && el !== document.activeElement) {
+                try { el.focus(); } catch(e) {}
+            }
         }
     }
 
