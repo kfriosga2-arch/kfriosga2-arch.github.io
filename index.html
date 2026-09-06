@@ -1065,7 +1065,7 @@
         }
     }
 
-    // ИСПРАВЛЕННАЯ ФУНКЦИЯ ДЛЯ УСТРАНЕНИЯ ДВОЙНОГО ОДКРЫТИЯ И ЗВУКА НА ANDROID 9 (Grunhelm)
+    // ИСПРАВЛЕННАЯ ФУНКЦИЯ С DOM MUTATION OBSERVER ДЛЯ БЛОКИРОВКИ ДУБЛЕЙ
     function updatePlayerFrame(titleText) {
         const container = document.getElementById('playerContainerInner');
         if (titleText.startsWith('Радіо:')) return;
@@ -1075,7 +1075,26 @@
         const oldScript = document.getElementById('kinobd-script');
         if(oldScript) oldScript.remove();
 
-        // 2. Делаем задержку для выгрузки потока на слабых WebView старых версий Android
+        // 2. Настраиваем MutationObserver для жесткой блокировки дублей внутри контейнера
+        if (window._playerObserver) {
+            window._playerObserver.disconnect();
+        }
+        
+        window._playerObserver = new MutationObserver((mutations) => {
+            const players = container.querySelectorAll('#kinobd, iframe, video, audio, object, embed');
+            if (players.length > 1) {
+                // Оставляем только первый элемент, остальные мгновенно уничтожаем
+                for (let i = 1; i < players.length; i++) {
+                    players[i].pause && players[i].pause();
+                    players[i].volume = 0;
+                    players[i].remove();
+                }
+            }
+        });
+
+        window._playerObserver.observe(container, { childList: true, subtree: true });
+
+        // 3. Делаем задержку для выгрузки потока на слабых WebView старых версий Android
         setTimeout(() => {
             const playerDiv = document.createElement('div');
             playerDiv.id = 'kinobd';
@@ -1095,6 +1114,11 @@
     }
 
     function closePlayer() {
+        if (window._playerObserver) {
+            window._playerObserver.disconnect();
+            window._playerObserver = null;
+        }
+
         const container = document.getElementById('playerContainerInner');
         container.innerHTML = '';
         const oldScript = document.getElementById('kinobd-script');
@@ -1242,3 +1266,4 @@
 </script>
 </body>
 </html>
+```[cite: 3]
