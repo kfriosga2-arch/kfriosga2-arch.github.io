@@ -15,7 +15,7 @@
             --bg-gradient: linear-gradient(135deg, #070709 0%, #12121a 100%);
         }
 
-        /* Темы оформления (живые анимации удалены для оптимизации)[cite: 7] */
+        /* Темы оформления (живые анимации удалены для оптимизации) */
         body.theme-cyberpunk {
             --bg-dark: #050508;
             --bg-card: #0c0c16;
@@ -90,7 +90,7 @@
             font-size: 48px; font-weight: 900; color: #E50914; font-family: Arial, sans-serif; letter-spacing: 2px;
         }
 
-        /* Экран выбора профилей в стиле Netflix[cite: 7] */
+        /* Экран выбора профилей в стиле Netflix */
         #profile-selection-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark); z-index: 88888; display: none;
@@ -204,7 +204,7 @@
         .search-history-item { padding: 8px 12px; font-size: 12px; cursor: pointer; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); outline: none; }
         .search-history-item:hover, .search-history-item.tv-focused { background: rgba(229,9,20,0.3); color: #fff; outline: 2px solid #fff; }
 
-        /* Модальные окна[cite: 7] */
+        /* Модальные окна */
         #modal-overlay, #roulette-modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
@@ -247,7 +247,7 @@
         .modal-close-abs { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
         .modal-close-abs:hover, .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
 
-        /* Окно рулетки (Рандомайзера)[cite: 7] */
+        /* Окно рулетки (Рандомайзера) */
         .roulette-box {
             background: var(--bg-card); width: 550px; max-width: 90vw; padding: 30px; border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.15); text-align: center; position: relative;
@@ -276,7 +276,8 @@
         .player-close-btn:hover, .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
 
         .player-container-inner { position: relative; width: 100%; flex: 1; background: #000; display: flex; justify-content: center; align-items: center; }
-        .player-container-inner > div { width: 100% !important; height: 100% !important; }
+        /* Уменьшаем плеер кинобд на 10 процентов (ширина и высота по 90% и центрирование) */
+        .player-container-inner > div { width: 90% !important; height: 90% !important; margin: auto; }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
