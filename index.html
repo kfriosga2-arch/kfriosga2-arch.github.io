@@ -32,7 +32,6 @@
             margin: 0; padding: 0;
             user-select: none;
             min-height: 100vh;
-            /* Уменьшаем базовый масштаб для телевизоров с крупным отображением */
             font-size: 13px;
         }
 
@@ -233,7 +232,6 @@
         .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 3px 10px; border-radius: 3px; font-weight: bold; font-size: 10px; cursor: pointer; outline: none; }
         .player-close-btn.tv-focused { outline: 2px solid #fff; background: #ff1e2b; }
 
-        /* ИСПРАВЛЕНИЕ: Заменяем 100vh на фиксированное позиционирование и корректный расчет для Android TV WebView */
         .player-container-inner { 
             position: absolute; 
             top: 35px; 
@@ -505,7 +503,7 @@
     
     let currentPage = 1;
     let russianCurrentPage = 1;
-    const ITEMS_PER_PAGE = 12; // Увеличили количество элементов на страницу под меньший размер сетки
+    const ITEMS_PER_PAGE = 12;
     let currentGenreFilter = 'all';
 
     let profiles = JSON.parse(localStorage.getItem('netflixProfilesList') || JSON.stringify([
@@ -540,7 +538,39 @@
     updateProfileUIElements();
     applyTheme(settings.theme || 'cyberpunk');
 
+    // Поддержка истории браузера для возврата назад по кнопке пультов
+    window.addEventListener('popstate', (event) => {
+        if (document.getElementById('player-screen').style.display === 'flex') {
+            closePlayer();
+            history.pushState({ tab: currentTab }, '', '');
+            return;
+        }
+        if (document.getElementById('modal-overlay').style.display === 'flex') {
+            closeModal();
+            history.pushState({ tab: currentTab }, '', '');
+            return;
+        }
+        if (document.getElementById('roulette-modal-overlay').style.display === 'flex') {
+            closeRouletteModal();
+            history.pushState({ tab: currentTab }, '', '');
+            return;
+        }
+        if (document.getElementById('profile-selection-screen').style.display === 'flex') {
+            history.pushState({ tab: currentTab }, '', '');
+            return;
+        }
+
+        if (event.state && event.state.tab) {
+            switchTab(event.state.tab, null, false);
+        } else {
+            switchTab('home', null, false);
+        }
+    });
+
+    let currentTab = 'home';
+
     window.addEventListener('load', () => {
+        history.replaceState({ tab: 'home' }, '', '');
         setTimeout(() => {
             const intro = document.getElementById('intro-screen');
             if(intro) intro.remove();
@@ -632,11 +662,30 @@
         showToast('Сохранено!');
     }
 
-    function switchTab(tabId, el) {
+    function switchTab(tabId, el, pushState = true) {
+        currentTab = tabId;
+        if (pushState) {
+            history.pushState({ tab: tabId }, '', '');
+        }
+
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         document.getElementById('tab-' + tabId).classList.add('active');
         document.querySelectorAll('.nav-links li').forEach(l => l.classList.remove('active'));
-        if(el) el.classList.add('active');
+        
+        if (el) {
+            el.classList.add('active');
+        } else {
+            // Найти соответствующий элемент навигации по вкладке
+            const map = { 'home': 'navHome', 'catalog': 1, 'russian': 2, 'radio': 3, 'history': 4, 'mylist': 5, 'settings': 6 };
+            // Простейший поиск вкладки для подсветки
+            const navItems = document.querySelectorAll('.nav-links li');
+            navItems.forEach(item => {
+                if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabId)) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
         window.scrollTo({ top: 0, behavior: 'instant' });
 
         if(tabId === 'mylist') renderGridCards('myListGrid', getMyListItems());
@@ -1095,7 +1144,7 @@
         let handled = false;
 
         if (playerScreen && playerScreen.style.display === 'flex') {
-            if (event.key === 'Escape' || event.key === 'Backspace') {
+            if (event.key === 'Escape' || event.key === 'Backspace' || event.keyCode === 8 || event.keyCode === 27) {
                 closePlayer();
                 event.preventDefault();
                 return;
@@ -1106,7 +1155,7 @@
                 case 'ArrowRight':
                     currentFocusIndex++;
                     if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
-                    updateTvFocus(true);
+                    updateTvHeaderOrFocus(true);
                     handled = true;
                     break;
                 case 'ArrowLeft':
@@ -1143,7 +1192,7 @@
                 handled = true;
                 break;
             case 'ArrowDown':
-                currentFocusIndex += 6; // Сетка стала по 6 элементов в ряд
+                currentFocusIndex += 6;
                 if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
                 updateTvFocus(true);
                 handled = true;
@@ -1163,7 +1212,21 @@
                 break;
             case 'Escape':
             case 'Backspace':
-                if (document.getElementById('modal-overlay').style.display === 'flex') { closeModal(); handled = true; }
+                // Перехватываем кнопку «Назад» пульта для программного возврата назад, предотвращая выход из приложения
+                if (document.getElementById('modal-overlay').style.display === 'flex') { 
+                    closeModal(); 
+                    handled = true; 
+                } else if (document.getElementById('roulette-modal-overlay').style.display === 'flex') {
+                    closeRouletteModal();
+                    handled = true;
+                } else if (currentTab !== 'home') {
+                    switchTab('home', document.getElementById('navHome'));
+                    handled = true;
+                } else {
+                    // Если на главной — генерируем имитацию программного возврата истории, блокируя закрытие WebView
+                    history.back();
+                    handled = true;
+                }
                 break;
         }
         if (handled) { event.preventDefault(); }
