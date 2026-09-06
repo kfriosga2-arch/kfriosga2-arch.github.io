@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Ультиматум (Компактный для ТВ)</title>
+    <title>Netflix Ультиматум (ТВ-управление)</title>
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -32,7 +32,6 @@
             margin: 0; padding: 0;
             user-select: none;
             min-height: 100vh;
-            font-size: 13px;
         }
 
         #intro-screen {
@@ -41,26 +40,26 @@
             z-index: 99999; display: flex; justify-content: center; align-items: center;
         }
         .netflix-intro-container {
-            font-size: 38px; font-weight: 900; color: #E50914; font-family: Arial, sans-serif; letter-spacing: 2px;
+            font-size: 48px; font-weight: 900; color: #E50914; font-family: Arial, sans-serif; letter-spacing: 2px;
         }
 
         #profile-selection-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark); z-index: 88888; display: none;
-            flex-direction: column; justify-content: center; align-items: center; padding: 15px;
+            flex-direction: column; justify-content: center; align-items: center; padding: 20px;
         }
-        .profile-title { font-size: 30px; font-weight: bold; margin-bottom: 25px; color: #fff; letter-spacing: 1px; }
-        .profiles-grid { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px; }
+        .profile-title { font-size: 38px; font-weight: bold; margin-bottom: 40px; color: #fff; letter-spacing: 1px; }
+        .profiles-grid { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
         .profile-card {
             display: flex; flex-direction: column; align-items: center; cursor: pointer;
-            background: transparent; border: none; outline: none; padding: 8px; border-radius: 6px;
+            background: transparent; border: none; outline: none; padding: 10px; border-radius: 8px;
         }
         .profile-avatar-wrap {
-            width: 100px; height: 100px; border-radius: 6px; overflow: hidden;
-            border: 2px solid transparent; background: #222;
+            width: 130px; height: 130px; border-radius: 8px; overflow: hidden;
+            border: 3px solid transparent; background: #222;
         }
         .profile-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-name { margin-top: 10px; font-size: 13px; color: var(--text-muted); font-weight: bold; }
+        .profile-name { margin-top: 15px; font-size: 16px; color: var(--text-muted); font-weight: bold; }
         
         .profile-card.tv-focused {
             border-color: #fff; transform: scale(1.05);
@@ -69,101 +68,100 @@
 
         .header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 25px; background: rgba(14, 14, 19, 0.95);
+            padding: 15px 40px; background: rgba(14, 14, 19, 0.95);
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-            height: 45px;
         }
-        .logo-nav { display: flex; align-items: center; gap: 20px; }
+        .logo-nav { display: flex; align-items: center; gap: 30px; }
         
         .logo { 
-            font-size: 22px; font-weight: 900; color: var(--netflix-red); 
+            font-size: 28px; font-weight: 900; color: var(--netflix-red); 
             font-family: Arial, sans-serif; cursor: pointer; 
-            outline: none; padding: 0; border: none; background: transparent; letter-spacing: 2px;
+            outline: none; padding: 0; border: none; background: transparent; letter-spacing: 3px;
         }
         
-        .nav-links { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; font-size: 11px; align-items: center; flex-wrap: wrap; }
-        .nav-links li { cursor: pointer; color: #e5e5e5; outline: none; padding: 3px 8px; border-radius: 3px; }
+        .nav-links { display: flex; gap: 12px; list-style: none; margin: 0; padding: 0; font-size: 13px; align-items: center; flex-wrap: wrap; }
+        .nav-links li { cursor: pointer; color: #e5e5e5; outline: none; padding: 5px 10px; border-radius: 4px; }
         .nav-links li.active { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); }
-        .nav-links li.tv-focused { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); outline: 2px solid #fff; }
+        .nav-links li.tv-focused { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); outline: 3px solid #fff; }
 
         :focus:not(:focus-visible) { outline: none !important; }
 
-        .header-right { display: flex; align-items: center; gap: 10px; font-size: 11px; }
-        .user-profile { display: flex; align-items: center; gap: 6px; cursor: pointer; outline: none; padding: 3px 8px; border-radius: 3px; background: rgba(255,255,255,0.05); }
-        .user-profile.tv-focused { outline: 2px solid #fff; background: rgba(255,255,255,0.15); }
-        .user-profile img { width: 20px; height: 20px; border-radius: 3px; object-fit: cover; }
+        .header-right { display: flex; align-items: center; gap: 15px; font-size: 13px; }
+        .user-profile { display: flex; align-items: center; gap: 8px; cursor: pointer; outline: none; padding: 5px 10px; border-radius: 4px; background: rgba(255,255,255,0.05); }
+        .user-profile.tv-focused { outline: 3px solid #fff; background: rgba(255,255,255,0.15); }
+        .user-profile img { width: 24px; height: 24px; border-radius: 4px; object-fit: cover; }
 
         .hero {
-            height: 48vh; background-size: cover; background-position: center top;
+            height: 60vh; background-size: cover; background-position: center top;
             display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 0 25px 25px 25px; position: relative; margin-top: 45px;
+            padding: 0 40px 40px 40px; position: relative; margin-top: 60px;
         }
         .hero::before {
             content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
             background: linear-gradient(to top, var(--bg-dark) 5%, transparent 70%), rgba(0,0,0,0.4);
         }
         .hero > * { position: relative; z-index: 2; }
-        .hero-title { font-size: 26px; font-weight: bold; line-height: 1.1; margin-bottom: 6px; text-shadow: 2px 2px 6px rgba(0,0,0,0.9); max-width: 500px; }
-        .hero-badge { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: bold; margin-bottom: 6px; color: #fff; }
-        .hero-badge span { background: var(--netflix-red); color: #fff; padding: 1px 5px; border-radius: 2px; font-size: 10px; }
-        .hero-desc { font-size: 11px; max-width: 450px; line-height: 1.3; color: #d1d1d1; margin-bottom: 8px; }
+        .hero-title { font-size: 36px; font-weight: bold; line-height: 1.1; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(0,0,0,0.9); max-width: 600px; }
+        .hero-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; margin-bottom: 10px; color: #fff; }
+        .hero-badge span { background: var(--netflix-red); color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
+        .hero-desc { font-size: 12px; max-width: 500px; line-height: 1.4; color: #d1d1d1; margin-bottom: 12px; }
 
-        .hero-btns { display: flex; gap: 8px; flex-wrap: wrap; }
-        .btn-white { background: white; color: black; border: none; padding: 6px 14px; font-size: 11px; font-weight: bold; border-radius: 3px; cursor: pointer; display: flex; align-items: center; gap: 4px; outline: none; }
-        .btn-white.tv-focused { background: #e0e0e0; outline: 2px solid var(--netflix-red); }
+        .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-white { background: white; color: black; border: none; padding: 8px 20px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+        .btn-white.tv-focused { background: #e0e0e0; outline: 3px solid var(--netflix-red); }
         
-        .btn-gray { background: rgba(109, 109, 110, 0.8); color: white; border: none; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 3px; cursor: pointer; display: flex; align-items: center; gap: 4px; outline: none; }
-        .btn-gray.tv-focused { background: rgba(109, 109, 110, 0.5); outline: 2px solid #fff; }
+        .btn-gray { background: rgba(109, 109, 110, 0.8); color: white; border: none; padding: 8px 16px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+        .btn-gray.tv-focused { background: rgba(109, 109, 110, 0.5); outline: 3px solid #fff; }
 
-        .btn-roulette { background: linear-gradient(135deg, #ff007b, var(--netflix-red)); color: white; border: none; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 3px; cursor: pointer; display: flex; align-items: center; gap: 4px; outline: none; }
-        .btn-roulette.tv-focused { outline: 2px solid #fff; }
+        .btn-roulette { background: linear-gradient(135deg, #ff007b, var(--netflix-red)); color: white; border: none; padding: 8px 16px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+        .btn-roulette.tv-focused { outline: 3px solid #fff; }
 
-        .main-container { padding: 15px 25px; max-width: 1300px; margin: 0 auto; }
-        .row-container { margin-bottom: 18px; }
-        .section-title { font-size: 13px; font-weight: bold; margin-bottom: 6px; color: #e5e5e5; display: flex; justify-content: space-between; align-items: center; }
+        .main-container { padding: 20px 40px; max-width: 1400px; margin: 0 auto; }
+        .row-container { margin-bottom: 25px; }
+        .section-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #e5e5e5; display: flex; justify-content: space-between; align-items: center; }
 
-        .row-carousel { display: flex; gap: 8px; overflow-x: auto; padding: 3px 2px 8px 2px; min-height: 105px; scroll-behavior: smooth; }
-        .row-carousel::-webkit-scrollbar { height: 2px; }
+        .row-carousel { display: flex; gap: 10px; overflow-x: auto; padding: 5px 2px 10px 2px; min-height: 130px; scroll-behavior: smooth; }
+        .row-carousel::-webkit-scrollbar { height: 3px; }
         .row-carousel::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
 
         .movie-card {
-            min-width: 140px; height: 82px; background: var(--bg-card); border-radius: 4px; overflow: hidden;
+            min-width: 180px; height: 105px; background: var(--bg-card); border-radius: 6px; overflow: hidden;
             cursor: pointer; position: relative; flex-shrink: 0; 
             border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .movie-card.tv-focused { transform: scale(1.05); z-index: 10; border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+        .movie-card.tv-focused { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
 
-        .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; padding: 2px; }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 4px; }
         .grid-card {
-            background: var(--bg-card); border-radius: 4px; overflow: hidden; cursor: pointer;
+            background: var(--bg-card); border-radius: 6px; overflow: hidden; cursor: pointer;
             position: relative; border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
-        .grid-card img { width: 100%; height: 155px; object-fit: cover; display: block; background: #1a1a24; }
-        .grid-card-info { padding: 6px; }
-        .grid-card-title { font-size: 11px; font-weight: bold; margin: 0 0 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .grid-card-meta { display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted); }
-        .grid-card.tv-focused { transform: scale(1.04); z-index: 10; border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+        .grid-card img { width: 100%; height: 200px; object-fit: cover; display: block; background: #1a1a24; }
+        .grid-card-info { padding: 8px; }
+        .grid-card-title { font-size: 12px; font-weight: bold; margin: 0 0 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .grid-card-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); }
+        .grid-card.tv-focused { transform: scale(1.04); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
 
-        .genre-chips { display: flex; gap: 5px; overflow-x: auto; padding: 2px 2px 8px 2px; margin-bottom: 10px; }
+        .genre-chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px 10px 2px; margin-bottom: 12px; }
         .genre-chips::-webkit-scrollbar { display: none; }
-        .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 12px; font-size: 10px; cursor: pointer; white-space: nowrap; color: #fff; outline: none; }
+        .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 14px; font-size: 11px; cursor: pointer; white-space: nowrap; color: #fff; outline: none; }
         .genre-chip.active, .genre-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 2px solid #fff; }
 
-        .search-wrapper { position: relative; width: 220px; }
-        .search-wrapper input.tv-focused { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
+        .search-wrapper { position: relative; width: 250px; }
+        .search-wrapper input.tv-focused { border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
 
         #modal-overlay, #roulette-modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center;
         }
         .lampa-modal-layout {
-            display: flex; background: var(--bg-card); width: 750px; max-width: 90vw; height: 60vh; max-height: 480px;
-            border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); position: relative;
+            display: flex; background: var(--bg-card); width: 900px; max-width: 95vw; height: 70vh; max-height: 600px;
+            border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); position: relative;
         }
         .lampa-left-pane {
             flex: 1.2; background-size: cover; background-position: center; position: relative;
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 18px;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 25px;
             border-right: 1px solid rgba(255,255,255,0.08);
         }
         .lampa-left-pane::before {
@@ -171,40 +169,41 @@
             background: linear-gradient(0deg, var(--bg-card) 15%, rgba(22,22,31,0.8) 60%, rgba(22,22,31,0.4) 100%);
         }
         .lampa-content-info { position: relative; z-index: 2; }
-        .lampa-title { font-size: 20px; font-weight: bold; line-height: 1.1; margin-bottom: 4px; }
-        .lampa-tagline { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; font-style: italic; }
-        .lampa-badges { display: flex; gap: 6px; font-size: 10px; margin-bottom: 8px; align-items: center; }
-        .lampa-badge-item { background: rgba(255,255,255,0.12); padding: 1px 5px; border-radius: 2px; font-weight: bold; }
-        .lampa-desc { font-size: 10px; line-height: 1.3; color: #cfcfd8; max-height: 45px; overflow: hidden; margin-bottom: 10px; }
+        .lampa-title { font-size: 24px; font-weight: bold; line-height: 1.1; margin-bottom: 6px; }
+        .lampa-tagline { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-style: italic; }
+        .lampa-badges { display: flex; gap: 8px; font-size: 11px; margin-bottom: 10px; align-items: center; }
+        .lampa-badge-item { background: rgba(255,255,255,0.12); padding: 2px 6px; border-radius: 3px; font-weight: bold; }
+        .lampa-desc { font-size: 11px; line-height: 1.3; color: #cfcfd8; max-height: 60px; overflow: hidden; margin-bottom: 12px; }
 
-        .lampa-action-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
-        .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 3px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; outline: none; }
-        .lampa-btn.active, .lampa-btn.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 2px solid #fff; }
+        .lampa-action-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+        .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 7px 14px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
+        .lampa-btn.active, .lampa-btn.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 3px solid #fff; }
 
-        .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 12px; overflow-y: auto; }
-        .lampa-sources-header { font-size: 11px; font-weight: bold; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 4px; }
+        .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 15px; overflow-y: auto; }
+        .lampa-sources-header { font-size: 13px; font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px; }
         .source-option-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-            padding: 6px 10px; border-radius: 4px; margin-bottom: 4px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; outline: none;
+            padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; outline: none;
         }
-        .source-option-card.selected, .source-option-card.tv-focused { background: rgba(229,9,20,0.3); border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); }
-        .source-info-title { font-weight: bold; font-size: 10px; color: #fff; }
-        .source-info-langs { font-size: 8px; color: #46d369; margin-top: 1px; }
-        .server-ping { font-size: 8px; padding: 1px 3px; border-radius: 2px; font-weight: bold; background: rgba(0,255,102,0.2); color: #00ff66; }
+        .source-option-card.selected, .source-option-card.tv-focused { background: rgba(229,9,20,0.3); border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
+        .source-info-title { font-weight: bold; font-size: 11px; color: #fff; }
+        .source-info-langs { font-size: 9px; color: #46d369; margin-top: 2px; }
+        .server-ping { font-size: 9px; padding: 2px 4px; border-radius: 3px; font-weight: bold; background: rgba(0,255,102,0.2); color: #00ff66; }
 
-        .modal-close-abs { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 10px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
-        .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 2px solid #fff; }
+        .modal-close-abs { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 12px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
+        .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
 
         .roulette-box {
-            background: var(--bg-card); width: 420px; max-width: 90vw; padding: 20px; border-radius: 8px;
+            background: var(--bg-card); width: 500px; max-width: 90vw; padding: 25px; border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.15); text-align: center; position: relative;
         }
         .roulette-result-card {
-            margin-top: 12px; background: var(--bg-dark); border-radius: 4px; padding: 10px; display: flex; gap: 10px; align-items: center; text-align: left;
+            margin-top: 15px; background: var(--bg-dark); border-radius: 6px; padding: 12px; display: flex; gap: 12px; align-items: center; text-align: left;
             border: 1px solid rgba(255,255,255,0.08); display: none;
         }
-        .roulette-result-card img { width: 65px; height: 95px; object-fit: cover; border-radius: 3px; }
+        .roulette-result-card img { width: 80px; height: 115px; object-fit: cover; border-radius: 4px; }
 
+        /* ИСПРАВЛЕНИЯ ДЛЯ ПЛЕЕРА НА ТВ (100% видимая область без обрезаний) */
         #player-screen { 
             display: none; 
             position: fixed; 
@@ -218,28 +217,24 @@
             overflow: hidden;
         }
         .player-top-bar {
-            display: flex; justify-content: space-between; align-items: center; padding: 4px 15px;
+            display: flex; justify-content: space-between; align-items: center; padding: 5px 20px;
             background: rgba(14, 14, 19, 0.95); border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 30; flex-shrink: 0;
-            height: 35px;
+            height: 40px;
         }
-        .player-title-block { display: flex; align-items: center; gap: 8px; }
-        .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 1px 5px; border-radius: 2px; font-size: 9px; font-weight: bold; }
-        .player-media-name { font-size: 11px; font-weight: bold; color: #fff; }
+        .player-title-block { display: flex; align-items: center; gap: 10px; }
+        .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: bold; }
+        .player-media-name { font-size: 13px; font-weight: bold; color: #fff; }
         
-        .player-fullscreen-btn { background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 3px 8px; border-radius: 3px; font-weight: bold; font-size: 10px; cursor: pointer; outline: none; margin-right: 6px; }
-        .player-fullscreen-btn.tv-focused { outline: 2px solid #fff; background: var(--netflix-red); }
+        .player-fullscreen-btn { background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; cursor: pointer; outline: none; margin-right: 8px; }
+        .player-fullscreen-btn.tv-focused { outline: 3px solid #fff; background: var(--netflix-red); }
 
-        .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 3px 10px; border-radius: 3px; font-weight: bold; font-size: 10px; cursor: pointer; outline: none; }
-        .player-close-btn.tv-focused { outline: 2px solid #fff; background: #ff1e2b; }
+        .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 4px 12px; border-radius: 4px; font-weight: bold; font-size: 11px; cursor: pointer; outline: none; }
+        .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
 
         .player-container-inner { 
-            position: absolute; 
-            top: 35px; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
+            position: relative; 
             width: 100%; 
-            height: auto !important; 
+            height: calc(100vh - 40px) !important; 
             background: #000; 
             display: flex; 
             justify-content: center; 
@@ -248,29 +243,39 @@
             flex-grow: 1;
         }
         
-        .player-container-inner iframe {
+        .player-container-inner > div { 
+            width: 100% !important; 
+            height: 100% !important; 
+            max-width: 100% !important;
+            max-height: 100% !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            transform: none !important;
+        }
+        .player-container-inner iframe,
+        .player-container-inner object,
+        .player-container-inner embed {
             width: 100% !important;
             height: 100% !important;
-            border: none;
-            background: #000;
         }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
 
-        .settings-container { max-width: 550px; margin: 60px auto 20px auto; background: var(--bg-card); padding: 20px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08); }
-        .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 16px; }
-        .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 11px; outline: none; }
-        .setting-row.tv-focused { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); background: rgba(229,9,20,0.1); border-radius: 3px; padding: 4px; }
-        .setting-row input[type="text"], .setting-row select { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 4px 6px; border-radius: 3px; outline: none; font-size: 11px; }
+        .settings-container { max-width: 650px; margin: 80px auto 30px auto; background: var(--bg-card); padding: 25px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); }
+        .settings-container h2 { margin-top: 0; color: var(--netflix-red); font-size: 20px; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 12px; outline: none; }
+        .setting-row.tv-focused { border-color: var(--netflix-red); outline: 2px solid var(--netflix-red); background: rgba(229,9,20,0.1); border-radius: 4px; padding: 5px; }
+        .setting-row input[type="text"], .setting-row select { background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.18); color: white; padding: 6px 8px; border-radius: 4px; outline: none; font-size: 12px; }
 
-        .settings-section-heading { font-size: 11px; font-weight: bold; color: var(--netflix-red); margin: 15px 0 6px 0; text-transform: uppercase; letter-spacing: 0.5px; border-left: 2px solid var(--netflix-red); padding-left: 5px; }
-        .setting-desc { font-size: 9px; color: var(--text-muted); margin-top: 1px; max-width: 300px; }
+        .settings-section-heading { font-size: 13px; font-weight: bold; color: var(--netflix-red); margin: 20px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; border-left: 3px solid var(--netflix-red); padding-left: 6px; }
+        .setting-desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; max-width: 350px; }
 
         #toast {
-            position: fixed; bottom: 15px; right: 15px; background: var(--bg-card); color: white; padding: 6px 12px;
-            border-radius: 4px; z-index: 999999; opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
-            border-left: 3px solid var(--netflix-red); font-weight: bold; font-size: 10px;
+            position: fixed; bottom: 20px; right: 20px; background: var(--bg-card); color: white; padding: 8px 14px;
+            border-radius: 6px; z-index: 999999; opacity: 0; transition: opacity 0.25s ease; pointer-events: none;
+            border-left: 4px solid var(--netflix-red); font-weight: bold; font-size: 11px;
         }
         #toast.show { opacity: 1; }
     </style>
@@ -284,7 +289,7 @@
 <div id="profile-selection-screen">
     <div class="profile-title">Кто смотрит?</div>
     <div class="profiles-grid" id="profilesContainer"></div>
-    <button class="lampa-btn" tabindex="0" onclick="openAddProfileModal()" style="font-size:11px; padding:6px 12px;">+ Добавить профиль</button>
+    <button class="lampa-btn" tabindex="0" onclick="openAddProfileModal()" style="font-size:13px; padding:8px 16px;">+ Добавить профиль</button>
 </div>
 
 <div id="toast">Уведомление</div>
@@ -294,11 +299,11 @@
         <button class="logo" tabindex="0" onclick="switchTab('home', document.getElementById('navHome'))">NETFLIX</button>
         <ul class="nav-links">
             <li id="navHome" class="active" tabindex="0" onclick="switchTab('home', this)">Главная</li>
-            <li tabindex="0" onclick="switchTab('catalog', this)">Каталог</li>
-            <li tabindex="0" onclick="switchTab('russian', this)">🇷🇺 Русс. кино</li>
-            <li tabindex="0" onclick="switchTab('radio', this)">📻 Радио</li>
+            <li tabindex="0" onclick="switchTab('catalog', this)">Мега-Каталог (~5000)</li>
+            <li tabindex="0" onclick="switchTab('russian', this)">🇷🇺 Русское кино (~2000)</li>
+            <li tabindex="0" onclick="switchTab('radio', this)">📻 Радио ТВ</li>
             <li tabindex="0" onclick="switchTab('history', this)">🕒 История</li>
-            <li tabindex="0" onclick="switchTab('mylist', this)">Список</li>
+            <li tabindex="0" onclick="switchTab('mylist', this)">Мой список</li>
             <li tabindex="0" onclick="switchTab('settings', this)">Настройки</li>
         </ul>
     </div>
@@ -312,9 +317,9 @@
 
 <div id="tab-home" class="view-section active">
     <div class="hero" id="heroBanner">
-        <div class="hero-title" id="heroTitle">Загрузка...</div>
-        <div class="hero-badge"><span>Android TV 9</span></div>
-        <div class="hero-desc" id="heroDesc">Компактный режим интерфейса для телевизоров.</div>
+        <div class="hero-title" id="heroTitle">Загрузка легкой коллекции...</div>
+        <div class="hero-badge"><span>Оптимизировано для Android TV 9</span></div>
+        <div class="hero-desc" id="heroDesc">Минимальное потребление памяти и быстрая работа на слабых интернет-соединениях.</div>
 
         <div class="hero-btns">
             <button class="btn-white" id="heroPlayBtn" tabindex="0">▶ Смотреть</button>
@@ -327,14 +332,14 @@
         <div class="row-container">
             <div class="section-title">
                 <span>🔥 Мировые лидеры проката</span>
-                <span tabindex="0" style="font-size:10px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)">Все →</span>
+                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)">Все →</span>
             </div>
             <div class="row-carousel" id="trendingRow"></div>
         </div>
         <div class="row-container">
             <div class="section-title">
                 <span>🇷🇺 Лучшие российские фильмы</span>
-                <span tabindex="0" style="font-size:10px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('russian', null)">Все →</span>
+                <span tabindex="0" style="font-size:11px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('russian', null)">Все →</span>
             </div>
             <div class="row-carousel" id="homeRussianRow"></div>
         </div>
@@ -358,12 +363,12 @@
 </div>
 
 <div id="tab-catalog" class="view-section">
-    <div class="main-container" style="padding-top: 60px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-            <div class="section-title" style="margin:0;" id="catalogHeaderTitle">🎬 Мега-Каталог</div>
+    <div class="main-container" style="padding-top: 80px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+            <div class="section-title" style="margin:0;" id="catalogHeaderTitle">🎬 Мега-Каталог (~5000 фильмов)</div>
 
             <div class="search-wrapper">
-                <input type="text" id="searchInput" placeholder="Поиск..." oninput="handleSearch(this.value)" tabindex="0" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:4px 8px; border-radius:3px; width:100%; outline:none; font-size:11px;">
+                <input type="text" id="searchInput" placeholder="Поиск..." oninput="handleSearch(this.value)" tabindex="0" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:6px 10px; border-radius:4px; width:100%; outline:none; font-size:12px;">
             </div>
         </div>
 
@@ -379,29 +384,29 @@
         </div>
 
         <div class="grid" id="catalogGrid"></div>
-        <div id="paginationContainer" style="display: flex; justify-content: center; gap: 8px; margin: 20px 0; align-items: center;"></div>
+        <div id="paginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 25px 0; align-items: center;"></div>
     </div>
 </div>
 
 <div id="tab-russian" class="view-section">
-    <div class="main-container" style="padding-top: 60px;">
-        <div class="section-title" id="russianHeaderTitle">🇷🇺 Русское кино</div>
+    <div class="main-container" style="padding-top: 80px;">
+        <div class="section-title" id="russianHeaderTitle">🇷🇺 Русское кино (~2000 фильмов)</div>
         <div class="grid" id="russianGrid"></div>
-        <div id="russianPaginationContainer" style="display: flex; justify-content: center; gap: 8px; margin: 20px 0; align-items: center;"></div>
+        <div id="russianPaginationContainer" style="display: flex; justify-content: center; gap: 10px; margin: 25px 0; align-items: center;"></div>
     </div>
 </div>
 
 <div id="tab-radio" class="view-section">
-    <div class="main-container" style="padding-top: 60px;">
+    <div class="main-container" style="padding-top: 80px;">
         <div class="section-title">📻 Українські Онлайн Радіостанції</div>
-        <p style="color:var(--text-muted); font-size:10px; margin-bottom:10px;">Музичні та інформаційні станції в прямому ефірі.</p>
+        <p style="color:var(--text-muted); font-size:12px; margin-bottom:15px;">Музичні та інформаційні станції в прямому ефірі.</p>
         <div class="grid" id="radioGrid"></div>
     </div>
 </div>
 
 <div id="tab-history" class="view-section">
-    <div class="main-container" style="padding-top: 60px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <div class="main-container" style="padding-top: 80px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div class="section-title" style="margin:0;">🕒 История просмотров (<span id="currentProfileHistoryLabel">Андрей</span>)</div>
             <button class="lampa-btn" tabindex="0" onclick="clearHistory()">Очистить</button>
         </div>
@@ -410,7 +415,7 @@
 </div>
 
 <div id="tab-mylist" class="view-section">
-    <div class="main-container" style="padding-top: 60px;">
+    <div class="main-container" style="padding-top: 80px;">
         <div class="section-title">⭐ Избранное (<span id="currentProfileListLabel">Андрей</span>)</div>
         <div class="grid" id="myListGrid"></div>
     </div>
@@ -418,7 +423,7 @@
 
 <div id="tab-settings" class="view-section">
     <div class="settings-container">
-        <h2>⚙️ Настройки (Компактный режим)</h2>
+        <h2>⚙️ Настройки для Android 9 (Grunhelm)</h2>
         
         <div class="settings-section-heading">👤 Профиль</div>
         <div class="setting-row" tabindex="0">
@@ -428,7 +433,7 @@
         <div class="setting-row" tabindex="0">
             <div>
                 <span>Тема оформления</span>
-                <div class="setting-desc">Облегченные цвета интерфейса.</div>
+                <div class="setting-desc">Облегченные цвета для снижения нагрузки на ТВ.</div>
             </div>
             <select id="settingTheme" onchange="saveSettings()">
                 <option value="netflix">🔴 Классический Netflix</option>
@@ -436,14 +441,14 @@
             </select>
         </div>
 
-        <div class="settings-section-heading">🌐 Сеть</div>
+        <div class="settings-section-heading">🌐 Оптимизация сети (Слабый интернет)</div>
         <div class="setting-row" tabindex="0">
             <div>
                 <span>Кэширование изображений</span>
-                <div class="setting-desc">Ускоряет загрузку на ТВ.</div>
+                <div class="setting-desc">Ускоряет загрузку списков на медленном Wi-Fi.</div>
             </div>
             <select id="settingPlayerBuffer" onchange="saveSettings()">
-                <option value="low" selected>Экономия трафика</option>
+                <option value="low" selected>Экономия трафика (Быстро)</option>
             </select>
         </div>
     </div>
@@ -456,17 +461,17 @@
 <div id="roulette-modal-overlay" onclick="closeRouletteOutside(event)">
     <div class="roulette-box">
         <button class="modal-close-abs" tabindex="0" onclick="closeRouletteModal()">✕</button>
-        <div style="font-size:16px; font-weight:bold; margin-bottom:4px;">🎲 Что посмотреть?</div>
-        <div style="font-size:10px; color:var(--text-muted); margin-bottom:10px;">Случайный выбор фильма</div>
+        <div style="font-size:20px; font-weight:bold; margin-bottom:5px;">🎲 Что посмотреть?</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Случайный выбор фильма из базы</div>
         
-        <button class="lampa-btn active" tabindex="0" onclick="spinRoulette()" style="width:100%; justify-content:center; padding:8px; font-size:12px;">🎰 Крутить рулетку!</button>
+        <button class="lampa-btn active" tabindex="0" onclick="spinRoulette()" style="width:100%; justify-content:center; padding:10px; font-size:14px;">🎰 Крутить рулетку!</button>
 
         <div class="roulette-result-card" id="rouletteResultCard">
             <img id="roulettePoster" src="" alt="">
             <div>
-                <div id="rouletteTitle" style="font-weight:bold; font-size:12px; margin-bottom:3px;">Название</div>
-                <div id="rouletteMeta" style="font-size:9px; color:#46d369; margin-bottom:5px;">Год • Рейтинг</div>
-                <button class="lampa-btn" tabindex="0" id="rouletteWatchBtn" style="padding:4px 8px; font-size:9px;">▶ Смотреть</button>
+                <div id="rouletteTitle" style="font-weight:bold; font-size:14px; margin-bottom:4px;">Название</div>
+                <div id="rouletteMeta" style="font-size:10px; color:#46d369; margin-bottom:6px;">Год • Рейтинг</div>
+                <button class="lampa-btn" tabindex="0" id="rouletteWatchBtn" style="padding:5px 10px; font-size:10px;">▶ Смотреть</button>
             </div>
         </div>
     </div>
@@ -493,7 +498,7 @@
     
     let currentPage = 1;
     let russianCurrentPage = 1;
-    const ITEMS_PER_PAGE = 12;
+    const ITEMS_PER_PAGE = 10;
     let currentGenreFilter = 'all';
 
     let profiles = JSON.parse(localStorage.getItem('netflixProfilesList') || JSON.stringify([
@@ -528,43 +533,12 @@
     updateProfileUIElements();
     applyTheme(settings.theme || 'cyberpunk');
 
-    window.addEventListener('popstate', (event) => {
-        if (document.getElementById('player-screen').style.display === 'flex') {
-            closePlayer();
-            history.pushState({ tab: currentTab }, '', '');
-            return;
-        }
-        if (document.getElementById('modal-overlay').style.display === 'flex') {
-            closeModal();
-            history.pushState({ tab: currentTab }, '', '');
-            return;
-        }
-        if (document.getElementById('roulette-modal-overlay').style.display === 'flex') {
-            closeRouletteModal();
-            history.pushState({ tab: currentTab }, '', '');
-            return;
-        }
-        if (document.getElementById('profile-selection-screen').style.display === 'flex') {
-            history.pushState({ tab: currentTab }, '', '');
-            return;
-        }
-
-        if (event.state && event.state.tab) {
-            switchTab(event.state.tab, null, false);
-        } else {
-            switchTab('home', null, false);
-        }
-    });
-
-    let currentTab = 'home';
-
     window.addEventListener('load', () => {
-        history.replaceState({ tab: 'home' }, '', '');
         setTimeout(() => {
             const intro = document.getElementById('intro-screen');
             if(intro) intro.remove();
             showProfileSelection();
-        }, 200);
+        }, 300);
         
         fetchAllOptimizedCatalog();
         renderRadioGrid();
@@ -636,7 +610,7 @@
         const t = document.getElementById('toast');
         t.innerText = text;
         t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 1800);
+        setTimeout(() => t.classList.remove('show'), 2000);
     }
 
     function saveSettings() {
@@ -651,27 +625,11 @@
         showToast('Сохранено!');
     }
 
-    function switchTab(tabId, el, pushState = true) {
-        currentTab = tabId;
-        if (pushState) {
-            history.pushState({ tab: tabId }, '', '');
-        }
-
+    function switchTab(tabId, el) {
         document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
         document.getElementById('tab-' + tabId).classList.add('active');
         document.querySelectorAll('.nav-links li').forEach(l => l.classList.remove('active'));
-        
-        if (el) {
-            el.classList.add('active');
-        } else {
-            const navItems = document.querySelectorAll('.nav-links li');
-            navItems.forEach(item => {
-                if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabId)) {
-                    item.classList.add('active');
-                }
-            });
-        }
-
+        if(el) el.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'instant' });
 
         if(tabId === 'mylist') renderGridCards('myListGrid', getMyListItems());
@@ -685,10 +643,10 @@
 
     async function fetchAllOptimizedCatalog() {
         try {
-            showToast('Загрузка базы...');
+            showToast('Загрузка базы для ТВ...');
             let allResults = [];
             
-            for (let p = 1; p <= 200; p++) {
+            for (let p = 1; p <= 250; p++) {
                 try {
                     let res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=popularity.desc&page=${p}`);
                     let data = await res.json();
@@ -697,7 +655,7 @@
             }
 
             let rusResults = [];
-            for (let p = 1; p <= 80; p++) {
+            for (let p = 1; p <= 100; p++) {
                 try {
                     let res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&with_original_language=ru&sort_by=popularity.desc&page=${p}`);
                     let data = await res.json();
@@ -724,12 +682,12 @@
         if(!cachedCatalog.length) return;
         setupRandomHero(cachedCatalog);
 
-        renderCarousel('trendingRow', cachedCatalog.slice(0, 6));
-        renderCarousel('homeRussianRow', russianCatalog.slice(0, 6));
-        renderCarousel('myListRow', getMyListItems().slice(0, 6));
-        renderCarousel('horrorRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(27)).slice(0, 6));
-        renderCarousel('scifiRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(878)).slice(0, 6));
-        renderCarousel('actionRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(28)).slice(0, 6));
+        renderCarousel('trendingRow', cachedCatalog.slice(0, 5));
+        renderCarousel('homeRussianRow', russianCatalog.slice(0, 5));
+        renderCarousel('myListRow', getMyListItems().slice(0, 5));
+        renderCarousel('horrorRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(27)).slice(0, 5));
+        renderCarousel('scifiRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(878)).slice(0, 5));
+        renderCarousel('actionRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(28)).slice(0, 5));
     }
 
     function setupRandomHero(items) {
@@ -741,7 +699,7 @@
 
         if(bgUrl) document.getElementById('heroBanner').style.backgroundImage = `url('${bgUrl}')`;
         document.getElementById('heroTitle').innerText = title;
-        document.getElementById('heroDesc').innerText = desc.length > 90 ? desc.substring(0, 90) + '...' : desc;
+        document.getElementById('heroDesc').innerText = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
 
         document.getElementById('heroPlayBtn').onclick = () => { openModal(randomItem.id, randomItem); };
         document.getElementById('heroInfoBtn').onclick = () => { openModal(randomItem.id, randomItem); };
@@ -767,7 +725,7 @@
         const c = document.getElementById(containerId);
         if(!c) return;
         c.innerHTML = '';
-        if(!list.length) { c.innerHTML = '<p style="color:#777; font-size:10px; padding:4px;">Пусто</p>'; return; }
+        if(!list.length) { c.innerHTML = '<p style="color:#777; font-size:11px; padding:5px;">Пусто</p>'; return; }
 
         list.forEach(m => {
             const title = m.title || m.name || 'Фильм';
@@ -815,7 +773,7 @@
         const c = document.getElementById(containerId);
         if(!c) return;
         c.innerHTML = '';
-        if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 6; padding:12px;">Ничего не найдено.</p>'; return; }
+        if(!list.length) { c.innerHTML = '<p style="color:#777; grid-column:span 5; padding:15px;">Ничего не найдено.</p>'; return; }
         
         list.forEach(m => {
             const title = m.title || m.name || 'Без названия';
@@ -857,8 +815,8 @@
         pContainer.appendChild(prevBtn);
 
         let infoSpan = document.createElement('span');
-        infoSpan.style.cssText = 'font-size: 10px; color: var(--text-muted); font-weight: bold;';
-        infoSpan.innerText = `${currentPg} / ${totalPages}`;
+        infoSpan.style.cssText = 'font-size: 12px; color: var(--text-muted); font-weight: bold;';
+        infoSpan.innerText = `Сторінка ${currentPg} із ${totalPages} (по 10)`;
         pContainer.appendChild(infoSpan);
 
         let nextBtn = document.createElement('button');
@@ -879,10 +837,10 @@
             card.className = 'grid-card';
             card.tabIndex = 0;
             card.innerHTML = `
-                <div style="height:100px; background:linear-gradient(135deg, #201a30, #0f0f18); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:8px;">
-                    <div style="font-size:22px; margin-bottom:4px;">📻</div>
-                    <div style="font-weight:bold; font-size:11px; color:#fff;">${r.name}</div>
-                    <div style="font-size:9px; color:var(--netflix-red); margin-top:2px;">${r.genre}</div>
+                <div style="height:120px; background:linear-gradient(135deg, #201a30, #0f0f18); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:10px;">
+                    <div style="font-size:28px; margin-bottom:6px;">📻</div>
+                    <div style="font-weight:bold; font-size:13px; color:#fff;">${r.name}</div>
+                    <div style="font-size:10px; color:var(--netflix-red); margin-top:3px;">${r.genre}</div>
                 </div>
             `;
             card.onclick = () => { playRadioStream(r); };
@@ -894,10 +852,10 @@
         openPlayer(`Радіо: ${station.name}`);
         const container = document.getElementById('playerContainerInner');
         container.innerHTML = `
-            <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:25vw; height:18vh; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background: #070709;">
-                <div style="font-size:24px; margin-bottom:6px;">📻</div>
-                <div style="font-size:12px; font-weight:bold; color:#fff; margin-bottom:4px;">${station.name}</div>
-                <audio controls autoplay style="width:180px; outline:none;" tabindex="0">
+            <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:30vw; height:20vh; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background: #070709;">
+                <div style="font-size:28px; margin-bottom:8px;">📻</div>
+                <div style="font-size:14px; font-weight:bold; color:#fff; margin-bottom:4px;">${station.name}</div>
+                <audio controls autoplay style="width:200px; outline:none;" tabindex="0">
                     <source src="${station.url}" type="audio/mpeg">
                 </audio>
             </div>
@@ -988,12 +946,12 @@
             </div>
             <div class="lampa-sources-pane">
                 <div class="lampa-sources-header">
-                    <span>Сервер CDN</span>
-                    <span style="font-size:8px; color:#46d369;">🟢 HD</span>
+                    <span>Сервер CDN (Легкий поток)</span>
+                    <span style="font-size:9px; color:#46d369;">🟢 HD</span>
                 </div>
                 <div style="flex:1; overflow-y:auto;">
                     <div class="source-option-card selected" tabindex="0">
-                        <div><div class="source-info-title">🎬 KinoBD Player</div><div class="source-info-langs">ТВ версия</div></div>
+                        <div><div class="source-info-title">🎬 KinoBD Player</div><div class="source-info-langs">Оптимизировано для ТВ</div></div>
                         <span class="server-ping">1ms</span>
                     </div>
                 </div>
@@ -1009,7 +967,7 @@
     function launchDirectPlayer(item) {
         addToHistory(item);
         closeModal();
-        openPlayer(item.title || item.name || 'Фильм', item.id);
+        openPlayer(item.title || item.name || 'Фильм');
     }
 
     function closeModal() { 
@@ -1027,9 +985,9 @@
         openModal(item.id, item);
     }
 
-    function openPlayer(titleText, tmdbId) {
+    function openPlayer(titleText) {
         document.getElementById('playerMediaTitle').innerText = titleText;
-        updatePlayerFrame(titleText, tmdbId);
+        updatePlayerFrame(titleText);
         document.getElementById('player-screen').style.display = 'flex';
 
         if (document.documentElement.requestFullscreen) {
@@ -1037,7 +995,7 @@
         }
 
         setTimeout(() => {
-            const iframe = document.querySelector('#playerContainerInner iframe');
+            const iframe = document.querySelector('#playerContainerInner iframe, #playerContainerInner div');
             if(iframe) iframe.focus();
         }, 1200);
     }
@@ -1054,18 +1012,27 @@
         }
     }
 
-    function updatePlayerFrame(titleText, tmdbId) {
+    function updatePlayerFrame(titleText) {
         const container = document.getElementById('playerContainerInner');
         if (titleText.startsWith('Радіо:')) return;
         
-        // Исправление: использование прямого iframe-запроса к KinoBD API для сохранения полной интерактивности плеера и перемотки
-        let iframeUrl = `https://kinobd.net/embed/${tmdbId}?token=ffa2d75dc51825a6735af4f120544d61`;
-        container.innerHTML = `<iframe src="${iframeUrl}" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" tabindex="0"></iframe>`;
+        container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" id="kinobd" style="width:100%; height:100%;" tabindex="0"></div>`;
+
+        const oldScript = document.getElementById('kinobd-script');
+        if(oldScript) oldScript.remove();
+
+        const script = document.createElement('script');
+        script.id = 'kinobd-script';
+        script.src = 'https://kinobd.net/js/player_.js';
+        script.async = true;
+        document.body.appendChild(script);
     }
 
     function closePlayer() {
         const container = document.getElementById('playerContainerInner');
         container.innerHTML = '';
+        const oldScript = document.getElementById('kinobd-script');
+        if(oldScript) oldScript.remove();
         document.getElementById('player-screen').style.display = 'none';
 
         if (document.fullscreenElement && document.exitFullscreen) {
@@ -1121,7 +1088,7 @@
         let handled = false;
 
         if (playerScreen && playerScreen.style.display === 'flex') {
-            if (event.key === 'Escape' || event.key === 'Backspace' || event.keyCode === 8 || event.keyCode === 27) {
+            if (event.key === 'Escape' || event.key === 'Backspace') {
                 closePlayer();
                 event.preventDefault();
                 return;
@@ -1169,13 +1136,13 @@
                 handled = true;
                 break;
             case 'ArrowDown':
-                currentFocusIndex += 6;
+                currentFocusIndex += 5;
                 if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
                 updateTvFocus(true);
                 handled = true;
                 break;
             case 'ArrowUp':
-                currentFocusIndex -= 6;
+                currentFocusIndex -= 5;
                 if (currentFocusIndex < 0) currentFocusIndex = 0;
                 updateTvFocus(true);
                 handled = true;
@@ -1189,19 +1156,7 @@
                 break;
             case 'Escape':
             case 'Backspace':
-                if (document.getElementById('modal-overlay').style.display === 'flex') { 
-                    closeModal(); 
-                    handled = true; 
-                } else if (document.getElementById('roulette-modal-overlay').style.display === 'flex') {
-                    closeRouletteModal();
-                    handled = true;
-                } else if (currentTab !== 'home') {
-                    switchTab('home', document.getElementById('navHome'));
-                    handled = true;
-                } else {
-                    history.back();
-                    handled = true;
-                }
+                if (document.getElementById('modal-overlay').style.display === 'flex') { closeModal(); handled = true; }
                 break;
         }
         if (handled) { event.preventDefault(); }
