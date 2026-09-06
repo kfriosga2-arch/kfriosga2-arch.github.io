@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Ультиматум (Оптимизирован для TV)</title>
+    <title>Netflix Ультиматум (ТВ-управление)</title>
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -62,10 +62,10 @@
         .profile-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
         .profile-name { margin-top: 15px; font-size: 16px; color: var(--text-muted); font-weight: bold; }
         
-        .profile-card:hover .profile-avatar-wrap, .profile-card.tv-focused .profile-avatar-wrap {
+        .profile-card.tv-focused {
             border-color: #fff; transform: scale(1.05);
         }
-        .profile-card:hover .profile-name, .profile-card.tv-focused .profile-name { color: #fff; }
+        .profile-card.tv-focused .profile-name { color: #fff; }
 
         .header {
             display: flex; justify-content: space-between; align-items: center;
@@ -82,7 +82,7 @@
         
         .nav-links { display: flex; gap: 12px; list-style: none; margin: 0; padding: 0; font-size: 13px; align-items: center; flex-wrap: wrap; }
         .nav-links li { cursor: pointer; color: #e5e5e5; outline: none; padding: 5px 10px; border-radius: 4px; }
-        .nav-links li:hover, .nav-links li.active { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); }
+        .nav-links li.active { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); }
         .nav-links li.tv-focused { color: #fff; font-weight: bold; background: rgba(229,9,20,0.5); outline: 3px solid #fff; }
 
         :focus:not(:focus-visible) { outline: none !important; }
@@ -109,13 +109,13 @@
 
         .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-white { background: white; color: black; border: none; padding: 8px 20px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .btn-white:hover, .btn-white.tv-focused { background: #e0e0e0; outline: 3px solid var(--netflix-red); }
+        .btn-white.tv-focused { background: #e0e0e0; outline: 3px solid var(--netflix-red); }
         
         .btn-gray { background: rgba(109, 109, 110, 0.8); color: white; border: none; padding: 8px 16px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .btn-gray:hover, .btn-gray.tv-focused { background: rgba(109, 109, 110, 0.5); outline: 3px solid #fff; }
+        .btn-gray.tv-focused { background: rgba(109, 109, 110, 0.5); outline: 3px solid #fff; }
 
         .btn-roulette { background: linear-gradient(135deg, #ff007b, var(--netflix-red)); color: white; border: none; padding: 8px 16px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .btn-roulette:hover, .btn-roulette.tv-focused { outline: 3px solid #fff; }
+        .btn-roulette.tv-focused { outline: 3px solid #fff; }
 
         .main-container { padding: 20px 40px; max-width: 1400px; margin: 0 auto; }
         .row-container { margin-bottom: 25px; }
@@ -131,7 +131,7 @@
             border: 1px solid rgba(255,255,255,0.06); outline: none;
         }
         .movie-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .movie-card:hover, .movie-card.tv-focused { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
+        .movie-card.tv-focused { transform: scale(1.06); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
 
         .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 4px; }
         .grid-card {
@@ -142,12 +142,12 @@
         .grid-card-info { padding: 8px; }
         .grid-card-title { font-size: 12px; font-weight: bold; margin: 0 0 3px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .grid-card-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); }
-        .grid-card:hover, .grid-card.tv-focused { transform: scale(1.04); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
+        .grid-card.tv-focused { transform: scale(1.04); z-index: 10; border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
 
         .genre-chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px 10px 2px; margin-bottom: 12px; }
         .genre-chips::-webkit-scrollbar { display: none; }
         .genre-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 14px; font-size: 11px; cursor: pointer; white-space: nowrap; color: #fff; outline: none; }
-        .genre-chip:hover, .genre-chip.active, .genre-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 2px solid #fff; }
+        .genre-chip.active, .genre-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 2px solid #fff; }
 
         .search-wrapper { position: relative; width: 250px; }
         .search-wrapper input.tv-focused { border-color: var(--netflix-red); outline: 3px solid var(--netflix-red); }
@@ -178,7 +178,7 @@
 
         .lampa-action-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
         .lampa-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 7px 14px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; outline: none; }
-        .lampa-btn:hover, .lampa-btn.active, .lampa-btn.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 3px solid #fff; }
+        .lampa-btn.active, .lampa-btn.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); color: #fff; outline: 3px solid #fff; }
 
         .lampa-sources-pane { flex: 1; background: var(--bg-dark); display: flex; flex-direction: column; padding: 15px; overflow-y: auto; }
         .lampa-sources-header { font-size: 13px; font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px; }
@@ -192,16 +192,12 @@
         .server-ping { font-size: 9px; padding: 2px 4px; border-radius: 3px; font-weight: bold; background: rgba(0,255,102,0.2); color: #00ff66; }
 
         .modal-close-abs { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 12px; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; outline: none; }
-        .modal-close-abs:hover, .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
+        .modal-close-abs.tv-focused { background: var(--netflix-red); outline: 3px solid #fff; }
 
         .roulette-box {
             background: var(--bg-card); width: 500px; max-width: 90vw; padding: 25px; border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.15); text-align: center; position: relative;
         }
-        .roulette-mood-chips { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin: 12px 0; }
-        .roulette-chip { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 5px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; color: #fff; outline: none; }
-        .roulette-chip:hover, .roulette-chip.active, .roulette-chip.tv-focused { background: var(--netflix-red); border-color: var(--netflix-red); font-weight: bold; outline: 2px solid #fff; }
-
         .roulette-result-card {
             margin-top: 15px; background: var(--bg-dark); border-radius: 6px; padding: 12px; display: flex; gap: 12px; align-items: center; text-align: left;
             border: 1px solid rgba(255,255,255,0.08); display: none;
@@ -217,10 +213,35 @@
         .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; }
         .player-media-name { font-size: 14px; font-weight: bold; color: #fff; }
         .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; outline: none; }
-        .player-close-btn:hover, .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
+        .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
 
-        .player-container-inner { position: relative; width: 100%; flex: 1; background: #000; display: flex; justify-content: center; align-items: center; }
-        .player-container-inner > div { width: 90% !important; height: 90% !important; margin: auto; }
+        .player-container-inner { 
+            position: relative; 
+            width: 100vw; 
+            height: calc(100vh - 50px); 
+            background: #000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden;
+        }
+        
+        .player-container-inner > div { 
+            width: 100% !important; 
+            height: 100% !important; 
+            max-width: 100% !important;
+            max-height: 100% !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            transform: none !important;
+        }
+        .player-container-inner iframe,
+        .player-container-inner object,
+        .player-container-inner embed {
+            width: 100% !important;
+            height: 100% !important;
+        }
 
         .view-section { display: none; }
         .view-section.active { display: block; }
@@ -459,7 +480,7 @@
     
     let currentPage = 1;
     let russianCurrentPage = 1;
-    const ITEMS_PER_PAGE = 10; // Строго по 10 фильмов на страницу в мега-каталоге
+    const ITEMS_PER_PAGE = 10;
     let currentGenreFilter = 'all';
 
     let profiles = JSON.parse(localStorage.getItem('netflixProfilesList') || JSON.stringify([
@@ -607,8 +628,6 @@
             showToast('Загрузка базы для ТВ...');
             let allResults = [];
             
-            // Загружаем порциями (примерно 250 страниц по 20 = 5000 фильмов для мега-каталога)
-            // Для легкости на Android 9 делаем параллельные запросы небольшими порциями
             for (let p = 1; p <= 250; p++) {
                 try {
                     let res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=popularity.desc&page=${p}`);
@@ -645,7 +664,6 @@
         if(!cachedCatalog.length) return;
         setupRandomHero(cachedCatalog);
 
-        // На главной разделы ровно по 3-5 фильмов для легкой работы Android 9
         renderCarousel('trendingRow', cachedCatalog.slice(0, 5));
         renderCarousel('homeRussianRow', russianCatalog.slice(0, 5));
         renderCarousel('myListRow', getMyListItems().slice(0, 5));
@@ -816,10 +834,10 @@
         openPlayer(`Радіо: ${station.name}`);
         const container = document.getElementById('playerContainerInner');
         container.innerHTML = `
-            <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; height:100%; background: #070709;">
-                <div style="font-size:48px; margin-bottom:15px;">📻</div>
-                <div style="font-size:20px; font-weight:bold; color:#fff; margin-bottom:6px;">${station.name}</div>
-                <audio controls autoplay style="width:280px; outline:none;" tabindex="0">
+            <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:30vw; height:20vh; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background: #070709;">
+                <div style="font-size:28px; margin-bottom:8px;">📻</div>
+                <div style="font-size:14px; font-weight:bold; color:#fff; margin-bottom:4px;">${station.name}</div>
+                <audio controls autoplay style="width:200px; outline:none;" tabindex="0">
                     <source src="${station.url}" type="audio/mpeg">
                 </audio>
             </div>
@@ -953,15 +971,17 @@
         document.getElementById('playerMediaTitle').innerText = titleText;
         updatePlayerFrame(titleText);
         document.getElementById('player-screen').style.display = 'flex';
+
         setTimeout(() => {
-            const closeBtn = document.querySelector('.player-close-btn');
-            if(closeBtn) { closeBtn.focus(); currentFocusIndex = 0; updateTvFocus(); }
-        }, 200);
+            const iframe = document.querySelector('#playerContainerInner iframe');
+            if(iframe) iframe.focus();
+        }, 1500);
     }
 
     function updatePlayerFrame(titleText) {
         const container = document.getElementById('playerContainerInner');
         if (titleText.startsWith('Радіо:')) return;
+        
         container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" id="kinobd" style="width:100%; height:100%;" tabindex="0"></div>`;
 
         const oldScript = document.getElementById('kinobd-script');
@@ -980,6 +1000,7 @@
         const oldScript = document.getElementById('kinobd-script');
         if(oldScript) oldScript.remove();
         document.getElementById('player-screen').style.display = 'none';
+
         setTimeout(() => focusFirstElementInView(), 100);
     }
 
@@ -988,7 +1009,7 @@
     function getFocusableElements() {
         if (document.getElementById('profile-selection-screen').style.display === 'flex') return Array.from(document.querySelectorAll('#profile-selection-screen button, #profile-selection-screen [tabindex="0"]'));
         if (document.getElementById('roulette-modal-overlay').style.display === 'flex') return Array.from(document.querySelectorAll('#roulette-modal-overlay button, #roulette-modal-overlay [tabindex="0"]'));
-        if (document.getElementById('player-screen').style.display === 'flex') return Array.from(document.querySelectorAll('#player-screen button, #player-screen [tabindex="0"]'));
+        if (document.getElementById('player-screen').style.display === 'flex') return Array.from(document.querySelectorAll('#player-screen .player-close-btn'));
         if (document.getElementById('modal-overlay').style.display === 'flex') return Array.from(document.querySelectorAll('#modal-overlay button, #modal-overlay [tabindex="0"]'));
         
         const activeSection = document.querySelector('.view-section.active');
@@ -1001,10 +1022,13 @@
 
     function focusFirstElementInView() {
         const focusables = getFocusableElements();
-        if (focusables.length > 0) { currentFocusIndex = 0; updateTvFocus(); }
+        if (focusables.length > 0) { 
+            currentFocusIndex = 0; 
+            updateTvFocus(true); 
+        }
     }
 
-    function updateTvFocus() {
+    function updateTvFocus(scrollTo = true) {
         const focusables = getFocusableElements();
         document.querySelectorAll('.tv-focused').forEach(el => el.classList.remove('tv-focused'));
         if (focusables.length === 0) return;
@@ -1014,33 +1038,75 @@
         const el = focusables[currentFocusIndex];
         if (el) {
             el.classList.add('tv-focused');
-            el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            if(scrollTo) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            }
             try { el.focus(); } catch(e) {}
         }
     }
 
+    // Управление для телевизора: запуск и подтверждение по Enter (Центральная кнопка пульта)
     window.addEventListener('keydown', function(event) {
-        const focusables = getFocusableElements();
-        if (focusables.length === 0) return;
+        const playerScreen = document.getElementById('player-screen');
         let handled = false;
 
+        if (playerScreen && playerScreen.style.display === 'flex') {
+            if (event.key === 'Escape' || event.key === 'Backspace') {
+                closePlayer();
+                event.preventDefault();
+                return;
+            }
+
+            if (event.key === 'Enter') {
+                const iframe = document.querySelector('#playerContainerInner iframe');
+                if (iframe) {
+                    try { iframe.focus(); } catch(e) {}
+                }
+                handled = true;
+            }
+            if (handled) { event.preventDefault(); }
+            return;
+        }
+
+        const focusables = getFocusableElements();
         switch(event.key) {
-            case 'ArrowRight': currentFocusIndex++; if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1; handled = true; break;
-            case 'ArrowLeft': currentFocusIndex--; if (currentFocusIndex < 0) currentFocusIndex = 0; handled = true; break;
-            case 'ArrowDown': currentFocusIndex += 5; if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1; handled = true; break;
-            case 'ArrowUp': currentFocusIndex -= 5; if (currentFocusIndex < 0) currentFocusIndex = 0; handled = true; break;
-            case 'Enter':
-            case ' ':
+            case 'ArrowRight':
+                currentFocusIndex++;
+                if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
+                updateTvFocus(true);
+                handled = true;
+                break;
+            case 'ArrowLeft':
+                currentFocusIndex--;
+                if (currentFocusIndex < 0) currentFocusIndex = 0;
+                updateTvFocus(true);
+                handled = true;
+                break;
+            case 'ArrowDown':
+                currentFocusIndex += 5;
+                if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
+                updateTvFocus(true);
+                handled = true;
+                break;
+            case 'ArrowUp':
+                currentFocusIndex -= 5;
+                if (currentFocusIndex < 0) currentFocusIndex = 0;
+                updateTvFocus(true);
+                handled = true;
+                break;
+            case 'Enter': // Главная кнопка пульта (ОК) запускает фокус
                 const active = focusables[currentFocusIndex] || document.activeElement;
-                if (active) { active.click(); handled = true; }
+                if (active) {
+                    active.click();
+                    handled = true;
+                }
                 break;
             case 'Escape':
             case 'Backspace':
-                if (document.getElementById('player-screen').style.display === 'flex') { closePlayer(); handled = true; }
-                else if (document.getElementById('modal-overlay').style.display === 'flex') { closeModal(); handled = true; }
+                if (document.getElementById('modal-overlay').style.display === 'flex') { closeModal(); handled = true; }
                 break;
         }
-        if (handled) { event.preventDefault(); updateTvFocus(); }
+        if (handled) { event.preventDefault(); }
     });
 </script>
 </body>
