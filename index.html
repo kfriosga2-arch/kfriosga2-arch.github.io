@@ -212,6 +212,11 @@
         .player-title-block { display: flex; align-items: center; gap: 10px; }
         .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; }
         .player-media-name { font-size: 14px; font-weight: bold; color: #fff; }
+        
+        /* Кнопка полноэкранного режима внутри плеера */
+        .player-fullscreen-btn { background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; outline: none; margin-right: 10px; }
+        .player-fullscreen-btn.tv-focused { outline: 3px solid #fff; background: var(--netflix-red); }
+
         .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; outline: none; }
         .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
 
@@ -467,6 +472,7 @@
             <div class="player-media-name" id="playerMediaTitle">Фильм</div>
         </div>
         <div class="player-controls">
+            <button class="player-fullscreen-btn" tabindex="0" onclick="togglePlayerFullscreen()">⛶ На весь экран</button>
             <button class="player-close-btn" tabindex="0" onclick="closePlayer()">✕ Закрыть</button>
         </div>
     </div>
@@ -972,10 +978,28 @@
         updatePlayerFrame(titleText);
         document.getElementById('player-screen').style.display = 'flex';
 
+        // Запрос полноэкранного режима при открытии плеера (аналог F11)
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(err => {});
+        }
+
         setTimeout(() => {
             const iframe = document.querySelector('#playerContainerInner iframe');
             if(iframe) iframe.focus();
         }, 1500);
+    }
+
+    // Функция переключения полноэкранного режима по кнопке внутри плеера
+    function togglePlayerFullscreen() {
+        if (!document.fullscreenElement) {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(err => {});
+            }
+        }
     }
 
     function updatePlayerFrame(titleText) {
@@ -1001,6 +1025,11 @@
         if(oldScript) oldScript.remove();
         document.getElementById('player-screen').style.display = 'none';
 
+        // Выход из полноэкранного режима при закрытии плеера
+        if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(err => {});
+        }
+
         setTimeout(() => focusFirstElementInView(), 100);
     }
 
@@ -1009,7 +1038,7 @@
     function getFocusableElements() {
         if (document.getElementById('profile-selection-screen').style.display === 'flex') return Array.from(document.querySelectorAll('#profile-selection-screen button, #profile-selection-screen [tabindex="0"]'));
         if (document.getElementById('roulette-modal-overlay').style.display === 'flex') return Array.from(document.querySelectorAll('#roulette-modal-overlay button, #roulette-modal-overlay [tabindex="0"]'));
-        if (document.getElementById('player-screen').style.display === 'flex') return Array.from(document.querySelectorAll('#player-screen .player-close-btn'));
+        if (document.getElementById('player-screen').style.display === 'flex') return Array.from(document.querySelectorAll('#player-screen .player-fullscreen-btn, #player-screen .player-close-btn'));
         if (document.getElementById('modal-overlay').style.display === 'flex') return Array.from(document.querySelectorAll('#modal-overlay button, #modal-overlay [tabindex="0"]'));
         
         const activeSection = document.querySelector('.view-section.active');
@@ -1057,13 +1086,29 @@
                 return;
             }
 
-            if (event.key === 'Enter') {
-                const iframe = document.querySelector('#playerContainerInner iframe');
-                if (iframe) {
-                    try { iframe.focus(); } catch(e) {}
-                }
-                handled = true;
+            const focusables = getFocusableElements();
+            switch(event.key) {
+                case 'ArrowRight':
+                    currentFocusIndex++;
+                    if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
+                    updateTvFocus(true);
+                    handled = true;
+                    break;
+                case 'ArrowLeft':
+                    currentFocusIndex--;
+                    if (currentFocusIndex < 0) currentFocusIndex = 0;
+                    updateTvFocus(true);
+                    handled = true;
+                    break;
+                case 'Enter':
+                    const active = focusables[currentFocusIndex] || document.activeElement;
+                    if (active) {
+                        active.click();
+                        handled = true;
+                    }
+                    break;
             }
+
             if (handled) { event.preventDefault(); }
             return;
         }
