@@ -203,7 +203,7 @@
         }
         .roulette-result-card img { width: 80px; height: 115px; object-fit: cover; border-radius: 4px; }
 
-        /* ИСПРАВЛЕНИЯ ДЛЯ ПЛЕЕРА НА ТВ */
+        /* ИСПРАВЛЕНИЯ ДЛЯ ПЛЕЕРА НА ТВ (100% видимая область без обрезаний) */
         #player-screen { 
             display: none; 
             position: fixed; 
@@ -214,26 +214,27 @@
             background: #000; 
             z-index: 20000; 
             flex-direction: column; 
+            overflow: hidden;
         }
         .player-top-bar {
-            display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;
-            background: rgba(14, 14, 19, 0.9); border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 30; flex-shrink: 0;
-            height: 50px;
+            display: flex; justify-content: space-between; align-items: center; padding: 5px 20px;
+            background: rgba(14, 14, 19, 0.95); border-bottom: 1px solid rgba(255,255,255,0.08); z-index: 30; flex-shrink: 0;
+            height: 40px;
         }
         .player-title-block { display: flex; align-items: center; gap: 10px; }
-        .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; }
-        .player-media-name { font-size: 14px; font-weight: bold; color: #fff; }
+        .player-logo-badge { background: var(--netflix-red); color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: bold; }
+        .player-media-name { font-size: 13px; font-weight: bold; color: #fff; }
         
-        .player-fullscreen-btn { background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; outline: none; margin-right: 10px; }
+        .player-fullscreen-btn { background: rgba(255,255,255,0.2); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 11px; cursor: pointer; outline: none; margin-right: 8px; }
         .player-fullscreen-btn.tv-focused { outline: 3px solid #fff; background: var(--netflix-red); }
 
-        .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; outline: none; }
+        .player-close-btn { background: var(--netflix-red); color: #fff; border: none; padding: 4px 12px; border-radius: 4px; font-weight: bold; font-size: 11px; cursor: pointer; outline: none; }
         .player-close-btn.tv-focused { outline: 3px solid #fff; background: #ff1e2b; }
 
         .player-container-inner { 
             position: relative; 
-            width: 100vw; 
-            height: calc(100vh - 50px); 
+            width: 100%; 
+            height: calc(100vh - 40px) !important; 
             background: #000; 
             display: flex; 
             justify-content: center; 
@@ -989,18 +990,16 @@
         updatePlayerFrame(titleText);
         document.getElementById('player-screen').style.display = 'flex';
 
-        // Автоматический запрос полноэкранного режима при открытии
         if (document.documentElement.requestFullscreen) {
             document.documentElement.requestFullscreen().catch(err => {});
         }
 
         setTimeout(() => {
-            const iframe = document.querySelector('#playerContainerInner iframe');
+            const iframe = document.querySelector('#playerContainerInner iframe, #playerContainerInner div');
             if(iframe) iframe.focus();
-        }, 1500);
+        }, 1200);
     }
 
-    // Обработчик кнопки «На весь экран»
     function togglePlayerFullscreen() {
         if (!document.fullscreenElement) {
             if (document.documentElement.requestFullscreen) {
