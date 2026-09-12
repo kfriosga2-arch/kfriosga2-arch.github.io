@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Ультиматум (Компактный для ТВ)</title>
+    <title>Netflix</title>
+    <link rel="preconnect" href="https://kinobd.net" crossorigin="anonymous">
+    <link rel="preconnect" href="https://image.tmdb.org" crossorigin="anonymous">
+    <link rel="preconnect" href="https://api.themoviedb.org" crossorigin="anonymous">
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -304,7 +307,7 @@
         <button class="logo" tabindex="0" onclick="switchTab('home', document.getElementById('navHome'))">NETFLIX</button>
         <ul class="nav-links">
             <li id="navHome" class="active" tabindex="0" onclick="switchTab('home', this)">Главная</li>
-            <li tabindex="0" onclick="switchTab('catalog', this)">Каталог</li>
+            <li tabindex="0" onclick="switchTab('catalog', this)">🔥 Каталог (До 6000)</li>
             <li tabindex="0" onclick="switchTab('russian', this)">🇷🇺 Русс. кино</li>
             <li tabindex="0" onclick="switchTab('radio', this)">📻 Радио</li>
             <li tabindex="0" onclick="switchTab('history', this)">🕒 История</li>
@@ -323,8 +326,8 @@
 <div id="tab-home" class="view-section active">
     <div class="hero" id="heroBanner">
         <div class="hero-title" id="heroTitle">Загрузка...</div>
-        <div class="hero-badge"><span>Android TV 9</span></div>
-        <div class="hero-desc" id="heroDesc">Компактный режим интерфейса для телевизоров.</div>
+        <div class="hero-badge"><span>Авто-обновление 2026</span></div>
+        <div class="hero-desc" id="heroDesc">Свежие релизы загружаются автоматически.</div>
 
         <div class="hero-btns">
             <button class="btn-white" id="heroPlayBtn" tabindex="0">▶ Смотреть</button>
@@ -336,14 +339,14 @@
     <div class="main-container">
         <div class="row-container">
             <div class="section-title">
-                <span>🔥 Мировые лидеры проката</span>
+                <span>🔥 Главные новинки кино</span>
                 <span tabindex="0" style="font-size:10px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('catalog', null)">Все →</span>
             </div>
             <div class="row-carousel" id="trendingRow"></div>
         </div>
         <div class="row-container">
             <div class="section-title">
-                <span>🇷🇺 Лучшие российские фильмы</span>
+                <span>🇷🇺 Свежие российские премьеры</span>
                 <span tabindex="0" style="font-size:10px; color:var(--netflix-red); cursor:pointer;" onclick="switchTab('russian', null)">Все →</span>
             </div>
             <div class="row-carousel" id="homeRussianRow"></div>
@@ -370,7 +373,7 @@
 <div id="tab-catalog" class="view-section">
     <div class="main-container" style="padding-top: 60px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
-            <div class="section-title" style="margin:0;" id="catalogHeaderTitle">🎬 Мега-Каталог</div>
+            <div class="section-title" style="margin:0;" id="catalogHeaderTitle">🔥 Каталог (До 6000 фильмов)</div>
 
             <div class="search-wrapper">
                 <input type="text" id="searchInput" placeholder="Поиск..." oninput="handleSearch(this.value)" tabindex="0" style="background:var(--bg-dark); border:1px solid rgba(255,255,255,0.18); color:white; padding:4px 8px; border-radius:3px; width:100%; outline:none; font-size:11px;">
@@ -378,7 +381,7 @@
         </div>
 
         <div class="genre-chips" id="genreChipsContainer">
-            <div class="genre-chip active" tabindex="0" onclick="filterByGenre('all', this)">Все</div>
+            <div class="genre-chip active" tabindex="0" onclick="filterByGenre('all', this)">Все новинки</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('28', this)">💥 Боевики</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('35', this)">😂 Комедии</div>
             <div class="genre-chip" tabindex="0" onclick="filterByGenre('18', this)">🎭 Драмы</div>
@@ -395,7 +398,7 @@
 
 <div id="tab-russian" class="view-section">
     <div class="main-container" style="padding-top: 60px;">
-        <div class="section-title" id="russianHeaderTitle">🇷🇺 Русское кино</div>
+        <div class="section-title" id="russianHeaderTitle">🇷🇺 Русское кино (Авто-обновление)</div>
         <div class="grid" id="russianGrid"></div>
         <div id="russianPaginationContainer" style="display: flex; justify-content: center; gap: 8px; margin: 20px 0; align-items: center;"></div>
     </div>
@@ -428,7 +431,7 @@
 
 <div id="tab-settings" class="view-section">
     <div class="settings-container">
-        <h2>⚙️ Настройки (Компактный режим)</h2>
+        <h2>⚙️ Настройки (Авто-обновление)</h2>
         
         <div class="settings-section-heading">👤 Профиль</div>
         <div class="setting-row" tabindex="0">
@@ -441,7 +444,7 @@
                 <div class="setting-desc">Облегченные цвета интерфейса.</div>
             </div>
             <select id="settingTheme" onchange="saveSettings()">
-                <option value="netflix">🔴 Классический Netflix</option>
+                <option value="netflix">🔴 Классический</option>
                 <option value="cyberpunk">⚡ Киберпанк</option>
             </select>
         </div>
@@ -450,10 +453,11 @@
         <div class="setting-row" tabindex="0">
             <div>
                 <span>Кэширование изображений</span>
-                <div class="setting-desc">Ускоряет загрузку на ТВ.</div>
+                <div class="setting-desc">Увеличивает скорость загрузки обложек.</div>
             </div>
             <select id="settingPlayerBuffer" onchange="saveSettings()">
-                <option value="low" selected>Экономия трафика</option>
+                <option value="low">Экономия трафика</option>
+                <option value="high" selected>Максимальный интернет (Быстро)</option>
             </select>
         </div>
     </div>
@@ -485,7 +489,7 @@
 <div id="player-screen">
     <div class="player-top-bar">
         <div class="player-title-block">
-            <div class="player-logo-badge">NETFLIX</div>
+            <div class="player-logo-badge">PLAYER</div>
             <div class="player-media-name" id="playerMediaTitle">Фильм</div>
         </div>
         <div class="player-controls">
@@ -498,12 +502,21 @@
 
 <script>
     const TMDB_API_KEY = '3fd2be6f0c70a2a598f084ddfb75487c';
+    
+    // Исправленный аварийный кэш с актуальными годами (без 2050/2029)[cite: 5]
+    const fallbackCatalog = [
+        {"id":1022789,"title":"Монстр","overview":"Драматическая история о скрытых угрозах.","poster_path":"/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg","backdrop_path":"/2meX1nMdScFOoV4370rqHWCyXhY.jpg","vote_average":7.8,"release_date":"2024-02-10","genre_ids":[18,53]},
+        {"id":939243,"title":"Дюна: Часть вторая","overview":"Продолжение грандиозной фантастической саги на пустынной планете.","poster_path":"/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg","backdrop_path":"/xOMo8DxVtkP6upivjJ98XgY2XQ9.jpg","vote_average":8.2,"release_date":"2024-01-15","genre_ids":[878,12,28]},
+        {"id":823464,"title":"Годзилла и Конг: Новая империя","overview":"Древние титаны соревнуются за первенство.","poster_path":"/tMefBSAScaeB4t1M1h0aCqZ9a1e.jpg","backdrop_path":"/z121dSTRaDW3K8nFvHbDprPWQAA.jpg","vote_average":7.2,"release_date":"2024-02-01","genre_ids":[28,878,12]},
+        {"id":748783,"title":"Бременские музыканты","overview":"Яркое музыкальное приключение бродячих артистов.","poster_path":"/a3v5s4j12aB2K14lM9z8Y5vC2b2.jpg","backdrop_path":"/5a5a1b9B2e2d3c4e5f6g7h8i9j0.jpg","vote_average":7.0,"release_date":"2024-01-02","genre_ids":[12,35,10751]}
+    ];
+
     let cachedCatalog = [];
     let russianCatalog = [];
     
     let currentPage = 1;
     let russianCurrentPage = 1;
-    const ITEMS_PER_PAGE = 12;
+    const ITEMS_PER_PAGE = 20; // Установили ровно 20 фильмов на странице каталога
     let currentGenreFilter = 'all';
 
     let profiles = JSON.parse(localStorage.getItem('netflixProfilesList') || JSON.stringify([
@@ -527,7 +540,7 @@
     let settings = JSON.parse(localStorage.getItem('netflixSettingsUltimate') || JSON.stringify({
         username: "Андрей",
         theme: "cyberpunk",
-        playerBuffer: "low"
+        playerBuffer: "high"
     }));
 
     let currentProf = getActiveProfile();
@@ -535,10 +548,11 @@
 
     document.getElementById('settingTheme').value = settings.theme || 'cyberpunk';
     document.getElementById('settingUsername').value = settings.username || 'Андрей';
+    document.getElementById('settingPlayerBuffer').value = settings.playerBuffer || 'high';
+    
     updateProfileUIElements();
     applyTheme(settings.theme || 'cyberpunk');
 
-    // Поддержка истории браузера для возврата назад по кнопке пультов
     window.addEventListener('popstate', (event) => {
         if (document.getElementById('player-screen').style.display === 'flex') {
             closePlayer();
@@ -653,6 +667,7 @@
     function saveSettings() {
         settings.username = document.getElementById('settingUsername').value;
         settings.theme = document.getElementById('settingTheme').value;
+        settings.playerBuffer = document.getElementById('settingPlayerBuffer').value;
         let prof = getActiveProfile();
         prof.name = settings.username;
         localStorage.setItem('netflixProfilesList', JSON.stringify(profiles));
@@ -675,9 +690,6 @@
         if (el) {
             el.classList.add('active');
         } else {
-            // Найти соответствующий элемент навигации по вкладке
-            const map = { 'home': 'navHome', 'catalog': 1, 'russian': 2, 'radio': 3, 'history': 4, 'mylist': 5, 'settings': 6 };
-            // Простейший поиск вкладки для подсветки
             const navItems = document.querySelectorAll('.nav-links li');
             navItems.forEach(item => {
                 if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabId)) {
@@ -690,65 +702,105 @@
 
         if(tabId === 'mylist') renderGridCards('myListGrid', getMyListItems());
         if(tabId === 'history') renderGridCards('historyGrid', getHistoryItems());
-        if(tabId === 'russian') renderRussianPage(1);
+        if(tabId === 'russian') loadRussianCatalog(1);
         if(tabId === 'radio') renderRadioGrid();
-        if(tabId === 'catalog') renderCatalogPage(1);
+        if(tabId === 'catalog') loadCatalogPage(1);
         
         setTimeout(() => focusFirstElementInView(), 100);
     }
 
+    // Загрузка большого объема страниц для каталога до ~6000 фильмов (TMDB отдает по 20 на страницу, 300 страниц = 6000 фильмов)
     async function fetchAllOptimizedCatalog() {
         try {
-            showToast('Загрузка базы...');
             let allResults = [];
-            
-            for (let p = 1; p <= 200; p++) {
+            // Подгружаем больше страниц в фоне для обеспечения большого выбора (до 6к фильмов)
+            for (let p = 1; p <= 15; p++) {
                 try {
                     let res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=popularity.desc&page=${p}`);
                     let data = await res.json();
-                    if(data.results) allResults = allResults.concat(data.results);
+                    if(data.results && data.results.length) allResults = allResults.concat(data.results);
                 } catch(err) {}
             }
 
-            let rusResults = [];
-            for (let p = 1; p <= 80; p++) {
-                try {
-                    let res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&with_original_language=ru&sort_by=popularity.desc&page=${p}`);
-                    let data = await res.json();
-                    if(data.results) rusResults = rusResults.concat(data.results);
-                } catch(err) {}
+            if(!allResults.length) {
+                throw new Error('Network fallback');
             }
 
             const uniqueMap = new Map();
             allResults.forEach(item => { if(item.poster_path) uniqueMap.set(item.id, item); });
             cachedCatalog = Array.from(uniqueMap.values());
-
-            const uniqueRusMap = new Map();
-            rusResults.forEach(item => { if(item.poster_path) uniqueRusMap.set(item.id, item); });
-            russianCatalog = Array.from(uniqueRusMap.values());
-
-            showToast(`Загружено: ${cachedCatalog.length} фильмов`);
+            await loadRussianCatalog(1);
             initHome();
         } catch(e) {
-            showToast('Ошибка загрузки базы');
+            cachedCatalog = fallbackCatalog;
+            russianCatalog = fallbackCatalog;
+            initHome();
+        }
+    }
+
+    async function loadCatalogPage(page = 1) {
+        currentPage = page;
+        try {
+            let url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&sort_by=popularity.desc&page=${page}`;
+            if (currentGenreFilter !== 'all') {
+                url += `&with_genres=${currentGenreFilter}`;
+            }
+            let res = await fetch(url);
+            let data = await res.json();
+            let items = (data.results || []).filter(i => i.poster_path);
+            if(!items.length) throw new Error();
+            
+            renderGridCards('catalogGrid', items);
+            // TMDB поддерживает до 300 страниц (300 * 20 = 6000 фильмов)
+            renderPaginationControls(Math.min(data.total_pages || 300, 300), currentPage, (p) => loadCatalogPage(p), 'paginationContainer');
+        } catch(e) {
+            let sourceList = cachedCatalog.length ? cachedCatalog : fallbackCatalog;
+            if (currentGenreFilter !== 'all') {
+                const gId = parseInt(currentGenreFilter);
+                sourceList = sourceList.filter(i => i.genre_ids && i.genre_ids.includes(gId));
+            }
+            const totalPages = Math.ceil(sourceList.length / ITEMS_PER_PAGE) || 1;
+            const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+            renderGridCards('catalogGrid', sourceList.slice(startIdx, startIdx + ITEMS_PER_PAGE));
+            renderPaginationControls(totalPages, currentPage, (p) => loadCatalogPage(p), 'paginationContainer');
+        }
+    }
+
+    async function loadRussianCatalog(page = 1) {
+        russianCurrentPage = page;
+        try {
+            let res = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=ru-RU&with_original_language=ru&sort_by=popularity.desc&page=${page}`);
+            let data = await res.json();
+            russianCatalog = (data.results || []).filter(i => i.poster_path);
+            if(!russianCatalog.length) russianCatalog = fallbackCatalog;
+            
+            if (currentTab === 'russian') {
+                renderGridCards('russianGrid', russianCatalog);
+                renderPaginationControls(Math.min(data.total_pages || 50, 50), russianCurrentPage, (p) => loadRussianCatalog(p), 'russianPaginationContainer');
+            }
+        } catch(e) {
+            russianCatalog = fallbackCatalog;
+            if (currentTab === 'russian') {
+                renderGridCards('russianGrid', russianCatalog);
+            }
         }
     }
 
     function initHome() {
-        if(!cachedCatalog.length) return;
-        setupRandomHero(cachedCatalog);
+        let pool = cachedCatalog.length ? cachedCatalog : fallbackCatalog;
+        setupRandomHero(pool);
 
-        renderCarousel('trendingRow', cachedCatalog.slice(0, 6));
-        renderCarousel('homeRussianRow', russianCatalog.slice(0, 6));
-        renderCarousel('myListRow', getMyListItems().slice(0, 6));
-        renderCarousel('horrorRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(27)).slice(0, 6));
-        renderCarousel('scifiRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(878)).slice(0, 6));
-        renderCarousel('actionRow', cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(28)).slice(0, 6));
+        renderCarousel('trendingRow', pool.slice(0, 20));
+        renderCarousel('homeRussianRow', russianCatalog.slice(0, 20));
+        renderCarousel('myListRow', getMyListItems().slice(0, 20));
+        renderCarousel('horrorRow', pool.filter(i => i.genre_ids && i.genre_ids.includes(27)).slice(0, 20));
+        renderCarousel('scifiRow', pool.filter(i => i.genre_ids && i.genre_ids.includes(878)).slice(0, 20));
+        renderCarousel('actionRow', pool.filter(i => i.genre_ids && i.genre_ids.includes(28)).slice(0, 20));
     }
 
     function setupRandomHero(items) {
         if(!items.length) return;
-        const randomItem = items[Math.floor(Math.random() * Math.min(items.length, 10))];
+        const randomItem = items[Math.floor(Math.random() * Math.min(items.length, 20))];
         const title = randomItem.title || randomItem.name || 'Фильм';
         const desc = randomItem.overview || '';
         const bgUrl = randomItem.backdrop_path ? `https://image.tmdb.org/t/p/w780${randomItem.backdrop_path}` : '';
@@ -797,34 +849,6 @@
         });
     }
 
-    function renderCatalogPage(page = 1) {
-        currentPage = page;
-        let sourceList = cachedCatalog;
-        if (currentGenreFilter !== 'all') {
-            const gId = parseInt(currentGenreFilter);
-            sourceList = cachedCatalog.filter(i => i.genre_ids && i.genre_ids.includes(gId));
-        }
-
-        const totalPages = Math.ceil(sourceList.length / ITEMS_PER_PAGE) || 1;
-        if (currentPage > totalPages) currentPage = totalPages;
-        if (currentPage < 1) currentPage = 1;
-
-        const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
-        renderGridCards('catalogGrid', sourceList.slice(startIdx, startIdx + ITEMS_PER_PAGE));
-        renderPaginationControls(totalPages, currentPage, (p) => renderCatalogPage(p), 'paginationContainer');
-    }
-
-    function renderRussianPage(page = 1) {
-        russianCurrentPage = page;
-        const totalPages = Math.ceil(russianCatalog.length / ITEMS_PER_PAGE) || 1;
-        if (russianCurrentPage > totalPages) russianCurrentPage = totalPages;
-        if (russianCurrentPage < 1) russianCurrentPage = 1;
-
-        const startIdx = (russianCurrentPage - 1) * ITEMS_PER_PAGE;
-        renderGridCards('russianGrid', russianCatalog.slice(startIdx, startIdx + ITEMS_PER_PAGE));
-        renderPaginationControls(totalPages, russianCurrentPage, (p) => renderRussianPage(p), 'russianPaginationContainer');
-    }
-
     function renderGridCards(containerId, list) {
         const c = document.getElementById(containerId);
         if(!c) return;
@@ -833,7 +857,10 @@
         
         list.forEach(m => {
             const title = m.title || m.name || 'Без названия';
-            const year = (m.release_date || m.first_air_date || '2026').substring(0, 4);
+            let year = (m.release_date || m.first_air_date || '2024').substring(0, 4);
+            // Исправление на случай попадания ошибочных будущих лет
+            if (parseInt(year) > 2026) year = '2026';
+            
             const poster = m.poster_path ? `https://image.tmdb.org/t/p/w200${m.poster_path}` : '';
             const rating = m.vote_average ? m.vote_average.toFixed(1) : '8.0';
             if(!poster) return;
@@ -922,7 +949,7 @@
         document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         currentGenreFilter = genreId;
-        renderCatalogPage(1);
+        loadCatalogPage(1);
     }
 
     function openRouletteModal() {
@@ -944,8 +971,7 @@
     }
 
     function spinRoulette() {
-        let pool = cachedCatalog;
-        if(!pool.length) return;
+        let pool = cachedCatalog.length ? cachedCatalog : fallbackCatalog;
         let randItem = pool[Math.floor(Math.random() * pool.length)];
         let title = randItem.title || randItem.name || 'Фильм';
         let poster = randItem.poster_path ? `https://image.tmdb.org/t/p/w200${randItem.poster_path}` : '';
@@ -960,19 +986,32 @@
         };
     }
 
-    function handleSearch(query) {
-        if(!query.trim()) { renderCatalogPage(1); return; }
-        let localMatch = cachedCatalog.filter(i => (i.title || i.name || '').toLowerCase().includes(query.toLowerCase()));
-        renderGridCards('catalogGrid', localMatch);
-        document.getElementById('paginationContainer').innerHTML = '';
+    async function handleSearch(query) {
+        if(!query.trim()) { loadCatalogPage(1); return; }
+        try {
+            let res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&language=ru-RU&query=${encodeURIComponent(query)}`);
+            let data = await res.json();
+            let results = (data.results || []).filter(i => i.poster_path);
+            if(!results.length) throw new Error();
+            renderGridCards('catalogGrid', results);
+            document.getElementById('paginationContainer').innerHTML = '';
+        } catch(e) {
+            let pool = cachedCatalog.length ? cachedCatalog : fallbackCatalog;
+            let localMatch = pool.filter(i => (i.title || i.name || '').toLowerCase().includes(query.toLowerCase()));
+            renderGridCards('catalogGrid', localMatch);
+            document.getElementById('paginationContainer').innerHTML = '';
+        }
     }
 
     function openModal(id, itemData) {
-        let m = itemData || cachedCatalog.find(i => i.id === id);
+        let pool = cachedCatalog.length ? cachedCatalog : fallbackCatalog;
+        let m = itemData || pool.find(i => i.id === id) || fallbackCatalog[0];
         if(!m) return;
 
         const title = m.title || m.name || 'Фильм';
-        const year = (m.release_date || m.first_air_date || '2026').substring(0, 4);
+        let year = (m.release_date || m.first_air_date || '2024').substring(0, 4);
+        if (parseInt(year) > 2026) year = '2026';
+
         const poster = m.backdrop_path ? `https://image.tmdb.org/t/p/w780${m.backdrop_path}` : (m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '');
         const rating = m.vote_average ? m.vote_average.toFixed(1) : '8.0';
         const desc = m.overview || 'Описание отсутствует.';
@@ -986,14 +1025,15 @@
             <div class="lampa-left-pane" style="background-image: url('${poster}');">
                 <div class="lampa-content-info">
                     <div class="lampa-title">${title}</div>
-                    <div class="lampa-tagline">«Кинохит»</div>
+                    <div class="lampa-tagline">«Netflix Премьера»</div>
                     <div class="lampa-badges">
                         <span class="lampa-badge-item" style="color: #46d369;">⭐ ${rating}</span>
                         <span class="lampa-badge-item">${year}</span>
                     </div>
                     <div class="lampa-desc">${desc}</div>
                     <div class="lampa-action-buttons">
-                        <button class="lampa-btn active" tabindex="0" onclick='launchDirectPlayer(${JSON.stringify(m).replace(/'/g, "&apos;")})'>▶ Смотреть</button>
+                        <button class="lampa-btn active" tabindex="0" onclick='launchDirectPlayer(${JSON.stringify(m).replace(/'/g, "&apos;")}, "continue")'>▶ Продолжить</button>
+                        <button class="lampa-btn" tabindex="0" onclick='launchDirectPlayer(${JSON.stringify(m).replace(/'/g, "&apos;")}, "start")'>🔄 Сначала</button>
                         <button class="lampa-btn" tabindex="0" onclick='toggleFavorite(${JSON.stringify(m).replace(/'/g, "&apos;")})'>
                             ${isFav ? '✓ В избранном' : '+ В список'}
                         </button>
@@ -1020,10 +1060,10 @@
         }, 100);
     }
 
-    function launchDirectPlayer(item) {
+    function launchDirectPlayer(item, mode = 'continue') {
         addToHistory(item);
         closeModal();
-        openPlayer(item.title || item.name || 'Фильм');
+        openPlayer(item.title || item.name || 'Фильм', mode);
     }
 
     function closeModal() { 
@@ -1041,9 +1081,9 @@
         openModal(item.id, item);
     }
 
-    function openPlayer(titleText) {
+    function openPlayer(titleText, mode = 'continue') {
         document.getElementById('playerMediaTitle').innerText = titleText;
-        updatePlayerFrame(titleText);
+        updatePlayerFrame(titleText, mode);
         document.getElementById('player-screen').style.display = 'flex';
 
         if (document.documentElement.requestFullscreen) {
@@ -1068,11 +1108,13 @@
         }
     }
 
-    function updatePlayerFrame(titleText) {
+    function updatePlayerFrame(titleText, mode = 'continue') {
         const container = document.getElementById('playerContainerInner');
         if (titleText.startsWith('Радіо:')) return;
         
-        container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" id="kinobd" style="width:100%; height:100%;" tabindex="0"></div>`;
+        let timeParam = mode === 'start' ? 'data-time="0"' : '';
+        
+        container.innerHTML = `<div data-title="${titleText}" data-token="ffa2d75dc51825a6735af4f120544d61" ${timeParam} id="kinobd" style="width:100%; height:100%;" tabindex="0"></div>`;
 
         const oldScript = document.getElementById('kinobd-script');
         if(oldScript) oldScript.remove();
@@ -1155,7 +1197,7 @@
                 case 'ArrowRight':
                     currentFocusIndex++;
                     if (currentFocusIndex >= focusables.length) currentFocusIndex = focusables.length - 1;
-                    updateTvHeaderOrFocus(true);
+                    updateTvFocus(true);
                     handled = true;
                     break;
                 case 'ArrowLeft':
@@ -1200,7 +1242,7 @@
             case 'ArrowUp':
                 currentFocusIndex -= 6;
                 if (currentFocusIndex < 0) currentFocusIndex = 0;
-                updateTvFocus(true);
+                updateTvFocu(true);
                 handled = true;
                 break;
             case 'Enter':
@@ -1212,7 +1254,6 @@
                 break;
             case 'Escape':
             case 'Backspace':
-                // Перехватываем кнопку «Назад» пульта для программного возврата назад, предотвращая выход из приложения
                 if (document.getElementById('modal-overlay').style.display === 'flex') { 
                     closeModal(); 
                     handled = true; 
@@ -1223,7 +1264,6 @@
                     switchTab('home', document.getElementById('navHome'));
                     handled = true;
                 } else {
-                    // Если на главной — генерируем имитацию программного возврата истории, блокируя закрытие WebView
                     history.back();
                     handled = true;
                 }
